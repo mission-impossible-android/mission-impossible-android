@@ -9,6 +9,7 @@ ui_print("|------------------------------|");
 ui_print("| 10%  Update Started          |");
 ui_print("| 30%  Reading Apps            |");
 ui_print("| 60%  Mounting filesystem     |");
+assert(getprop("ro.product.device") == "grouper");
 run_program("/sbin/busybox", "mount", "/system");
 run_program("/sbin/busybox", "mount", "/cache");
 run_program("/sbin/busybox", "mount", "/data");
