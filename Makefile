@@ -3,7 +3,7 @@ download_apks:
 	mkdir -p pkg/system/app
 	./download_apks.sh
 
-package:
+package: download_apks
 	mkdir -p build
 	(cd pkg; zip -r ../build/mission-impossible-update.zip *)
 
