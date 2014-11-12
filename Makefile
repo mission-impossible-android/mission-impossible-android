@@ -5,4 +5,7 @@ download_apks:
 
 package:
 	mkdir -p build
-	zip -r build/mission-impossible-update.zip *
+	(cd pkg; zip -r ../build/mission-impossible-update.zip *)
+
+push_emulator:
+	adb -e push build/mission-impossible-update.zip /sdcard/
