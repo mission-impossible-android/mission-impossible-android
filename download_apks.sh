@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 
-BASEDIR=$(dirname $0)/pkg
+BASEDIR=$(readlink -e pkg)
 
 apk_files=( \
   org.torproject.android_124.apk \
