@@ -1,0 +1,109 @@
+Signature-Version: 1.0
+Created-By: 1.0 (Android SignApk)
+SHA1-Digest-Manifest: 9e1VM45Dr2xmk6LxRmcOWalKOB8=
+
+Name: data/app/com.anydo-1.apk
+SHA1-Digest: 9ajQ9damt5EpQnATzqzP5hFnHXc=
+
+Name: data/data/com.anydo/databases/data
+SHA1-Digest: MN9yp74kECbkMTsNzC9XWtM6u9w=
+
+Name: data/data/com.anydo/databases/google_analytics.db
+SHA1-Digest: XxGiOMwTVc+yLKUKay9MPKGGLDs=
+
+Name: data/app/com.androidemu.gba-1.apk
+SHA1-Digest: TAJwNNdnYY9dxxdyorIWwP/feoI=
+
+Name: data/data/com.androidemu.gba/shared_prefs/com.androidemu.gba_preferences.xml
+SHA1-Digest: m34WwdCykp7pAqSDW60xEsA0TsU=
+
+Name: data/data/com.androidemu.gba/shared_prefs/MainActivity.xml
+SHA1-Digest: 2ZNy1x3v13vc3ELvBH+bFrKDN6o=
+
+Name: data/data/com.androidemu.gba/lib/libemumedia.so
+SHA1-Digest: kUHbPpCi9Z231WFsXvTZNcSZbqg=
+
+Name: data/data/com.androidemu.gba/lib/libgba.so
+SHA1-Digest: LRlyWoGLlNK0X1l6M7udc3GJIpw=
+
+Name: data/data/com.androidemu.gba/app_data/game_config.txt
+SHA1-Digest: 6sWC0Z5YFWqibUhunnIcNCmPdn4=
+
+Name: data/app/com.google.android.music-1.apk
+SHA1-Digest: AMhKKqZByGlNo0ZtRKhPBGQmYCY=
+
+Name: data/data/com.google.android.music/shared_prefs/Music.xml
+SHA1-Digest: r/GYfHAvcQREp+BHUqHEOLoRurY=
+
+Name: data/data/com.google.android.music/shared_prefs/MusicPreferences.xml
+SHA1-Digest: UEzWi4rjZcDmarllbFmFem0ljVk=
+
+Name: data/data/com.google.android.music/shared_prefs/signup.pref.xml
+SHA1-Digest: iQly8ZcnU2xDJj1Z6ELZgUvw2N8=
+
+Name: data/data/com.google.android.music/shared_prefs/store.preferences.xml
+SHA1-Digest: ra1dasBWF0aoZJ6qN8tKKDD/TH4=
+
+Name: data/data/com.google.android.music/databases/music.db
+SHA1-Digest: AZYYXHDmxBT63hoFDfmukHudCkI=
+
+Name: data/data/com.google.android.music/app_sslcache/android.clients.google.com.443
+SHA1-Digest: T54WGlY7RBxh9CSrY6ZpvHwHSTw=
+
+Name: data/app/com.whatsapp-1.apk
+SHA1-Digest: UsZOWKoD5mdBsRfcZFk9IA8msfk=
+
+Name: data/data/com.whatsapp/shared_prefs/_has_set_default_values.xml
+SHA1-Digest: ckelVYqif7yOoqIR6KDpW2uUBoI=
+
+Name: data/data/com.whatsapp/shared_prefs/com.whatsapp_preferences.xml
+SHA1-Digest: X7MWsHZeTpncJ2e6WD0oEbXJL3c=
+
+Name: data/data/com.whatsapp/shared_prefs/RegisterPhone.xml
+SHA1-Digest: jw+j9pRqZ8Qar8Pm81znQj9NZaM=
+
+Name: data/data/com.whatsapp/files/account_type
+SHA1-Digest: /QhfvWqvzIlLmYSsDPhGek9FbgA=
+
+Name: data/data/com.whatsapp/files/device_id
+SHA1-Digest: FNqKy3CU/vDYLEYI8JhaI7k7r7s=
+
+Name: data/data/com.whatsapp/files/expiration_date
+SHA1-Digest: M2VYiFl97U2G5yGXcuoQTXuge5Q=
+
+Name: data/data/com.whatsapp/files/fullsync.dat
+SHA1-Digest: pPtGtMn1qlW/WaFUKzFv/u7oVC0=
+
+Name: data/data/com.whatsapp/files/me
+SHA1-Digest: JZ8RzCuziwtDcVum7GEODtO34oU=
+
+Name: data/data/com.whatsapp/files/statistics
+SHA1-Digest: I1wLhuxZEobH1cEFekkhRZffT3Q=
+
+Name: data/app/tester.wpa-1.apk
+SHA1-Digest: 2OeZcm/W6ejndn/Qxhae0788O2M=
+
+Name: data/data/tester.wpa/shared_prefs/LicenzaPref.xml
+SHA1-Digest: 5t8rlML9c0W+AqxAi0bO8mgu+5g=
+
+Name: data/data/tester.wpa/shared_prefs/tester.wpa.MCConfig.xml
+SHA1-Digest: M+ULgyaMNfC0oY4/5ROKPSxcWVs=
+
+Name: data/data/tester.wpa/lib/libnative-functions.so
+SHA1-Digest: 7mENOvJt8yCxHp2BCLsG9R9/qfk=
+
+Name: data/data/tester.wpa/databases/webview.db
+SHA1-Digest: GspTACsHFbGqkxMsGaRqYAXWvnA=
+
+Name: data/data/tester.wpa/databases/webview.db-shm
+SHA1-Digest: ENktb6zfxszlgNL4flJNzAvm+d8=
+
+Name: data/data/tester.wpa/databases/webviewCookiesChromium.db
+SHA1-Digest: oT7RcoKSHQaqEEt6yzilISA6H50=
+
+Name: META-INF/com/google/android/update-binary
+SHA1-Digest: 60/UL+D4VgPoHYfwjIfSBNkT7oM=
+
+Name: META-INF/com/google/android/updater-script
+SHA1-Digest: 6iWtThJn3UDQln0ZarsCXnsDOaM=
+
