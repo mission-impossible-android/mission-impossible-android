@@ -1,5 +1,4 @@
 wipe dalvik
 wipe cache
 wipe data
-install /sdcard/cm-11-20141110-NIGHTLY-grouper.zip
 install /sdcard/mission-impossible-update.zip

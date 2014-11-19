@@ -12,3 +12,13 @@ package:
 
 push_emulator:
 	adb -e push build/mission-impossible-update.zip /sdcard/
+
+push_update_zip:
+	adb push -p build/mission-impossible-update.zip /sdcard/
+
+set_openrecoveryscript:
+	adb push -p assets/openrecoveryscript /sdcard/
+	adb shell "su root cp /sdcard/openrecoveryscript /cache/recovery/"
+
+build_deploy: package push_update_zip set_openrecoveryscript
+	adb reboot recovery
