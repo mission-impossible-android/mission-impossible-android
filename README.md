@@ -23,7 +23,7 @@ this is by design!
 
 ```
 make cm_dl_link # Follow instructions
-adb push path/to/cm-11-<TIMESTAMP>-SNAPSHOT-<VERSION>-<DEVICE_CODENAME>.zip /sdcard/
+make push_cm_zip
 make build_deploy
 ```
 

@@ -1,4 +1,5 @@
 wipe dalvik
 wipe cache
 wipe data
+install /sdcard/cm-11.zip
 install /sdcard/mission-impossible-update.zip

@@ -16,6 +16,9 @@ push_emulator:
 push_update_zip:
 	adb push -p build/mission-impossible-update.zip /sdcard/
 
+push_cm_zip:
+	adb push -p assets/cm-11-20141112-SNAPSHOT-M12-grouper.zip /sdcard/cm-11.zip
+
 set_openrecoveryscript:
 	adb push -p assets/openrecoveryscript /sdcard/
 	adb shell "su root cp /sdcard/openrecoveryscript /cache/recovery/"
