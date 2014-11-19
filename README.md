@@ -15,6 +15,7 @@ this is by design!
 
 ### Usage
 
+* [Install](http://teamw.in/project/twrp2) Team Win Recovery Project bootloader. (Follow instructions for your device.)
 * [Enable](https://developer.android.com/tools/device.html#developer-device-options) on-device developer options.
 - [Enable](https://developer.android.com/tools/device.html#setting-up) USB debugging.
 * Connect your device via USB, authorizing as neccessary.
@@ -24,7 +25,11 @@ this is by design!
 make cm_dl_link # Follow instructions
 adb push path/to/cm-11-<TIMESTAMP>-SNAPSHOT-<VERSION>-<DEVICE_CODENAME>.zip /sdcard/
 make build_deploy
+```
 
+### Compatibility
+
+Currently, project is being tested on the wifi-only Nexus 7, 2012 version (`grouper`).
 
 ### Links
 
