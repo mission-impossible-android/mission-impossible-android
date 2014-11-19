@@ -1,3 +1,4 @@
 pkg/*/app/
 build/
 tmp/
+assets/cm-11-*-SNAPSHOT-*.zip
