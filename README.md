@@ -4,9 +4,10 @@ This project is a attempting to streamline the process of following [Mike
 Perry's Android hardening tutorial on the Tor
 blog](https://blog.torproject.org/blog/mission-impossible-hardening-android-security-and-privacy).
 
-It is currently a collection of scripts that require developer tools. It
-aspires for be the basis for an installer for a custom Android ROM based
-on Cyanogenmod.
+It is currently a collection of scripts that require developer tools,
+that will build and deploy an `update.zip` file to your connected
+device. It aspires for be the basis for an installer for a custom
+Android ROM based on Cyanogenmod.
 
 Please keep in mind that this is experimental, and may not be functional
 at any given moment. Also, it will likely wipe your Android device, and
