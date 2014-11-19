@@ -1,9 +1,12 @@
+cm_dl_link:
+	scripts/cyanogenmod_download_link.sh
+
 download_apks:
 	mkdir -p pkg/data/app
 	mkdir -p pkg/system/app
-	./download_apks.sh
+	scripts/download_apks.sh
 
-package: download_apks
+package:
 	mkdir -p build
 	(cd pkg; zip -r ../build/mission-impossible-update.zip *)
 
