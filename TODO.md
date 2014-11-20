@@ -3,3 +3,6 @@
 - test if `su` command is available before attempting deploy
 - Find out why `location_providers_allowed` gets set to GPS on first
   boot.
+- Turn off `assisted_gps_location`?
+
+      https://en.wikipedia.org/wiki/Assisted_GPS
