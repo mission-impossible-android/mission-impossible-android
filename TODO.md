@@ -6,3 +6,5 @@
 - Turn off `assisted_gps_location`?
 
       https://en.wikipedia.org/wiki/Assisted_GPS
+
+- Figure out how to extract 90firewall from local orwall apk.
