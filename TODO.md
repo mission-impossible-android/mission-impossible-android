@@ -10,3 +10,4 @@
 - Figure out how to extract 90firewall from local orwall apk.
 - Add wizard for setting numeric pin and encrypting with long password.
 - Figure out why setting device_hostname isn't working.
+- why is owner information not on lock screen?
