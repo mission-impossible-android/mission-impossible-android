@@ -8,3 +8,4 @@
       https://en.wikipedia.org/wiki/Assisted_GPS
 
 - Figure out how to extract 90firewall from local orwall apk.
+- Add wizard for setting numeric pin and encrypting with long password.
