@@ -11,3 +11,5 @@
 - Add wizard for setting numeric pin and encrypting with long password.
 - Figure out why setting device_hostname isn't working.
 - why is owner information not on lock screen?
+- allow fdroid access from beginning
+- Create app lists for downloading certain tools
