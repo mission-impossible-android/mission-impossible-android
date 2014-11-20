@@ -19,6 +19,7 @@ run_program("/system/bin/settings", "put", "global", "install_non_market_apps", 
 run_program("/system/bin/settings", "put", "global", "wifi_on", "0");
 run_program("/system/bin/settings", "put", "global", "bluetooth_on", "0");
 run_program("/system/bin/settings", "put", "global", "airplane_mode_on", "1");
+run_program("/system/bin/settings", "put", "global", "airplane_mode_toggleable_radios", "bluetooth,wifi,nfc,ant");
 run_program("/system/bin/settings", "put", "secure", "location_providers_allowed", "''");
 run_program("/system/bin/settings", "put", "global", "assisted_gps_enabled", "0");
 run_program("/system/bin/settings", "put", "global", "backup_auto_restore", "0");
