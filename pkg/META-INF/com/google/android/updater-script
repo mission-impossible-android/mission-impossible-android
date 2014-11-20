@@ -32,6 +32,7 @@ set_perm_recursive(0, 0, 0755, 0644, "/system/app");
 set_perm(0, 2000, 0755, "/system/etc/init.d/91firewall");
 package_extract_dir("data", "/data");
 set_perm_recursive(1000, 1000, 0771, 0644, "/data/app");
+set_perm_recursive(1027, 1027, 0771, 0660, "/data/data/com.android.nfc");
 # Disable setup wizard
 delete("/system/priv-app/CMAccount.apk");
 run_program("/sbin/busybox", "umount", "/system");
