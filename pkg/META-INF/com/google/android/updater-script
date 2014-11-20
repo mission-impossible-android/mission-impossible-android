@@ -24,13 +24,14 @@ run_program("/system/bin/settings", "put", "global", "assisted_gps_enabled", "0"
 run_program("/system/bin/settings", "put", "global", "backup_auto_restore", "0");
 run_program("/system/bin/settings", "put", "global", "backup_enabled", "0");
 run_program("/system/bin/settings", "put", "secure", "privacy_guard_default", "1");
-run_program("/system/bin/settings", "put", "secure", "user_setup_complete", "1");
 run_program("/system/bin/setprop", "net.hostname", "localhost");
 ui_print("| 80%  Installing Applications |");
 package_extract_dir("system", "/system");
 set_perm_recursive(0, 0, 0755, 0644, "/system/app");
 package_extract_dir("data", "/data");
 set_perm_recursive(1000, 1000, 0771, 0644, "/data/app");
+# Disable setup wizard
+delete("/system/priv-app/CMAccount.apk");
 run_program("/sbin/busybox", "umount", "/system");
 run_program("/sbin/busybox", "umount", "/cache");
 run_program("/sbin/busybox", "umount", "/data");
