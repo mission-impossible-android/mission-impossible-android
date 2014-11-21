@@ -20,4 +20,4 @@ printf "%s\n" "${apk_files[@]}" \
   | xargs --max-args=1 --max-procs=8 -i \
     wget --no-verbose --continue https://f-droid.org/repo/{}
 
-echo "--- All package downloaded!"
+echo "--- All packages downloaded!"
