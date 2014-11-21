@@ -6,9 +6,12 @@ download_apks:
 	mkdir -p pkg/system/priv-app
 	scripts/download_apks.sh
 
-package:
+clean:
+	rm -f build/mission-impossible-update.zip
+	rm -f pkg/*/*app/*
+
+package: download_apks
 	mkdir -p build
-	rm build/mission-impossible-update.zip
 	(cd pkg; zip -r ../build/mission-impossible-update.zip *)
 
 push_emulator:
@@ -28,5 +31,5 @@ update_orwall_init:
 	rm pkg/system/etc/init.d/*
 	(cd pkg/system/etc/init.d && wget https://raw.githubusercontent.com/EthACKdotOrg/orWall/master/app/src/main/res/raw/userinit.sh ---output-document=91firewall)
 
-build_deploy: package push_update_zip set_openrecoveryscript
+build_deploy: clean package push_update_zip set_openrecoveryscript
 	adb reboot recovery
