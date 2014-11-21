@@ -34,6 +34,10 @@ set_perm(0, 2000, 0755, "/system/etc/init.d/91firewall");
 package_extract_dir("data", "/data");
 set_perm_recursive(1000, 1000, 0771, 0644, "/data/app");
 set_perm_recursive(1027, 1027, 0771, 0660, "/data/data/com.android.nfc");
+
+# Install default Orwall rules
+set_perm_recursive(10056, 10056, 0771, 0660, "/data/data/org.ethack.orwall");
+
 # Disable setup wizard
 delete("/system/priv-app/CMAccount.apk");
 # Remove stock browser
