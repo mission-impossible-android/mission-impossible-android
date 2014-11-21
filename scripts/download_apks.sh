@@ -11,6 +11,11 @@ echo "--- Downloading F-Droid app market APK..."
 cd ${BASEDIR}/system/priv-app
 wget --no-verbose --continue https://f-droid.org/repo/org.fdroid.fdroid_760.apk
 
+echo "--- Downloading Orfox browser debug APK..."
+cd ${BASEDIR}/data/app
+orfox_release_timestamp='2014-08-22_23-32-22'
+wget --no-verbose --continue "https://guardianproject.info/builds/OrfoxFennec/${orfox_release_timestamp}/OrfoxFennec-debug.apk"
+
 echo "--- Downloading ${#apk_files[@]} F-Droid packages..."
 echo "    This is parallel, but may still take awhile."
 echo "    (Partially-downloaded files will be resumed.)"
