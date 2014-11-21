@@ -4,7 +4,7 @@ BASEDIR=$(readlink -e pkg)
 
 apk_files=( \
   org.torproject.android_124.apk \
-  org.ethack.orwall_32.apk \
+  org.ethack.orwall_33.apk \
 )
 
 echo "--- Downloading F-Droid app market APK..."
