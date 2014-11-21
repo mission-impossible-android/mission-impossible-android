@@ -28,7 +28,7 @@ run_program("/system/bin/settings", "put", "secure", "privacy_guard_default", "1
 run_program("/system/bin/settings", "put", "secure", "device_hostname", "localhost");
 ui_print("| 80%  Installing Applications |");
 package_extract_dir("system", "/system");
-set_perm_recursive(0, 0, 0755, 0644, "/system/app");
+set_perm_recursive(0, 0, 0755, 0644, "/system/priv-app");
 # Save a restart by setting Orwall perms correctly
 set_perm(0, 2000, 0755, "/system/etc/init.d/91firewall");
 package_extract_dir("data", "/data");

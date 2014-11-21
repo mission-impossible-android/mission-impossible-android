@@ -8,7 +8,7 @@ apk_files=( \
 )
 
 echo "--- Downloading F-Droid app market APK..."
-cd ${BASEDIR}/system/app
+cd ${BASEDIR}/system/priv-app
 wget --no-verbose --continue https://f-droid.org/repo/org.fdroid.fdroid_760.apk
 
 echo "--- Downloading ${#apk_files[@]} F-Droid packages..."

@@ -3,7 +3,7 @@ cm_dl_link:
 
 download_apks:
 	mkdir -p pkg/data/app
-	mkdir -p pkg/system/app
+	mkdir -p pkg/system/priv-app
 	scripts/download_apks.sh
 
 package:
