@@ -40,8 +40,6 @@ set_perm_recursive(10056, 10056, 0771, 0660, "/data/data/org.ethack.orwall");
 
 # Disable setup wizard
 delete("/system/priv-app/CMAccount.apk");
-# Remove stock browser
-delete("/system/app/Browser.apk");
 run_program("/sbin/busybox", "umount", "/system");
 run_program("/sbin/busybox", "umount", "/cache");
 run_program("/sbin/busybox", "umount", "/data");
@@ -51,5 +49,6 @@ ui_print("|------------------------------|");
 ui_print("|www.pirateparty.altervista.org|");
 ui_print("|------------------------------|");
 ui_print("________________________________");
+run_program("vdc", "cryptfs", "enablecrypto", "inplace", "thisisapassword");
 
 
