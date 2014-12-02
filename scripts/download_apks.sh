@@ -5,6 +5,11 @@ BASEDIR=$(readlink -e pkg)
 apk_files=( \
   org.torproject.android_124.apk \
   org.ethack.orwall_33.apk \
+  org.nick.cryptfs.passwdmanager_1210.apk \
+  com.fsck.k9_22001.apk \
+  org.sufficientlysecure.keychain_31200.apk \
+  net.osmand.plus_183.apk \
+  com.csipsimple_2417.apk \
 )
 
 echo "--- Downloading F-Droid app market APK..."
