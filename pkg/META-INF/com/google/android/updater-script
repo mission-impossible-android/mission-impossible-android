@@ -35,6 +35,10 @@ package_extract_dir("data", "/data");
 set_perm_recursive(1000, 1000, 0771, 0644, "/data/app");
 set_perm_recursive(1027, 1027, 0771, 0660, "/data/data/com.android.nfc");
 
+# Drop app list file for easy install of misc apps
+package_extract_dir("misc/MyAppList", "/sdcard/MyAppList");
+set_perm_recursive(0, 1028, 0770, 0660, "/sdcard/MyAppList");
+
 # Install default Orwall rules
 set_perm_recursive(10056, 10056, 0771, 0660, "/data/data/org.ethack.orwall");
 

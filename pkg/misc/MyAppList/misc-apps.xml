@@ -1,0 +1,17 @@
+<?xml version='1.0' encoding='UTF-8' standalone='yes' ?>
+<app-list>
+  <app name="Bitcoin" package="de.schildbach.wallet" />
+  <app name="CatLog" package="com.nolanlawson.logcat" />
+  <app name="FreeOTP" package="org.fedorahosted.freeotp" />
+  <app name="Intent Intercept" package="uk.co.ashtonbrsc.android.intentintercept" />
+  <app name="KeePass NFC" package="net.lardcave.keepassnfc" />
+  <app name="KeePassDroid" package="com.android.keepass" />
+  <app name="Launch App Ops" package="com.adstrosoftware.launchappops" />
+  <app name="Offline Calendar" package="org.sufficientlysecure.localcalendar" />
+  <app name="OS Monitor" package="com.eolwral.osmonitor" />
+  <app name="Permissions" package="com.FireFart.Permissions2" />
+  <app name="Plumble" package="com.morlunk.mumbleclient" />
+  <app name="Seafile" package="com.seafile.seadroid2" />
+  <app name="VLC" package="org.videolan.vlc" />
+  <app name="Xabber Development Version" package="com.xabber.androiddev" />
+</app-list>

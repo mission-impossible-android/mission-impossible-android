@@ -10,6 +10,7 @@ apk_files=( \
   org.sufficientlysecure.keychain_31200.apk \
   net.osmand.plus_183.apk \
   com.csipsimple_2417.apk \
+  com.projectsexception.myapplist.open_16.apk \
 )
 
 echo "--- Downloading F-Droid app market APK..."

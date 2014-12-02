@@ -27,6 +27,9 @@ make push_cm_zip
 make build_deploy
 ```
 
+* Open the *My App List* app, and install any desired apps from
+  `misc-apps.xml`.
+
 ### Compatibility
 
 Currently, project is being tested on the wifi-only Nexus 7, 2012 version (`grouper`).
