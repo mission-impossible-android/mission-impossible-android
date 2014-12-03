@@ -27,6 +27,7 @@ make push_cm_zip
 make build_deploy
 ```
 
+* Open F-Droid and update the app list.
 * Open the *My App List* app, and install any desired apps from
   `misc-apps.xml`.
 
