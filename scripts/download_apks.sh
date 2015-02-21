@@ -3,19 +3,19 @@
 BASEDIR=$(readlink -e pkg)
 
 apk_files=( \
-  org.torproject.android_124.apk \
-  org.ethack.orwall_33.apk \
-  org.nick.cryptfs.passwdmanager_1210.apk \
-  com.fsck.k9_22001.apk \
+  org.torproject.android_133.apk \
+  org.ethack.orwall_35.apk \
+  org.nick.cryptfs.passwdmanager_1230.apk \
+  com.fsck.k9_22002.apk \
   org.sufficientlysecure.keychain_31200.apk \
-  net.osmand.plus_183.apk \
+  net.osmand.plus_197.apk \
   com.csipsimple_2417.apk \
   com.projectsexception.myapplist.open_16.apk \
 )
 
 echo "--- Downloading F-Droid app market APK..."
 cd ${BASEDIR}/system/priv-app
-wget --no-verbose --continue https://f-droid.org/repo/org.fdroid.fdroid_760.apk
+wget --no-verbose --continue https://f-droid.org/repo/org.fdroid.fdroid_780.apk
 
 echo "--- Downloading Orfox browser debug APK..."
 cd ${BASEDIR}/data/app
