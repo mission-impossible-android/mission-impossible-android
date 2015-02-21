@@ -1,0 +1,34 @@
+#!/system/bin/sh
+# execute post-install script on First boot
+# 01022012
+SLEEP=3
+FBSCR="/data/.firstboot.sh"
+BB="busybox"
+pg () {
+	$BB ps | $BB grep "$@" | $BB grep -v "$( echo $BB grep $@ )"
+}
+
+sleeperlog() {
+  echo $1 >> /sdcard/firstboot.log
+}
+
+if [ -f "$FBSCR" ]; then
+#install apps on first boot after system services have started
+	sleeperlog "Found $FBLOC"
+	sleeperlog "Waiting for system"
+	$BB chmod 0755 $FBSCR
+	while : ; do
+		if pg systemui; then
+			$BB sleep 10
+			sleeperlog "system loaded."
+			log -p i -t boot "Executing $FBSCR script"
+			sleeperlog "Running FirstBoot init"
+			$FBSCR
+
+			break
+		fi
+		sleeperlog "WAITING FOR SYSTEM SERVICE: sleeping for $SLEEP s..."
+		$BB sleep $SLEEP
+
+	done
+fi

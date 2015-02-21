@@ -1,0 +1,24 @@
+<?xml version='1.0' encoding='utf-8' standalone='yes' ?>
+<map>
+    <boolean name="next_word_prediction" value="false" />
+    <boolean name="pref_key_use_contacts_dict" value="false" />
+    <string name="pref_keyboard_layout_20110916">2</string>
+    <boolean name="pref_show_language_switch_key" value="true" />
+    <boolean name="pref_include_other_imes_in_language_switch_list" value="false" />
+    <boolean name="gesture_input" value="true" />
+    <string name="show_suggestions_setting">0</string>
+    <boolean name="pref_sliding_key_input_preview" value="true" />
+    <boolean name="auto_cap" value="true" />
+    <boolean name="vibrate_on" value="true" />
+    <boolean name="pref_voice_input_key" value="true" />
+    <boolean name="pref_key_block_potentially_offensive" value="false" />
+    <boolean name="pref_key_use_double_space_period" value="true" />
+    <boolean name="popup_on" value="false" />
+    <string name="emoji_recent_keys"></string>
+    <boolean name="sound_on" value="false" />
+    <boolean name="pref_gesture_preview_trail" value="true" />
+    <int name="last_shown_emoji_category_id" value="1" />
+    <boolean name="pref_gesture_floating_preview_text" value="true" />
+    <boolean name="pref_spellcheck_use_contacts" value="true" />
+    <string name="auto_correction_threshold">0</string>
+</map>

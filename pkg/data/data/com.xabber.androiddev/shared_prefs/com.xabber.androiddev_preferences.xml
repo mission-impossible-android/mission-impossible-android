@@ -1,0 +1,49 @@
+<?xml version='1.0' encoding='utf-8' standalone='yes' ?>
+<map>
+    <string name="connection_priority_away">0</string>
+    <boolean name="security_otr_history" value="false" />
+    <boolean name="contacts_show_avatars" value="true" />
+    <string name="chats_divide">portrait</string>
+    <string name="contacts_order">status</string>
+    <string name="chats_attention_sound">content://settings/system/ringtone</string>
+    <string name="connection_priority_chat">20</string>
+    <boolean name="connection_wifi_lock" value="true" />
+    <boolean name="contact_integration_suggested" value="true" />
+    <string name="connection_priority_dnd">-1</string>
+    <boolean name="events_lightning" value="true" />
+    <string name="chats_font_size">normal</string>
+    <string name="events_sound_uri">content://settings/system/notification_sound</string>
+    <boolean name="contacts_show_empty_groups" value="false" />
+    <boolean name="chats_show_avatars" value="false" />
+    <boolean name="events_vibro" value="true" />
+    <boolean name="contacts_show_offline" value="false" />
+    <boolean name="security_check_certificate" value="true" />
+    <string name="connection_priority_xa">0</string>
+    <boolean name="events_show_text" value="false" />
+    <string name="chats_hide_keyboard">landscape</string>
+    <boolean name="events_first_only" value="false" />
+    <boolean name="connection_adjust_priority" value="false" />
+    <boolean name="contacts_show_panel" value="true" />
+    <string name="interface_smiles">android</string>
+    <boolean name="connection_load_vcard" value="true" />
+    <string name="connection_priority_online">5</string>
+    <string name="connection_go_away">-1</string>
+    <boolean name="events_persistent" value="true" />
+    <string name="chats_show_status_change">muc</string>
+    <boolean name="chats_state_notification" value="false" />
+    <boolean name="contacts_show_accounts" value="false" />
+    <boolean name="events_visible_chat" value="false" />
+    <boolean name="connection_wake_lock_key" value="true" />
+    <int name="boot_count" value="2" />
+    <boolean name="contacts_stay_active_chats" value="true" />
+    <string name="events_message">chat</string>
+    <boolean name="chats_attention" value="false" />
+    <string name="connection_go_xa">-1</string>
+    <boolean name="debug_log" value="false" />
+    <boolean name="events_ignore_system_vibro" value="false" />
+    <boolean name="connection_start_at_boot" value="false" />
+    <string name="security_otr_mode">manual</string>
+    <boolean name="contacts_show_groups" value="true" />
+    <boolean name="chats_send_by_enter" value="false" />
+    <boolean name="contacts_show_active_chats" value="true" />
+</map>
