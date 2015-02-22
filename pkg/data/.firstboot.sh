@@ -47,8 +47,13 @@ do
   $FIND /data/data/$APP -type f -exec $CHMOD 0660 {} \;
 done
 
-# XXX: enablecrypto?? Seems to fail?
-#/system/bin/vdc cryptfs enablecrypto inplace thisisapassword
+# For some reason, these settings are ignored if run from the updater-script,
+# so we set them here:
+/system/bin/settings put global adb_enabled 0
+/system/bin/settings put secure location_providers_allowed ""
+/system/bin/settings put global auto_time 0
+/system/bin/settings put global airplane_mode_on 1 # XXX: Set, but not displayed in UI :/
+/system/bin/settings put secure device_hostname "localhost" # XXX: Still broken!
 
 # Start time settings app so the user can set the clock.
 # FIXME: This could be done better with our own wizard, or maybe even if we
@@ -56,3 +61,7 @@ done
 am start -a android.intent.action.MAIN -n 'com.android.settings/.Settings$DateTimeSettingsActivity'
 
 rm $0 >> /sdcard/init.log
+
+# XXX: Seems to fail? causes a reboot loop when enabled, and will mess with
+# the settings wizard anyway :/.
+#/system/bin/vdc cryptfs enablecrypto inplace thisisapassword
