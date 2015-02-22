@@ -50,4 +50,9 @@ done
 # XXX: enablecrypto?? Seems to fail?
 #/system/bin/vdc cryptfs enablecrypto inplace thisisapassword
 
+# Start time settings app so the user can set the clock.
+# FIXME: This could be done better with our own wizard, or maybe even if we
+# call into only specific activities of the CM one.
+am start -a android.intent.action.MAIN -n 'com.android.settings/.Settings$DateTimeSettingsActivity'
+
 rm $0 >> /sdcard/init.log
