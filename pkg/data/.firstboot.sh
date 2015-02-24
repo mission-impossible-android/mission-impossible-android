@@ -16,6 +16,7 @@ org.torproject.android \
 
 SIP_APP=com.csipsimple
 BROWSER_APP=org.mozilla.fennec_fdroid
+ORWALL_APP=org.ethack.orwall
 
 # Programs needed
 ECHO="busybox echo"
@@ -28,12 +29,19 @@ CUT="busybox cut"
 FIND="busybox find"
 SED="busybox sed"
 
-# Fix orwall's config UIDs
+# Get important UIDs for later
 BROWSER_UID=$( $CAT /data/system/packages.xml | $EGREP "^[ ]*<package.*serId" | $GREP -v framework-res.apk | $GREP -v com.htc.resources.apk | $GREP -i $BROWSER_APP | $SED 's%.*serId="\(.*\)".*%\1%' |  $CUT -d '"' -f1) 
+ORWALL_UID=$( $CAT /data/system/packages.xml | $EGREP "^[ ]*<package.*serId" | $GREP -v framework-res.apk | $GREP -v com.htc.resources.apk | $GREP -i $ORWALL_APP | $SED 's%.*serId="\(.*\)".*%\1%' |  $CUT -d '"' -f1)
 SIP_UID=$( $CAT /data/system/packages.xml | $EGREP "^[ ]*<package.*serId" | $GREP -v framework-res.apk | $GREP -v com.htc.resources.apk | $GREP -i $SIP_APP | $SED 's%.*serId="\(.*\)".*%\1%' |  $CUT -d '"' -f1)
 
+# Fix orwall's config UIDs
 $SED -i /data/data/org.ethack.orwall/shared_prefs/org.ethack.orwall_preferences.xml -e "s/REPLACE_WITH_BROWSER_UID/$BROWSER_UID/"
 $SED -i /data/data/org.ethack.orwall/shared_prefs/org.ethack.orwall_preferences.xml -e "s/REPLACE_WITH_SIP_UID/$SIP_UID/"
+
+# Give OrWall full, permanent root access
+echo "Importing Superuser database with orWall uid $APP_UID pre-authorized." >> /sdcard/init.log
+$SED -i /sdcard/com.android.settings_su.sql -e "s/REPLACE_WITH_ORWALL_UID/$ORWALL_UID/"
+/system/xbin/sqlite3 /data/data/com.android.settings/databases/su.sqlite < /sdcard/com.android.settings_su.sql
 
 # Fix permissions for all apps
 for APP in ${APPS[@]}
