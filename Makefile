@@ -18,10 +18,10 @@ push_emulator:
 	adb -e push build/mission-impossible-update.zip /sdcard/
 
 push_update_zip: package
-	adb push build/mission-impossible-update.zip /sdcard/
+	adb push -p build/mission-impossible-update.zip /sdcard/
 
 push_cm_zip:
-	adb push assets/cm-11.zip /sdcard/cm-11.zip
+	adb push -p assets/cm-11.zip /sdcard/cm-11.zip
 
 set_openrecoveryscript:
 	adb push -p assets/openrecoveryscript /sdcard/
