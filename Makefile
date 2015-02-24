@@ -10,7 +10,10 @@ clean:
 	rm -f build/mission-impossible-update.zip
 	rm -f pkg/*/*app/*
 
-package:
+extract_update_binary:
+	unzip -o assets/cm-11.zip META-INF/com/google/android/update-binary -d pkg
+
+package: extract_update_binary
 	mkdir -p build
 	(cd pkg; zip -r ../build/mission-impossible-update.zip *)
 
