@@ -40,6 +40,7 @@ $SED -i /data/data/org.ethack.orwall/shared_prefs/org.ethack.orwall_preferences.
 
 # Give OrWall full, permanent root access
 echo "Importing Superuser database with orWall uid $APP_UID pre-authorized." >> /sdcard/init.log
+mkdir -p /data/data/com.android.settings/databases
 $SED -i /sdcard/com.android.settings_su.sql -e "s/REPLACE_WITH_ORWALL_UID/$ORWALL_UID/"
 /system/xbin/sqlite3 /data/data/com.android.settings/databases/su.sqlite < /sdcard/com.android.settings_su.sql
 
