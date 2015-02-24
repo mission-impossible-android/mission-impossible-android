@@ -33,11 +33,8 @@ make build_deploy
 
 ### Compatibility
 
-Currently, project is being tested on the wifi-only Nexus 7, 2012 version (`grouper`).
-
-You will need to change [this
-flag](https://github.com/patcon/mission-impossible-android/blob/master/pkg/META-INF/com/google/android/updater-script#L12)
-to your device codename to test others.
+Currently, project is being tested on the wifi-only Nexus 7, 2012 version
+(`grouper`) and 2013 version (`flo`).
 
 ### Links
 

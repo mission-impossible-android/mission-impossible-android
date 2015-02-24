@@ -10,18 +10,18 @@ clean:
 	rm -f build/mission-impossible-update.zip
 	rm -f pkg/*/*app/*
 
-package: download_apks
+package:
 	mkdir -p build
 	(cd pkg; zip -r ../build/mission-impossible-update.zip *)
 
 push_emulator:
 	adb -e push build/mission-impossible-update.zip /sdcard/
 
-push_update_zip:
-	adb push -p build/mission-impossible-update.zip /sdcard/
+push_update_zip: package
+	adb push build/mission-impossible-update.zip /sdcard/
 
 push_cm_zip:
-	adb push -p assets/cm-11-20141112-SNAPSHOT-M12-grouper.zip /sdcard/cm-11.zip
+	adb push assets/cm-11.zip /sdcard/cm-11.zip
 
 set_openrecoveryscript:
 	adb push -p assets/openrecoveryscript /sdcard/
@@ -31,5 +31,5 @@ update_orwall_init:
 	rm pkg/system/etc/init.d/*
 	(cd pkg/system/etc/init.d && wget https://raw.githubusercontent.com/EthACKdotOrg/orWall/master/app/src/main/res/raw/userinit.sh ---output-document=91firewall)
 
-build_deploy: package push_update_zip set_openrecoveryscript
+build_deploy: download_apks push_update_zip set_openrecoveryscript
 	adb reboot recovery

@@ -4,12 +4,19 @@
 - Find out why `location_providers_allowed` gets set to GPS on first
   boot.
 - Turn off `assisted_gps_location`?
-
       https://en.wikipedia.org/wiki/Assisted_GPS
 
-- Figure out how to extract 90firewall from local orwall apk.
 - Add wizard for setting numeric pin and encrypting with long password.
 - Figure out why setting device_hostname isn't working.
 - why is owner information not on lock screen?
 - allow fdroid access from beginning
-- Create app lists for downloading certain tools
+
+- MyAppList
+  + Create app lists for downloading certain tools
+  - Seems to be unable to read this list...
+
+- Orwall:
+  - Set OrWall config to use Fennec for the Browser app and CSIPSimple for SIP app 
+    - https://github.com/patcon/mission-impossible-android/issues/2
+    - https://github.com/patcon/mission-impossible-android/issues/5
+  +? Figure out how to extract 90firewall from local orwall apk.

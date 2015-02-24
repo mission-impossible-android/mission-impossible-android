@@ -13,3 +13,6 @@ echo "    https://download.cyanogenmod.org/?device=${device_name}&type=snapshot"
 echo
 echo "---- Remember to verify the file's provided MD5 checksum against the ouput of this local command:"
 echo "     ~$ md5sum path/to/cm-11-<TIMESTAMP>-SNAPSHOT-${snapshot_version}-${device_name}.zip"
+echo
+echo "When you are done:"
+echo "     ~$ mv path/to/cm-11-<TIMESTAMP>-SNAPSHOT-${snapshot_version}-${device_name}.zip assets/cm-11.zip"
