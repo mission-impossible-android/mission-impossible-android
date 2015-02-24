@@ -25,13 +25,6 @@ run_program("/system/bin/settings", "put", "global", "assisted_gps_enabled", "0"
 run_program("/system/bin/settings", "put", "global", "backup_auto_restore", "0");
 run_program("/system/bin/settings", "put", "global", "backup_enabled", "0");
 run_program("/system/bin/settings", "put", "secure", "privacy_guard_default", "1");
-# XXX: The following settings are ignored here for some reason. We also set
-# them in /data/.firstboot.sh as a result.
-run_program("/system/bin/settings", "put", "secure", "location_providers_allowed", "''");
-run_program("/system/bin/settings", "put", "global", "adb_enabled", "0");
-run_program("/system/bin/settings", "put", "secure", "device_hostname", "localhost");
-run_program("/system/bin/settings", "put", "global", "auto_time", "0");
-run_program("/system/bin/settings", "put", "global", "airplane_mode_on", "1");
 
 ui_print("| 30%  Installing /system files |");
 set_progress(0.3);
