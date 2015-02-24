@@ -7,11 +7,11 @@ download_apks:
 	scripts/download_apks.sh
 
 clean:
-	rm -f build/mission-impossible-update.zip
 	rm -f pkg/*/*app/*
 
 package:
 	mkdir -p build
+	rm -f build/mission-impossible-update.zip
 	(cd pkg; zip -r ../build/mission-impossible-update.zip *)
 
 push_emulator:
