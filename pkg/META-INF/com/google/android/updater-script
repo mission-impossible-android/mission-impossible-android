@@ -11,7 +11,6 @@ set_progress(0.0);
 
 ui_print("| 10%  Mounting filesystem      |");
 set_progress(0.1);
-#assert(getprop("ro.product.device") == "grouper");
 run_program("/sbin/busybox", "mount", "/system");
 run_program("/sbin/busybox", "mount", "/cache");
 run_program("/sbin/busybox", "mount", "/data");
@@ -30,9 +29,9 @@ ui_print("| 30%  Installing /system files |");
 set_progress(0.3);
 package_extract_dir("system", "/system");
 set_perm_recursive(0, 0, 0755, 0644, "/system/priv-app");
-# Save a restart by setting Orwall perms correctly XXX: Is this true?
-set_perm(0, 2000, 0755, "/system/etc/init.d/91firewall");
 set_perm(0, 2000, 0755, "/system/etc/init.d/Y02firstboot");
+# Save a restart by placing a file Orwall would normally create during setup.
+set_perm(0, 2000, 0755, "/system/etc/init.d/91firewall");
 
 ui_print("| 40%  Installing /data files   |");
 set_progress(0.4);
@@ -43,8 +42,8 @@ set_perm(0, 0, 0755, "/data/.firstboot.sh");
 ui_print("| 70%  Installing App List      |");
 set_progress(0.7);
 package_extract_dir("misc/MyAppList", "/sdcard/MyAppList");
+# TODO: MyAppList user id changes, so should move to Y02firstboot?
 set_perm_recursive(1023, 1023, 0770, 0660, "/sdcard/MyAppList");
-# TODO: Still need to tell App list to load this file
 
 ui_print("| 80%  Disable CM Setup Wizard  |");
 set_progress(0.8);
