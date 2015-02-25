@@ -26,7 +26,7 @@ get_app_uid()
       | $EGREP "^[ ]*<package.*serId" \
       | $GREP -v framework-res.apk \
       | $GREP -v com.htc.resources.apk \
-      | $GREP -i "$APP_NAME" \
+      | $GREP -i "\"$APP_NAME\"" \
       | $SED 's%.*serId="\(.*\)".*%\1%' \
       |  $CUT -d '"' -f1 \
   )
