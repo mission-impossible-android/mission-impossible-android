@@ -29,10 +29,13 @@ CUT="busybox cut"
 FIND="busybox find"
 SED="busybox sed"
 
+MISC_DIR=/sdcard/misc
+source $MISC_DIR/library.sh
+
 # Get important UIDs for later
-BROWSER_UID=$( $CAT /data/system/packages.xml | $EGREP "^[ ]*<package.*serId" | $GREP -v framework-res.apk | $GREP -v com.htc.resources.apk | $GREP -i $BROWSER_APP | $SED 's%.*serId="\(.*\)".*%\1%' |  $CUT -d '"' -f1) 
-ORWALL_UID=$( $CAT /data/system/packages.xml | $EGREP "^[ ]*<package.*serId" | $GREP -v framework-res.apk | $GREP -v com.htc.resources.apk | $GREP -i $ORWALL_APP | $SED 's%.*serId="\(.*\)".*%\1%' |  $CUT -d '"' -f1)
-SIP_UID=$( $CAT /data/system/packages.xml | $EGREP "^[ ]*<package.*serId" | $GREP -v framework-res.apk | $GREP -v com.htc.resources.apk | $GREP -i $SIP_APP | $SED 's%.*serId="\(.*\)".*%\1%' |  $CUT -d '"' -f1)
+BROWSER_UID=$(get_app_uid $BROWSER_APP)
+SIP_UID=$(get_app_uid $SIP_APP)
+ORWALL_UID=$(get_app_uid $ORWALL_APP)
 
 # Fix orwall's config UIDs
 $SED -i /data/data/org.ethack.orwall/shared_prefs/org.ethack.orwall_preferences.xml -e "s/REPLACE_WITH_BROWSER_UID/$BROWSER_UID/"
@@ -43,6 +46,18 @@ echo "Importing Superuser database with orWall uid $APP_UID pre-authorized." >> 
 mkdir -p /data/data/com.android.settings/databases
 $SED -i /sdcard/com.android.settings_su.sql -e "s/REPLACE_WITH_ORWALL_UID/$ORWALL_UID/"
 /system/xbin/sqlite3 /data/data/com.android.settings/databases/su.sqlite < /sdcard/com.android.settings_su.sql
+
+# Generate SQL to create orWall app DB
+SQL_FRAGMENT=""
+while read APP; do
+  APP_UID=$(get_app_uid $APP)
+  LINE="INSERT INTO rules VALUES($APP_UID,'$APP','Tor',9040,'TransProxy');"
+  SQL_FRAGMENT="$LINE\n$SQL_FRAGMENT"
+done < $MISC_DIR/app-list-orwall.txt
+$SED -i $MISC_DIR/org.ethack.orwall_nat.sql -e "s/{{REPLACE_WITH_GENERATED_SQL}}/$SQL_FRAGMENT/"
+mkdir -p /data/data/org.ethack.orwall/databases
+/system/xbin/sqlite3 /data/data/org.ethack.orwall/databases/nat.s3db < $MISC_DIR/org.ethack.orwall_nat.sql
+
 
 # Fix permissions for all apps
 for APP in ${APPS[@]}
