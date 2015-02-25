@@ -1,2 +1,14 @@
 org.fdroid.fdroid
 org.mariotaku.twidere
+com.cyanogenmod.updater
+com.android.providers.downloads
+com.csipsimple
+com.fsck.k9
+com.morlunk.mumbleclient
+com.xabber.androiddev
+de.schildbach.wallet
+org.mozilla.firefox
+org.mozilla.fennec_fdroid
+net.osmand.plus
+fr.kwiatkowski.ApkTrack
+indrora.atomic
