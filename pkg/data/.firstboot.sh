@@ -49,10 +49,13 @@ $SED -i /sdcard/com.android.settings_su.sql -e "s/REPLACE_WITH_ORWALL_UID/$ORWAL
 
 # Generate SQL to create orWall app DB
 SQL_FRAGMENT=""
-while read APP; do
-  APP_UID=$(get_app_uid $APP)
-  LINE="INSERT INTO rules VALUES($APP_UID,'$APP','Tor',9040,'TransProxy');"
-  SQL_FRAGMENT="$LINE\n$SQL_FRAGMENT"
+while read APP_DATA; do
+  APP_NAME=$(echo $APP_DATA | $CUT -f'1' -d':')
+  APP_UID=$(get_app_uid $APP_NAME)
+  APP_PORT_TYPE=$(echo $APP_DATA | $CUT -f'2' -d':')
+  APP_PORT_TYPE=${APP_PORT_TYPE:-TransProxy} # Default port type
+  SQL_LINE="INSERT INTO rules VALUES($APP_UID,'$APP_NAME','Tor',9040,'$APP_PORT_TYPE');"
+  SQL_FRAGMENT="$SQL_LINE\n$SQL_FRAGMENT"
 done < $MISC_DIR/app-list-orwall.txt
 $SED -i $MISC_DIR/org.ethack.orwall_nat.sql -e "s/{{REPLACE_WITH_GENERATED_SQL}}/$SQL_FRAGMENT/"
 mkdir -p /data/data/org.ethack.orwall/databases
