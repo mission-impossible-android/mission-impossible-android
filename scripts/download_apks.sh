@@ -13,12 +13,12 @@ apk_files=( \
   com.fsck.k9_22002.apk \
   org.sufficientlysecure.keychain_31200.apk \
   net.osmand.plus_197.apk \
-  com.csipsimple_2417.apk \
+  com.csipsimple_2459.apk \
   com.projectsexception.myapplist.open_16.apk \
   fr.kwiatkowski.ApkTrack_1.apk \
   org.coolreader_875.apk \
   com.artifex.mupdfdemo_55.apk \
-  org.mozilla.fennec_fdroid_350010.apk \
+  org.mozilla.fennec_fdroid_360010.apk \
   fennec-35.0.multi.android-arm.apk \
   de.schildbach.wallet_209.apk \
   org.mariotaku.twidere_98.apk \
