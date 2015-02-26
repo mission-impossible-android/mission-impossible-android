@@ -45,6 +45,10 @@ package_extract_dir("misc/MyAppList", "/sdcard/MyAppList");
 # TODO: MyAppList user id changes, so should move to Y02firstboot?
 set_perm_recursive(1023, 1023, 0770, 0660, "/sdcard/MyAppList");
 
+ui_print("| 75% Copying database dumps    |");
+set_progress(0.75);
+package_extract_dir("misc/db_dumps/com.android.settings_su.sql", "/sdcard/");
+
 ui_print("| 80%  Disable CM Setup Wizard  |");
 set_progress(0.8);
 delete("/system/priv-app/CMAccount.apk");
