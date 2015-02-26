@@ -1,3 +1,4 @@
+pkg/META-INF/com/google/android/update-binary
 pkg/*/*app/
 build/
 tmp/
