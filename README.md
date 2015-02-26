@@ -51,7 +51,7 @@ make download_apks
 
 The above process does **NOT** delete previous APKs, and so you'll need
 to manually delete duplicates and removed apps from `pkg/data/app`. (You
-could also delete the whole app directory to be sure.)
+could also run `make clean` to remove all APKs before running the above.)
 
 ### Compatibility
 
