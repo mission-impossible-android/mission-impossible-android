@@ -49,6 +49,10 @@ ui_print("| 80%  Disable CM Setup Wizard  |");
 set_progress(0.8);
 delete("/system/priv-app/CMAccount.apk");
 
+ui_print("| 85%  Removing stock browser   |");
+set_progress(0.85);
+delete("/system/app/Browser.apk");
+
 ui_print("| 90%  Unmounting filesystems   |");
 set_progress(0.9);
 run_program("/sbin/busybox", "umount", "/system");
