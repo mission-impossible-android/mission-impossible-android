@@ -31,6 +31,28 @@ make build_deploy
 * Open the *My App List* app, and install any desired apps from
   `misc-apps.xml`.
 
+### Updating Pre-installed Apps
+
+The names of pre-installed apps are specified in
+`pkg/misc/preinstalled.list`. These names are resolved to their most
+recent download targets, which are stored in
+`pkg/misc/preinstalled.list.lock`. Every so often, these can be updated
+so that new installs give the most recent versions:
+
+This process relies on the `xpath` command in the `libxml-xpath-perl`
+package.
+
+```
+sudo apt-get install libxml-xpath-perl
+make get_app_index
+make generate_applist_lockfile
+make download_apks
+```
+
+The above process does **NOT** delete previous APKs, and so you'll need
+to manually delete duplicates and removed apps from `pkg/data/app`. (You
+could also delete the whole app directory to be sure.)
+
 ### Compatibility
 
 Currently, project is being tested on the wifi-only Nexus 7, 2012 version

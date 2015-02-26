@@ -30,6 +30,13 @@ set_openrecoveryscript:
 	adb push -p assets/openrecoveryscript /sdcard/
 	adb shell "su root cp /sdcard/openrecoveryscript /cache/recovery/"
 
+get_app_index:
+	cd assets && curl --remote-name --progress https://f-droid.org/repo/index.xml
+
+generate_applist_lockfile:
+	rm -f pkg/misc/preinstalled.list.lock
+	scripts/generate_apk_lockfile.sh
+
 update_orwall_init:
 	rm pkg/system/etc/init.d/*
 	(cd pkg/system/etc/init.d && wget https://raw.githubusercontent.com/EthACKdotOrg/orWall/master/app/src/main/res/raw/userinit.sh ---output-document=91firewall)
