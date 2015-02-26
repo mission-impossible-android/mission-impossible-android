@@ -1,0 +1,15 @@
+org.fdroid.fdroid:
+info.guardianproject.orfox:Fenced
+com.android.providers.downloads
+org.mariotaku.twidere:
+com.cyanogenmod.updater:
+com.csipsimple:
+com.fsck.k9:
+com.morlunk.mumbleclient:
+com.xabber.androiddev:
+de.schildbach.wallet:
+org.mozilla.firefox:
+org.mozilla.fennec_fdroid:
+net.osmand.plus:
+fr.kwiatkowski.ApkTrack:
+indrora.atomic:

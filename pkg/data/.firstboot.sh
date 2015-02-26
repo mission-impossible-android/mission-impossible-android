@@ -29,10 +29,13 @@ CUT="busybox cut"
 FIND="busybox find"
 SED="busybox sed"
 
+MISC_DIR=/sdcard/misc
+source $MISC_DIR/library.sh
+
 # Get important UIDs for later
-BROWSER_UID=$( $CAT /data/system/packages.xml | $EGREP "^[ ]*<package.*serId" | $GREP -v framework-res.apk | $GREP -v com.htc.resources.apk | $GREP -i $BROWSER_APP | $SED 's%.*serId="\(.*\)".*%\1%' |  $CUT -d '"' -f1) 
-ORWALL_UID=$( $CAT /data/system/packages.xml | $EGREP "^[ ]*<package.*serId" | $GREP -v framework-res.apk | $GREP -v com.htc.resources.apk | $GREP -i $ORWALL_APP | $SED 's%.*serId="\(.*\)".*%\1%' |  $CUT -d '"' -f1)
-SIP_UID=$( $CAT /data/system/packages.xml | $EGREP "^[ ]*<package.*serId" | $GREP -v framework-res.apk | $GREP -v com.htc.resources.apk | $GREP -i $SIP_APP | $SED 's%.*serId="\(.*\)".*%\1%' |  $CUT -d '"' -f1)
+BROWSER_UID=$(get_app_uid $BROWSER_APP)
+SIP_UID=$(get_app_uid $SIP_APP)
+ORWALL_UID=$(get_app_uid $ORWALL_APP)
 
 # Fix orwall's config UIDs
 $SED -i /data/data/org.ethack.orwall/shared_prefs/org.ethack.orwall_preferences.xml -e "s/REPLACE_WITH_BROWSER_UID/$BROWSER_UID/"
@@ -41,8 +44,23 @@ $SED -i /data/data/org.ethack.orwall/shared_prefs/org.ethack.orwall_preferences.
 # Give OrWall full, permanent root access
 echo "Importing Superuser database with orWall uid $APP_UID pre-authorized." >> /sdcard/init.log
 mkdir -p /data/data/com.android.settings/databases
-$SED -i /sdcard/com.android.settings_su.sql -e "s/REPLACE_WITH_ORWALL_UID/$ORWALL_UID/"
-/system/xbin/sqlite3 /data/data/com.android.settings/databases/su.sqlite < /sdcard/com.android.settings_su.sql
+$SED -i $MISC_DIR/com.android.settings_su.sql -e "s/REPLACE_WITH_ORWALL_UID/$ORWALL_UID/"
+/system/xbin/sqlite3 /data/data/com.android.settings/databases/su.sqlite < $MISC_DIR/com.android.settings_su.sql
+
+# Generate SQL to create orWall app DB
+SQL_FRAGMENT=""
+while read APP_DATA; do
+  APP_NAME=$(echo $APP_DATA | $CUT -f'1' -d':')
+  APP_UID=$(get_app_uid $APP_NAME)
+  APP_PORT_TYPE=$(echo $APP_DATA | $CUT -f'2' -d':')
+  APP_PORT_TYPE=${APP_PORT_TYPE:-TransProxy} # Default port type
+  SQL_LINE="INSERT INTO rules VALUES($APP_UID,'$APP_NAME','Tor',9040,'$APP_PORT_TYPE');"
+  SQL_FRAGMENT="$SQL_LINE\n$SQL_FRAGMENT"
+done < $MISC_DIR/app-list-orwall.txt
+$SED -i $MISC_DIR/org.ethack.orwall_nat.sql -e "s/{{REPLACE_WITH_GENERATED_SQL}}/$SQL_FRAGMENT/"
+mkdir -p /data/data/org.ethack.orwall/databases
+/system/xbin/sqlite3 /data/data/org.ethack.orwall/databases/nat.s3db < $MISC_DIR/org.ethack.orwall_nat.sql
+
 
 # Fix permissions for all apps
 for APP in ${APPS[@]}
