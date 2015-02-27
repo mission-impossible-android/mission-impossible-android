@@ -1,6 +1,7 @@
 <?xml version='1.0' encoding='utf-8' standalone='yes' ?>
 <map>
     <string name="sip_app">REPLACE_WITH_SIP_UID</string>
+    <boolean name="first_run" value="false" />
     <string name="browser_app">REPLACE_WITH_BROWSER_UID</string>
     <boolean name="enforce_init_script" value="true" />
 </map>

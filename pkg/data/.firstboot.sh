@@ -90,6 +90,10 @@ done
 # This is a hack, and race conditions might occur if the .firstboot.sh script gets to long.
 am startservice org.torproject.android/org.torproject.android.service.TorService
 
+# Fake BOOT_COMPLETE to force orwall to apply rules in background.
+# TODO: Investigate why this doesn't happen on its own.
+am broadcast -a android.intent.action.BOOT_COMPLETED -n org.ethack.orwall/.BootBroadcast
+
 # Start time settings app so the user can set the clock.
 # FIXME: This could be done better with our own wizard, or maybe even if we
 # call into only specific activities of the CM one.
