@@ -80,7 +80,13 @@ done
 /system/bin/settings put secure location_providers_allowed ""
 /system/bin/settings put global auto_time 0
 /system/bin/settings put global airplane_mode_on 1 # XXX: Set, but not displayed in UI :/
-/system/bin/settings put secure device_hostname "localhost" # XXX: Still broken!
+
+# Change hostname for subsequent reboots
+/system/bin/settings put secure device_hostname "localhost"
+
+# Change hostname for current boot
+setprop net.hostname localhost
+echo localhost > /proc/sys/kernel/hostname
 
 # The Tor binary does not start until RECEIVE_BOOT_COMPLETED is broadcast. We
 # need the supporting data files created in the org.torproject.android
