@@ -82,6 +82,14 @@ done
 /system/bin/settings put global airplane_mode_on 1 # XXX: Set, but not displayed in UI :/
 /system/bin/settings put secure device_hostname "localhost" # XXX: Still broken!
 
+# The Tor binary does not start until RECEIVE_BOOT_COMPLETED is broadcast. We
+# need the supporting data files created in the org.torproject.android
+# directory prior to that.  Starting this service happens to check for these
+# directories and generate them if missing (which they are on first boot).
+#
+# This is a hack, and race conditions might occur if the .firstboot.sh script gets to long.
+am startservice org.torproject.android/org.torproject.android.service.TorService
+
 # Start time settings app so the user can set the clock.
 # FIXME: This could be done better with our own wizard, or maybe even if we
 # call into only specific activities of the CM one.
