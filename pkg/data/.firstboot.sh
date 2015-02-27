@@ -90,6 +90,9 @@ done
 # This is a hack, and race conditions might occur if the .firstboot.sh script gets to long.
 am startservice org.torproject.android/org.torproject.android.service.TorService
 
+# Force open orWall to force writing of iptables rules. Close with HOME key.
+am start org.ethack.orwall/org.ethack.orwall.TabbedMain && input keyevent 3
+
 # Start time settings app so the user can set the clock.
 # FIXME: This could be done better with our own wizard, or maybe even if we
 # call into only specific activities of the CM one.
