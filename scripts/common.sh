@@ -11,8 +11,10 @@ function connect_adb()
 function get_device_name()
 {
   connect_adb
+  # The 'ro.product.device' property isn't very reliable.
   # Note: Whitespace character \r was causing odd formatting.
-  local device_name=`adb shell getprop ro.product.device | tr -d "\r"`
+  local device_name=`adb shell getprop ro.cm.device | tr -d "\r"`
+  [[ -z "$device_name" ]] && device_name=`adb shell getprop ro.product.device | tr -d "\r"`
   [[ -z "$device_name" ]] && device_name='DEVICE_CODENAME'
   echo "$device_name"
 }
