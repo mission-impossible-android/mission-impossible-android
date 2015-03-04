@@ -61,24 +61,24 @@ declare -a APK_FILES_LIST
 for APP_NAME in "${!FDROID_APPS[@]}"
 do
   APP_VERSION="${FDROID_APPS[$APP_NAME]}"
-  echo "Downloading $APP_NAME [$APP_VERSION] from F-Droid.org..."
+  echo "Adding $APP_NAME [$APP_VERSION] to download queue."
 
   # Test if a settings section has been provided.
   APK_NAME=
   if [ "x${APP_VERSION}x" == 'xlatestx' ]; then
-    echo " - Trying to determine the latest $APP_NAME version and apk file name."
+    echo " - Trying to determine the latest $APP_NAME version and APK file."
     APK_NAME=$(get_app_apkname $FDROID_XML $APP_NAME $APP_VERSION)
 
     if [ "x${APK_NAME}x" == 'xx' ]; then
-      echo "ERROR: Could not determine latest version apk file name for $APP_NAME"
+      echo "ERROR: Could not determine latest version APK file for $APP_NAME"
       exit 1;
     fi
   else
-    echo " - Trying to determine the $APP_NAME apk file name for version $APP_VERSION."
+    echo " - Trying to determine the $APP_NAME APK file for version $APP_VERSION."
     APK_NAME=$(get_app_apkname $FDROID_XML $APP_NAME $APP_VERSION)
 
     if [ "x${APK_NAME}x" == 'xx' ]; then
-      echo "ERROR: Could not determine the apk file name for $APP_NAME version $APP_VERSION"
+      echo "ERROR: Could not determine the APK file for $APP_NAME version $APP_VERSION"
       exit 1;
     fi
   fi
