@@ -33,7 +33,7 @@ declare -A BASE_APPS
 get_settings_section settings.ini apps BASE_APPS
 
 # Create local directory to store the APKs.
-mkdir -p "pkg${GENERAL_SETTINGS[apps_destination]}"
+mkdir -p "${BASEDIR}${GENERAL_SETTINGS[system_app_destination]}"
 
 # Download the APKs.
 echo ""
@@ -41,7 +41,7 @@ for APP_NAME in "${!BASE_APPS[@]}"
 do
   echo "Downloading ${APP_NAME} APK..."
   APK_URI="${BASE_APPS[$APP_NAME]}"
-  output_document="--output-document=${BASEDIR}${GENERAL_SETTINGS[apps_destination]}/"`basename $APK_URI`
+  output_document="--output-document=${BASEDIR}${GENERAL_SETTINGS[system_app_destination]}/"`basename $APK_URI`
   $WGET_COMMAND $output_document $APK_URI
   echo ""
 done
@@ -52,8 +52,7 @@ declare -A FDROID_APPS
 get_settings_section settings.ini fdroid_apps FDROID_APPS
 
 # Create local directory to store the APKs.
-DEST_DIR="${BASEDIR}${GENERAL_SETTINGS[fdroid_apps_destination]}"
-mkdir -p "pkg${GENERAL_SETTINGS[fdroid_apps_destination]}"
+mkdir -p "${BASEDIR}${GENERAL_SETTINGS[user_app_destination]}"
 
 FDROID_XML=$(readlink -e "${BASEDIR}/../assets/fdroid-index.xml")
 
@@ -89,6 +88,9 @@ do
   APK_FILES_LIST+=("$APK_NAME")
   echo ""
 done
+
+# The download destination directory.
+DEST_DIR="${BASEDIR}${GENERAL_SETTINGS[user_app_destination]}"
 
 echo "Downloading ${#APK_FILES_LIST[@]} F-Droid packages..."
 echo " - This is in parallel, but may still take awhile."
