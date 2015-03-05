@@ -1,8 +1,9 @@
-ui_print("                                ");
-ui_print("                                ");
-ui_print("                                ");
-ui_print("________________________________");
-ui_print("                                ");
+
+ui_print("                                 ");
+ui_print("                                 ");
+ui_print("                                 ");
+ui_print("_________________________________");
+ui_print("                                 ");
 ui_print("|-------------------------------|");
 ui_print("|      Mission: Impossible      |");
 ui_print("|-------------------------------|");

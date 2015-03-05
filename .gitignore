@@ -1,12 +1,5 @@
 
-# Ignore local assets.
-assets/cm-11*.zip
-assets/*index.xml
-build/
-pkg/META-INF/com/google/android/update-binary
-pkg/*/*app/
-tmp/
-
-# Ignore the local settings.ini file.
-settings.ini
+# Ignore the files.
+definitions/*
+resources/*
 *-ignore
