@@ -5,16 +5,23 @@
 
 function connect_adb()
 {
+  # Hide startup messages.
   adb start-server
 }
 
-function get_device_name()
+# Always call connect_adb before using get_cm_device_name.
+function get_cm_device_name()
 {
-  connect_adb
   # Note: Whitespace character \r was causing odd formatting.
-  local device_name=`adb shell getprop ro.product.device | tr -d "\r"`
-  [[ -z "$device_name" ]] && device_name='DEVICE_CODENAME'
-  echo "$device_name"
+  local cm_device_name=`adb shell getprop ro.product.device | tr -d "\r"`
+  if [ -z "$cm_device_name" ]; then
+    echo "Could not determine your device name."
+    echo "Please check the wiki and enter the device name"
+    echo " - http://wiki.cyanogenmod.org/w/Devices"
+    read -p "cm_device_name = " -r
+  fi
+
+  echo "$cm_device_name"
 }
 
 function get_download_filename()
@@ -26,10 +33,10 @@ function get_download_filename()
 }
 
 
-# Populates an asociative array with the values read from an INI file.
+# Populates an associative array with the values read from an INI file.
 #
 # To read settings from a particular file and section you first need to declare
-# a global associative array in wich to store the values:
+# a global associative array in which to store the values:
 #
 # Usage:
 # > source $current_dir/common.sh
@@ -41,32 +48,32 @@ function get_settings_section()
   if [ "x${1}x" == 'xx' ]
   then
     echo "ERROR: Please provide a settings file!"
-    return
+    exit 1
   fi
 
   # Test if a settings file exists.
   local settings_file=$(readlink --canonicalize-existing --zero $1)
-  if [ "x${settings_file}x" == 'xx' ] || [ ! -r $settings_file ]
+  if [ -z "$settings_file" ] || [ ! -r $settings_file ]
   then
     echo "ERROR: Configuration file not found or could not be read!"
-    return
+    exit 1
   fi
 
   # Test if a settings section has been provided.
-  if [ "x${2}x" == 'xx' ]
+  if [ -z "$2" ]
   then
     echo "ERROR: Please provide a settings file section!"
-    return
+    exit 1
   fi
 
   # Get the settings section.
   local section_name=$2
 
   # Test if a settings section has been provided.
-  if [ "x${3}x" == 'xx' ]
+  if [ -z "$3" ]
   then
     echo "ERROR: Please provide a variable to store the settings!"
-    return
+    exit 1
   fi
 
   # Read section entry strings into an array.

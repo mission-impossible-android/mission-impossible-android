@@ -3,41 +3,62 @@
 info:
 	cat README.md
 
-cm_dl_link:
-	scripts/cyanogenmod_download_link.sh
+# make TEMPLATE=mia-default DEFINITION=my-phone definition
+definition:
+	echo "Creating definition"
+	scripts/create_definition.sh $(TEMPLATE) $(DEFINITION)
 
+# make DEFINITION=my-phone download_apks
 download_apks:
-	mkdir -p pkg/data/app
-	mkdir -p pkg/system/priv-app
-	scripts/download_apks.sh
+	echo "Downloading APK files"
+	mkdir -p definitions/$(DEFINITION)/data/app
+	mkdir -p definitions/$(DEFINITION)/system/priv-app
+	scripts/download_apks.sh $(DEFINITION)
 
 clean:
-	rm -f pkg/*/*app/*
+	rm -f build/*
+	rm -f definitions/*/*/*app/*.apk
+	# rm -f resources/*
 
+# make DEFINITION=my-phone extract_update_binary
 extract_update_binary:
-	unzip -o assets/cm-11.zip META-INF/com/google/android/update-binary -d pkg
+	echo "Extracting update-binary from CM zip"
+	scripts/extract_update_binary.sh $(DEFINITION)
 
+# make DEFINITION=my-phone generate_update_zip
 generate_update_zip: extract_update_binary
-	mkdir -p build
-	rm -f build/mission-impossible-update.zip
-	(cd pkg; zip -r ../build/mission-impossible-update.zip *)
+	mkdir -p build/$(DEFINITION)/
+	rm -f build/$(DEFINITION)/mia-update.zip
+	(cd definitions/$(DEFINITION); zip --recurse-paths ../../build/$(DEFINITION)/mia-update.zip *)
 
+# make DEFINITION=my-phone push_emulator
 push_emulator:
-	adb -e push build/mission-impossible-update.zip /sdcard/
+	echo "Pushing MIA update to device"
+	adb -e push build/mia-$(DEFINITION)-update.zip /sdcard/
 
+# make DEFINITION=my-phone push_update_zip
 push_update_zip: generate_update_zip
-	adb push -p build/mission-impossible-update.zip /sdcard/
+	echo "Pushing update zip to device"
+	scripts/push_zip_files.sh $(DEFINITION) update
 
+# make DEFINITION=my-phone push_cm_zip
 push_cm_zip:
-	adb push -p assets/cm-11.zip /sdcard/cm-11.zip
+	echo "Pushing CM to device"
+	scripts/push_zip_files.sh $(DEFINITION) cm
 
+# make DEFINITION=my-phone set_openrecoveryscript
 set_openrecoveryscript:
-	adb push -p assets/openrecoveryscript /sdcard/
+	echo "Pushing openrecoveryscript to device"
+	definitions/$(DEFINITION)/scripts/OpenRecovery
+
+	adb push definitions/$(DEFINITION)/scripts/OpenRecovery /sdcard/openrecoveryscript
 	adb shell "su root cp /sdcard/openrecoveryscript /cache/recovery/"
 
+# make DEFINITION=my-phone update_orwall_init
 update_orwall_init:
-	rm pkg/system/etc/init.d/*
-	(cd pkg/system/etc/init.d && wget https://raw.githubusercontent.com/EthACKdotOrg/orWall/master/app/src/main/res/raw/userinit.sh ---output-document=91firewall)
+	rm definitions/$(DEFINITION)/system/etc/init.d/*
+	(cd definitions/$(DEFINITION)/system/etc/init.d && wget https://raw.githubusercontent.com/EthACKdotOrg/orWall/master/app/src/main/res/raw/userinit.sh ---output-document=91firewall)
 
-build_deploy: download_apks push_update_zip set_openrecoveryscript
+# make DEFINITION=my-phone build_deploy
+build_deploy: download_apks push_cm_zip push_update_zip set_openrecoveryscript
 	adb reboot recovery

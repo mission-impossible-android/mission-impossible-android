@@ -22,10 +22,12 @@ this is by design!
 * Provide **temporary root access via ADB**. (We will revoke later.)
 
 ```
-make cm_dl_link # Follow instructions
-make push_cm_zip
-make build_deploy
+make TEMPLATE=mia-default DEFINITION=my-phone definition
+make DEFINITION=my-phone build_deploy
 ```
+
+After you generate the definition you can add a `cm_device_name=NAME_GOES_HERE` entry to the definition settings.ini file so that the phone phone won't be queried each time you the device name is needed.
+
 
 * Open F-Droid and update the app list.
 * Open the *My App List* app, and install any desired apps from
@@ -46,7 +48,7 @@ make download_apks
 ```
 
 The above process does **NOT** delete previous APKs, and so you'll need
-to manually delete duplicates and removed apps from `pkg/data/app`. (You
+to manually delete duplicates and removed apps from `data/app`. (You
 could also run `make clean` to remove all APKs before running the above.)
 
 ### Compatibility
