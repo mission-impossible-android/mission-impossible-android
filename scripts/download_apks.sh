@@ -2,12 +2,12 @@
 
 if [ -z `command -v xpath` ]; then
   echo "ERROR: xpath not found!"
-  exit
+  exit 1
 fi
 
 if [ -z `command -v wget` ]; then
   echo "ERROR: wget not found!"
-  exit
+  exit 1
 fi
 
 WGET_COMMAND="wget --no-verbose --continue"

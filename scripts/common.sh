@@ -41,7 +41,7 @@ function get_settings_section()
   if [ "x${1}x" == 'xx' ]
   then
     echo "ERROR: Please provide a settings file!"
-    return
+    exit 1
   fi
 
   # Test if a settings file exists.
@@ -49,14 +49,15 @@ function get_settings_section()
   if [ "x${settings_file}x" == 'xx' ] || [ ! -r $settings_file ]
   then
     echo "ERROR: Configuration file not found or could not be read!"
-    return
+    echo "       Please make sure you have a settings.ini file."
+    exit 1
   fi
 
   # Test if a settings section has been provided.
   if [ "x${2}x" == 'xx' ]
   then
     echo "ERROR: Please provide a settings file section!"
-    return
+    exit 1
   fi
 
   # Get the settings section.
@@ -66,7 +67,7 @@ function get_settings_section()
   if [ "x${3}x" == 'xx' ]
   then
     echo "ERROR: Please provide a variable to store the settings!"
-    return
+    exit 1
   fi
 
   # Read section entry strings into an array.
