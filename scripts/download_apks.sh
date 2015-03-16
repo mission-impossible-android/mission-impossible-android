@@ -32,8 +32,11 @@ get_settings_section settings.ini general GENERAL_SETTINGS
 declare -A BASE_APPS
 get_settings_section settings.ini apps BASE_APPS
 
-# Create local directory to store the APKs.
+# Create local directory to store the system APKs.
 mkdir -p "${BASEDIR}${GENERAL_SETTINGS[system_app_destination]}"
+
+# Create local directory to store the user APKs.
+mkdir -p "${BASEDIR}${GENERAL_SETTINGS[user_app_destination]}"
 
 # Download the APKs.
 echo ""
@@ -41,7 +44,7 @@ for APP_NAME in "${!BASE_APPS[@]}"
 do
   echo "Downloading ${APP_NAME} APK..."
   APK_URI="${BASE_APPS[$APP_NAME]}"
-  output_document="--output-document=${BASEDIR}${GENERAL_SETTINGS[system_app_destination]}/"`basename $APK_URI`
+  output_document="--output-document=${BASEDIR}${GENERAL_SETTINGS[user_app_destination]}/"`basename $APK_URI`
   $WGET_COMMAND $output_document $APK_URI
   echo ""
 done
@@ -51,8 +54,6 @@ done
 declare -A FDROID_APPS
 get_settings_section settings.ini fdroid_apps FDROID_APPS
 
-# Create local directory to store the APKs.
-mkdir -p "${BASEDIR}${GENERAL_SETTINGS[user_app_destination]}"
 
 FDROID_XML=$(readlink -e "${BASEDIR}/../assets/fdroid-index.xml")
 
