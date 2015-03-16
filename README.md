@@ -58,6 +58,18 @@ could also run `make clean` to remove all APKs before running the above.)
 Currently, project is being tested on the wifi-only Nexus 7, 2012 version
 (`grouper`) and 2013 version (`flo`).
 
+Devices currently available for testing:
+
+| Device | Codename | Owner | Actively tested? |
+|--------|:--------:|:-----:|:----------------:|
+| LG Nexus 4 | mako | patcon | no |
+| Google/Asus Nexus 7 (wifi, 2012) | grouper | patcon | yes |
+| Google/Asus Nexus 7 (wifi, 2013) | flo | mikeperry-tor | yes |
+| Motorola Moto G 4G | peregrine | mikeperry-tor | no |
+| Samsung Galaxy S II | ? | SchnWalter | ? |
+| OnePlus One | bacon | SchnWalter | ? |
+
+
 ### Links
 
 - [updater-script syntax](http://forum.xda-developers.com/wiki/Edify_script_language)
