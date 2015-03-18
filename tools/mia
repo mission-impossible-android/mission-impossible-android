@@ -80,4 +80,8 @@ if __name__ == '__main__':
     MiaHandler(script_root=SCRIPT_ROOT, cli_args=args)
 
     # Execute the command.
-    delegate_command()
+    try:
+        delegate_command()
+    except KeyboardInterrupt:
+        print("\n" + 'Exiting...')
+        pass
