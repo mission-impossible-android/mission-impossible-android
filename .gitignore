@@ -1,5 +1,8 @@
+# Ignore local files.
+.idea
+__pycache__
 
-# Ignore the files.
+# Ignore the workspace files.
 build/*
 definitions/*
 resources/*
