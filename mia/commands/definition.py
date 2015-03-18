@@ -2,15 +2,24 @@
 Create and configure a definition in the current workspace using the provided
 template.
 
+Usage patterns:
+    mia definition create [--template=<template>] [--cpu=<cpu>] [<definition>]
+    mia definition configure <definition>
+
 Usage Example:
     mia definition create
     mia definition create --template=extra --cpu=x86
     mia definition create my-xyz-phone
     mia definition configure my-xyz-phone
     mia definition configure my-mnp-tablet
+
+Notes:
+    A valid <definition> name consists of lowercase letters, digits and hyphens.
+    And it must start with a letter name.
+
 """
 
-import os
+import re
 import sys
 import shutil
 
@@ -27,6 +36,12 @@ def main():
     if handler.args['<definition>'] is None:
         msg = 'Please provide a definition name'
         handler.args['<definition>'] = input_ask(msg)
+
+    if not re.search(r'^[a-z][a-z0-9-]+$', handler.args['<definition>']):
+        # raise Exception('Definition "%s" already exists!' % definition)
+        print('ERROR: Please provide a valid definition name! See: mia help '
+              'definition')
+        sys.exit(0)
 
     # Create the definition.
     if handler.args['create']:
@@ -80,7 +95,8 @@ def configure_definition():
     # Get the MIA handler singleton.
     handler = MiaHandler()
 
-    definition = handler.args['<definition>']
+    definition_path = os.path.join(handler.workspace, 'definitions',
+                                   handler.args['<definition>'])
 
     # Detect the device codename.
     cm_device_codename = get_cyanogenmod_codename()
@@ -104,11 +120,27 @@ def configure_definition():
           % (cm_device_codename, cm_release_type)
 
     file_name = '%s.%s.%s-%s.zip' % \
-                (definition, cm_device_codename, cm_release_type,
-                 cm_release_version)
+                (handler.args['<definition>'], cm_device_codename,
+                 cm_release_type, cm_release_version)
 
     print("Download CyanogenMod for and save the file as\n - %s\n"
           "into the resources folder and then verify the file checksum"
           % file_name)
 
     print_nl(' - ' + url)
+
+    # The path to the definition settings.yaml file.
+    settings_file = os.path.join(definition_path, 'settings.yaml')
+    settings_file_backup = os.path.join(definition_path, 'settings.orig.yaml')
+
+    # Create a backup of the settings file.
+    shutil.copy(settings_file, settings_file_backup)
+
+    # Update the settings file.
+    update_settings(settings_file, {'general': {
+        'update': {
+            'cm_device_codename': cm_device_codename,
+            'cm_release_type': cm_release_type,
+            'cm_release_version': cm_release_version,
+        },
+    }})

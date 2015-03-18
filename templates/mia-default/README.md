@@ -30,3 +30,9 @@ TODO: Add description of how things work.
 `scripts/updater`:
   This script will be copied to `META-INF/com/google/android/updater-script` in
   the generated update.zip.
+
+`settings.yaml`:
+  This file contains a list of settings for the current definition.
+
+`settings.orig.yaml`:
+  This is the original file from the template.

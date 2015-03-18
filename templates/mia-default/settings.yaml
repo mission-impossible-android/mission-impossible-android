@@ -1,0 +1,62 @@
+
+# General settings.
+general:
+  system_app_destination: /system/priv-app  # No trailing slash!
+  user_app_destination: /data/app           # No trailing slash!
+  password_file: /path/to/secret/file
+
+  # The CyanogenMod codename of the device.
+  cm_device_codename:
+  # Preferred CyanogenMod release type
+  cm_release_type: snapshot
+  # Preferred CyanogenMod release version
+  cm_release_version: M12
+
+
+# Apps with direct download link.
+other_apps:
+  - name: FDroid
+    url: https://f-droid.org/FDroid.apk
+  - name: OrfoxFennec Debug
+    url: https://guardianproject.info/builds/OrfoxFennec/latest/OrfoxFennec-debug.apk
+
+# Apps from the main f-droid.org repository, with recommended version codes.
+fdroid_apps:
+  - name: com.artifex.mupdfdemo
+    code: 55
+  - name: com.csipsimple
+    code: 2459
+  - name: com.fsck.k9
+    code: 22002
+  - name: com.morlunk.mumbleclient
+    code: 72
+  - name: com.projectsexception.myapplist.open
+    code: 16
+  - name: com.xabber.androiddev
+    code: 136
+  - name: de.schildbach.wallet
+    code: 209
+  - name: fr.kwiatkowski.ApkTrack
+    code: 1
+  - name: indrora.atomic
+    code: 19
+  - name: net.osmand.plus
+    code: 197
+  - name: org.coolreader
+    code: 875
+  - name: org.ethack.orwall
+    code: 35
+  - name: org.mariotaku.twidere
+    code: 98
+  - name: org.mozilla.fennec_fdroid
+    code: 360010
+  - name: org.sufficientlysecure.keychain
+    code: 31200
+  - name: org.nick.cryptfs.passwdmanager
+    code: 1230
+  - name: org.sufficientlysecure.localcalendar
+    code: 6
+  - name: org.torproject.android
+    code: 133
+  - name: org.videolan.vlc
+    code: 10104

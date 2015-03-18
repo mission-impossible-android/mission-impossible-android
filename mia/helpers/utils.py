@@ -2,6 +2,8 @@
 Utilities for the mia script.
 """
 
+import os
+
 
 class Singleton(type):
     _instances = {}
@@ -114,3 +116,60 @@ def input_ask(display_text, default_value=None, free_text=False):
 
 def print_nl(string=''):
     print(string + "\n")
+
+
+# TODO: Find a way to keep comments in the setting files.
+def update_settings(settings_file, changes):
+    import yaml
+
+    # Make sure the settings file exists.
+    if not os.path.isfile(settings_file):
+        print('Settings file "%s" not found' % settings_file)
+        return None
+
+    try:
+        fd = open(settings_file, 'r')
+
+        # Load the yaml and sort the top level entries.
+        settings = yaml.load(fd)
+
+        fd.close()
+    except yaml.YAMLError:
+        print('ERROR: Could not read configuration file!')
+        return None
+
+    for section in changes:
+        # Update entries.
+        if hasattr(changes[section], 'update'):
+            for key in changes[section]['update']:
+                settings[section][key] = changes[section]['update'][key]
+
+        # Remove entries.
+        if hasattr(changes[section], 'remove'):
+            for key in changes[section]['remove']:
+                del settings[section][key]
+
+    # Save the changes.
+    print("Updating settings file: \n - %s" % settings_file)
+
+    try:
+        # Define a custom order of the sections
+        order = ['general', 'other_apps', 'fdroid_apps']
+        for section in settings.keys():
+            if section not in order:
+                order.append(section)
+
+        # Open the file.
+        fd = open(settings_file, 'w')
+
+        # Save all the settings in oder.
+        for section in order:
+            if section in settings.keys():
+                data = {section: settings[section]}
+                fd.write(yaml.dump(data, default_flow_style=False))
+
+        fd.close()
+    except yaml.YAMLError:
+        fd.close()
+        print('ERROR: Could not save configuration file!')
+        return None

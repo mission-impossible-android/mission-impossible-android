@@ -3,11 +3,6 @@
 info:
 	cat README.md
 
-# make TEMPLATE=mia-default DEFINITION=my-phone definition
-definition:
-	echo "Creating definition"
-	scripts/create_definition.sh $(TEMPLATE) $(DEFINITION)
-
 # make DEFINITION=my-phone download_apks
 download_apks:
 	echo "Downloading APK files"

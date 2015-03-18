@@ -11,6 +11,7 @@ setup(
     scripts=['tools/mia'],
     install_requires=[
         'docopt',
+        'PyYAML',
     ],
     classifiers=[
         'Development Status :: 1 - Planning',
