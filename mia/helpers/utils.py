@@ -17,12 +17,15 @@ class MiaHandler(metaclass=Singleton):
     args = []
     config_parser = []
 
-    def __init__(self, script_root=None, cli_args=None):
+    def __init__(self, script_root=None, workspace_dir=None, cli_args=None):
         if script_root:
             self.root = script_root
 
         if cli_args:
             self.args = cli_args
+
+        if workspace_dir:
+            self.workspace = workspace_dir
 
     # Save and display a log message.
     def log(self, msg, log_type='info'):
