@@ -86,7 +86,6 @@ def input_ask(display_text, default_value=None, free_text=False):
     :return: string
     """
 
-    print("free_text: %s" % free_text)
     # Update the text depending on the default return value.
     if default_value:
         display_text = '%s [%s]: ' % (display_text, default_value)
