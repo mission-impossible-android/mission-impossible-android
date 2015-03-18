@@ -60,14 +60,15 @@ Currently, project is being tested on the wifi-only Nexus 7, 2012 version
 
 Devices currently available for testing:
 
-| Device | Codename | Owner | Actively tested? |
+| Device | Codename | Testers | Actively tested? |
 |--------|:--------:|:-----:|:----------------:|
-| LG Nexus 4 | mako | patcon | no |
+| LG Nexus 4 | mako | patcon/SchnWalter | no/yes |
 | Google/Asus Nexus 7 (wifi, 2012) | grouper | patcon | yes |
 | Google/Asus Nexus 7 (wifi, 2013) | flo | mikeperry-tor | yes |
 | Motorola Moto G 4G | peregrine | mikeperry-tor | no |
-| Samsung Galaxy S II | ? | SchnWalter | ? |
-| OnePlus One | bacon | SchnWalter | ? |
+| Samsung Galaxy S II | i9100 | SchnWalter | no |
+| OnePlus One | bacon | SchnWalter | no |
+| Sony Xperia Tablet Z (wifi) | pollux_windy | SchnWalter | yes | 
 
 
 ### Links
