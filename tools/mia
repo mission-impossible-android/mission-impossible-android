@@ -13,7 +13,8 @@ design!
 Usage:
     mia clean
     mia definition create [--template=<template>] [--cpu=<cpu>] [<definition>]
-    mia definition configure [<definition>]
+    mia definition configure <definition>
+    mia definition lock [--force-latest] <definition>
     mia help <command>
     mia (-h | --help | --version)
 

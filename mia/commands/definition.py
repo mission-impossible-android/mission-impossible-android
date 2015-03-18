@@ -5,13 +5,16 @@ template.
 Usage patterns:
     mia definition create [--template=<template>] [--cpu=<cpu>] [<definition>]
     mia definition configure <definition>
+    mia definition lock [--force-latest] <definition>
 
 Usage Example:
     mia definition create
-    mia definition create --template=extra --cpu=x86
     mia definition create my-xyz-phone
     mia definition configure my-xyz-phone
+    mia definition lock my-xyz-phone
+    mia definition create --template=extra --cpu=x86 my-mnp-tablet
     mia definition configure my-mnp-tablet
+    mia definition lock --force-latest my-mnp-tablet
 
 Notes:
     A valid <definition> name consists of lowercase letters, digits and hyphens.
@@ -22,6 +25,10 @@ Notes:
 import re
 import sys
 import shutil
+from urllib.request import urlretrieve
+
+# Import non-standard libraries.
+from lxml import html as lxml_html
 
 # Import custom helpers.
 from mia.helpers.android import *
@@ -39,8 +46,8 @@ def main():
 
     if not re.search(r'^[a-z][a-z0-9-]+$', handler.args['<definition>']):
         # raise Exception('Definition "%s" already exists!' % definition)
-        print('ERROR: Please provide a valid definition name! See: mia help '
-              'definition')
+        print('ERROR: Please provide a valid definition name! '
+              'See: mia help definition')
         sys.exit(0)
 
     # Create the definition.
@@ -52,6 +59,10 @@ def main():
             or handler.args['configure']:
         print()
         configure_definition()
+
+    # Create the definition.
+    if handler.args['lock']:
+        generate_apk_lock_file()
 
     return None
 
@@ -144,3 +155,106 @@ def configure_definition():
             'cm_release_version': cm_release_version,
         },
     }})
+
+
+# TODO: Implement the APK lock functionality.
+def generate_apk_lock_file():
+    # Get the MIA handler singleton.
+    handler = MiaHandler()
+
+    import yaml
+
+    definition_path = os.path.join(handler.workspace, 'definitions',
+                                   handler.args['<definition>'])
+
+    settings_file = os.path.join(definition_path, 'settings.yaml')
+    print('Using settings file:')
+    print_nl(' - ' + settings_file)
+
+    try:
+        fd = open(settings_file, 'r')
+
+        # Load the yaml and sort the top level entries.
+        settings = yaml.load(fd)
+
+        fd.close()
+    except yaml.YAMLError:
+        print('ERROR: Could not read configuration file!')
+        return None
+
+    # Generate APK lock files for all repositories.
+    lock_file_data = {}
+    for repo_info in settings['repositories']:
+        apps_keys = repo_info['apps_key']
+        lock_file_data[apps_keys] = repo_lock_info(repo_info, settings[apps_keys])
+
+    lock_file_path = os.path.join(definition_path, 'apps_lock.yaml')
+
+    print("Creating lock file: \n - %s" % lock_file_path)
+    try:
+        fd = open(lock_file_path, 'w')
+        fd.write(yaml.dump(lock_file_data, default_flow_style=False))
+        fd.close()
+    except yaml.YAMLError:
+        fd.close()
+        print('ERROR: Could not save the lock file!')
+        return None
+
+
+def repo_lock_info(repo_info, repo_apps):
+    # Get the MIA handler singleton.
+    handler = MiaHandler()
+
+    index_path = os.path.join(handler.root, 'resources',
+                              repo_info['apps_key'] + '.index.xml')
+
+    # Download the repository index.xml file.
+    if not os.path.isfile(index_path):
+        index_url = '%s/%s' % (repo_info['base_url'], 'index.xml')
+        print('Downloading the %s repository information from:\n - %s' %
+              (repo_info['name'], index_url))
+        urlretrieve(index_url, index_path)
+
+    # Read the whole file index in memory?!?
+    try:
+        with open(index_path, 'r') as index_fd:
+            index_data = index_fd.read()
+
+        xml_document = lxml_html.fromstring(index_data)
+        index_fd.close()
+    except FileNotFoundError:
+        print('File not found:\n - %s' % index_path)
+
+    print('Looking for APKs for repo %s' % repo_info['name'])
+    for key, app_info in enumerate(repo_apps):
+        if handler.args['--force-latest'] or app_info['app_code'] == 'latest':
+            # Get information about the latest version of the application.
+            latest_name_xpath = "//application[@id='%s']/package[0]/apkname/text()" % \
+                                (app_info['app_name'])
+            app_package_names = xml_document.xpath(latest_name_xpath)
+
+            code_xpath = "//application[@id='%s']/marketvercode/text()" % \
+                         app_info['app_name']
+            app_version_codes = xml_document.xpath(code_xpath)
+        else:
+            # Get information about an exact version of the application.
+            name_xpath = "//application[@id='%s']/package/apkname/text()[../../versioncode/text() = %s]" % \
+                         (app_info['app_name'], app_info['app_code'])
+            app_package_names = xml_document.xpath(name_xpath)
+            app_version_codes = None
+
+        if len(app_package_names):
+            print(' - found: %s:%s' % (app_info['app_name'],
+                                       app_info['app_code']))
+        else:
+            print(' - not found: %s' % app_info['app_name'])
+            del repo_apps[key]
+            continue
+
+        app_info['package_name'] = "%s" % app_package_names[0]
+        app_info['package_url'] = "%s/%s" % (repo_info['base_url'],
+                                             app_package_names[0])
+        if app_version_codes is not None and len(app_version_codes):
+            app_info['code'] = app_version_codes[0]
+
+    return repo_apps
