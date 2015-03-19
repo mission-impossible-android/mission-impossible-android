@@ -3,13 +3,6 @@
 info:
 	cat README.md
 
-# make DEFINITION=my-phone download_apks
-download_apks:
-	echo "Downloading APK files"
-	mkdir -p definitions/$(DEFINITION)/data/app
-	mkdir -p definitions/$(DEFINITION)/system/priv-app
-	scripts/download_apks.sh $(DEFINITION)
-
 clean:
 	rm -f build/*
 	rm -f definitions/*/*/*app/*.apk
@@ -55,5 +48,5 @@ update_orwall_init:
 	(cd definitions/$(DEFINITION)/system/etc/init.d && wget https://raw.githubusercontent.com/EthACKdotOrg/orWall/master/app/src/main/res/raw/userinit.sh ---output-document=91firewall)
 
 # make DEFINITION=my-phone build_deploy
-build_deploy: download_apks push_cm_zip push_update_zip set_openrecoveryscript
+build_deploy: push_cm_zip push_update_zip set_openrecoveryscript
 	adb reboot recovery

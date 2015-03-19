@@ -11,6 +11,7 @@ def main():
     handler = MiaHandler()
 
     # TODO: Find a dynamic way to import the right command.
+    #       getattr() does not work on sub-module that were not imported.
     import mia.commands.clean
     import mia.commands.definition
 

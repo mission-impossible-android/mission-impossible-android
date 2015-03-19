@@ -15,6 +15,7 @@ Usage:
     mia definition create [--template=<template>] [--cpu=<cpu>] [<definition>]
     mia definition configure <definition>
     mia definition lock [--force-latest] <definition>
+    mia definition dl-apps <definition>
     mia help <command>
     mia (-h | --help | --version)
 

@@ -6,6 +6,7 @@ Usage patterns:
     mia definition create [--template=<template>] [--cpu=<cpu>] [<definition>]
     mia definition configure <definition>
     mia definition lock [--force-latest] <definition>
+    mia definition dl-apps <definition>
 
 Usage Example:
     mia definition create
@@ -48,7 +49,7 @@ def main():
         # raise Exception('Definition "%s" already exists!' % definition)
         print('ERROR: Please provide a valid definition name! '
               'See: mia help definition')
-        sys.exit(0)
+        sys.exit(1)
 
     # Create the definition.
     if handler.args['create']:
@@ -60,9 +61,14 @@ def main():
         print()
         configure_definition()
 
-    # Create the definition.
-    if handler.args['lock']:
-        generate_apk_lock_file()
+    # Create the apps lock file.
+    if (handler.args['create'] and input_confirm('Create the lock file now?', True)) \
+            or handler.args['lock']:
+        create_apps_lock_file()
+
+    # Download apps.
+    if handler.args['dl-apps'] or input_confirm('Download apps now?', True):
+        download_apps()
 
     return None
 
@@ -71,8 +77,7 @@ def create_definition():
     # Get the MIA handler singleton.
     handler = MiaHandler()
 
-    definition_path = os.path.join(handler.workspace, 'definitions',
-                                   handler.args['<definition>'])
+    definition_path = handler.get_definition_path()
     print('Destination directory is:\n - %s\n' % definition_path)
 
     # Make sure the definition does not exist.
@@ -80,17 +85,17 @@ def create_definition():
         # raise Exception('Definition "%s" already exists!' % definition)
         print('ERROR: Definition "%s" already exists!' %
               handler.args['<definition>'])
-        sys.exit(0)
+        sys.exit(1)
 
     template = handler.args['--template']
-    template_path = os.path.join(handler.root, 'templates', template)
+    template_path = os.path.join(handler.get_root(), 'templates', template)
     print('Using template:\n - %s\n' % definition_path)
 
     # Check if the template exists.
     if not os.path.exists(template_path):
         # raise Exception('Template "%s" does not exist!' % template)
         print('ERROR: Template "%s" does not exist!' % template)
-        sys.exit(0)
+        sys.exit(1)
 
     # Make sure the definitions folder exists.
     os.makedirs(os.path.join(handler.workspace, 'definitions'), mode=0o755,
@@ -103,9 +108,6 @@ def create_definition():
 def configure_definition():
     # Get the MIA handler singleton.
     handler = MiaHandler()
-
-    definition_path = os.path.join(handler.workspace, 'definitions',
-                                   handler.args['<definition>'])
 
     # Detect the device codename.
     cm_device_codename = get_cyanogenmod_codename()
@@ -137,6 +139,7 @@ def configure_definition():
           % (file_name, url))
 
     # The path to the definition settings.yaml file.
+    definition_path = handler.get_definition_path()
     settings_file = os.path.join(definition_path, 'settings.yaml')
     settings_file_backup = os.path.join(definition_path, 'settings.orig.yaml')
 
@@ -154,41 +157,27 @@ def configure_definition():
 
 
 # TODO: Implement the APK lock functionality.
-def generate_apk_lock_file():
+def create_apps_lock_file():
     # Get the MIA handler singleton.
     handler = MiaHandler()
 
-    import yaml
-
-    definition_path = os.path.join(handler.workspace, 'definitions',
-                                   handler.args['<definition>'])
-
-    settings_file = os.path.join(definition_path, 'settings.yaml')
-    print('Using settings file:\n - %s\n' % settings_file)
-
-    try:
-        fd = open(settings_file, 'r')
-
-        # Load the yaml and sort the top level entries.
-        settings = yaml.load(fd)
-
-        fd.close()
-    except yaml.YAMLError:
-        print('ERROR: Could not read configuration file!')
-        return None
+    # Read the definition settings.
+    settings = handler.get_definition_settings()
 
     # Generate APK lock files for all repositories.
-    lock_file_data = {}
+    lock_data = {}
     for repo_info in settings['repositories']:
-        apps_keys = repo_info['apps_key']
-        lock_file_data[apps_keys] = repo_lock_info(repo_info, settings[apps_keys])
+        apps_key = repo_info['apps_key']
+        lock_data[apps_key] = get_apps_lock_info(repo_info, settings[apps_key])
 
+    definition_path = handler.get_definition_path()
     lock_file_path = os.path.join(definition_path, 'apps_lock.yaml')
+    print("Creating lock file: \n - %s\n" % lock_file_path)
 
-    print("Creating lock file: \n - %s" % lock_file_path)
+    import yaml
     try:
         fd = open(lock_file_path, 'w')
-        fd.write(yaml.dump(lock_file_data, default_flow_style=False))
+        fd.write(yaml.dump(lock_data, default_flow_style=False))
         fd.close()
     except yaml.YAMLError:
         fd.close()
@@ -196,11 +185,11 @@ def generate_apk_lock_file():
         return None
 
 
-def repo_lock_info(repo_info, repo_apps):
+def get_apps_lock_info(repo_info, repo_apps):
     # Get the MIA handler singleton.
     handler = MiaHandler()
 
-    index_path = os.path.join(handler.root, 'resources',
+    index_path = os.path.join(handler.get_root(), 'resources',
                               repo_info['apps_key'] + '.index.xml')
 
     # Download the repository index.xml file.
@@ -253,3 +242,29 @@ def repo_lock_info(repo_info, repo_apps):
             app_info['code'] = app_version_codes[0]
 
     return repo_apps
+
+
+def download_apps():
+    # Get the MIA handler singleton.
+    handler = MiaHandler()
+
+    # Read the definition apps lock data.
+    lock_data = handler.get_definition_apps_lock_data()
+
+    if not lock_data:
+        # raise Exception('Definition "%s" already exists!' % definition)
+        print('ERROR: Apps lock file is missing! '
+              'See: mia help definition')
+        sys.exit(1)
+
+    # Path where to download the APK files.
+    user_apps_folder = os.path.join(handler.get_definition_path(), 'user-apps')
+    if not os.path.isdir(user_apps_folder):
+        os.mkdir(user_apps_folder, mode=0o755)
+
+    for repo_group in lock_data:
+        print('Downloading %s...' % repo_group)
+        for apk_info in lock_data[repo_group]:
+            print(' - downloaded: %s:' % apk_info['package_url'])
+            apk_path = os.path.join(user_apps_folder, apk_info['package_name'])
+            urlretrieve(apk_info['package_url'], apk_path)

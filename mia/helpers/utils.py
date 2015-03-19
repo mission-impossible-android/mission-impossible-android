@@ -17,11 +17,14 @@ class Singleton(type):
 
 class MiaHandler(metaclass=Singleton):
     args = []
-    config_parser = []
+    __root = None
+    __definition_path = []
+    __definition_settings = []
+    __definition_apps_lock_data = []
 
     def __init__(self, script_root=None, workspace_dir=None, cli_args=None):
         if script_root:
-            self.root = script_root
+            self.__root = script_root
 
         if cli_args:
             self.args = cli_args
@@ -46,6 +49,62 @@ class MiaHandler(metaclass=Singleton):
             logging.debug(msg)
         else:
             logging.error(msg)
+
+    def get_root(self):
+        return self.__root
+
+    def get_definition_path(self):
+        if not self.__definition_path and self.args['<definition>']:
+            self.__definition_path = os.path.join(self.workspace, 'definitions',
+                                                  self.args['<definition>'])
+
+        return self.__definition_path
+
+    def get_definition_settings(self):
+        if not self.__definition_settings and self.args['<definition>']:
+            definition_path = self.get_definition_path()
+            settings_file = os.path.join(definition_path, 'settings.yaml')
+            print('Using definition settings file:\n - %s\n' % settings_file)
+
+            import yaml
+            try:
+                fd = open(settings_file, 'r')
+
+                # Load the yaml and sort the top level entries.
+                settings = yaml.load(fd)
+
+                fd.close()
+            except yaml.YAMLError:
+                print('ERROR: Could not read configuration file!')
+                return None
+
+            if settings:
+                self.__definition_settings = settings
+
+        return self.__definition_settings
+
+    def get_definition_apps_lock_data(self):
+        if not self.__definition_apps_lock_data and self.args['<definition>']:
+            definition_path = self.get_definition_path()
+            lock_file_path = os.path.join(definition_path, 'apps_lock.yaml')
+            print('Using lock file:\n - %s\n' % lock_file_path)
+
+            import yaml
+            try:
+                fd = open(lock_file_path, 'r')
+
+                # Load the yaml and sort the top level entries.
+                lock_data = yaml.load(fd)
+
+                fd.close()
+            except yaml.YAMLError:
+                print('ERROR: Could not read configuration file!')
+                return None
+
+            if lock_data:
+                self.__definition_apps_lock_data = lock_data
+
+        return self.__definition_apps_lock_data
 
 
 def input_confirm(display_text='Confirm', default_value=False):

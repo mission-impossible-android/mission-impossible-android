@@ -4,10 +4,12 @@ Docs:
 
 
 Tools:
-- Cleanup!
+- Cleanup and review code!
 - Use as few libraries and dependencies as possible; switch settings from YAML?
 - Add `--update` option to the `definition lock` command. This will update a new
   version of the repository index file and check the locked APKs for updates.
+- Add checksum to lock file entries.
+
 
 Android:
 - Try to mount system rw when changing with settings binary.
