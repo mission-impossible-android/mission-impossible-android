@@ -12,8 +12,11 @@ function connect_adb()
 # Always call connect_adb before using get_cm_device_name.
 function get_cm_device_name()
 {
+  # The 'ro.product.device' property isn't very reliable.
   # Note: Whitespace character \r was causing odd formatting.
-  local cm_device_name=`adb shell getprop ro.product.device | tr -d "\r"`
+  local cm_device_name=`adb shell getprop ro.cm.device | tr -d "\r"`
+  [[ -z "$cm_device_name" ]] && cm_device_name=`adb shell getprop ro.product.device | tr -d "\r"`
+
   if [ -z "$cm_device_name" ]; then
     echo "Could not determine your device name."
     echo "Please check the wiki and enter the device name"
