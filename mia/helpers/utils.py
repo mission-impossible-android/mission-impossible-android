@@ -60,11 +60,14 @@ class MiaHandler(metaclass=Singleton):
 
         return self.__definition_path
 
-    def get_definition_settings(self):
-        if not self.__definition_settings and self.args['<definition>']:
+    def get_definition_settings(self, force_update=False):
+        if (not self.__definition_settings and self.args['<definition>']) or \
+                force_update:
             definition_path = self.get_definition_path()
             settings_file = os.path.join(definition_path, 'settings.yaml')
-            print('Using definition settings file:\n - %s\n' % settings_file)
+            if not force_update:
+                print('Using definition settings file:\n - %s\n' %
+                      settings_file)
 
             import yaml
             try:
@@ -89,6 +92,12 @@ class MiaHandler(metaclass=Singleton):
             lock_file_path = os.path.join(definition_path, 'apps_lock.yaml')
             print('Using lock file:\n - %s\n' % lock_file_path)
 
+            if not os.path.isfile(lock_file_path):
+                # raise Exception('Definition "%s" already exists!' % definition)
+                print('ERROR: Apps lock file is missing! '
+                      'See: mia help definition')
+                sys.exit(1)
+
             import yaml
             try:
                 fd = open(lock_file_path, 'r')
@@ -105,6 +114,10 @@ class MiaHandler(metaclass=Singleton):
                 self.__definition_apps_lock_data = lock_data
 
         return self.__definition_apps_lock_data
+
+
+def input_pause(display_text='Paused.'):
+    input("%s\nPress enter to continue!\n" % display_text)
 
 
 def input_confirm(display_text='Confirm', default_value=False):
@@ -205,7 +218,7 @@ def update_settings(settings_file, changes):
                 del settings[section][key]
 
     # Save the changes.
-    print("Updating settings file: \n - %s" % settings_file)
+    print("Updating settings file:\n - %s\n" % settings_file)
 
     try:
         # Define a custom order of the sections
@@ -228,3 +241,9 @@ def update_settings(settings_file, changes):
         fd.close()
         print('ERROR: Could not save configuration file!')
         return None
+
+    # Get the MIA handler singleton.
+    handler = MiaHandler()
+
+    # Load the settings in the main handler file.
+    handler.get_definition_settings(True)

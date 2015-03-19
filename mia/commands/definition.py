@@ -7,6 +7,7 @@ Usage patterns:
     mia definition configure <definition>
     mia definition lock [--force-latest] <definition>
     mia definition dl-apps <definition>
+    mia definition dl-os <definition>
 
 Usage Example:
     mia definition create
@@ -60,14 +61,19 @@ def main():
             or handler.args['configure']:
         print()
         configure_definition()
+    elif handler.args['create']:
+        return None
 
     # Create the apps lock file.
-    if (handler.args['create'] and input_confirm('Create the lock file now?', True)) \
-            or handler.args['lock']:
+    if handler.args['lock']:
         create_apps_lock_file()
 
+    # Download the CyanogenMod OS.
+    if handler.args['dl-os']:
+        download_os()
+
     # Download apps.
-    if handler.args['dl-apps'] or input_confirm('Download apps now?', True):
+    if handler.args['dl-apps']:
         download_apps()
 
     return None
@@ -113,30 +119,19 @@ def configure_definition():
     cm_device_codename = get_cyanogenmod_codename()
     print('Using device codename: %s\n' % cm_device_codename)
 
-    # Detect the CM release type.
+    # Detect the CyanogenMod release type.
     if input_confirm('Use recommended CyanogenMod release type?', True):
         cm_release_type = get_cyanogenmod_release_type(True)
     else:
         cm_release_type = get_cyanogenmod_release_type(False)
     print('Using release type: %s\n' % cm_release_type)
 
-    # Detect the CM release version.
+    # Detect the CyanogenMod release version.
     if input_confirm('Use recommended CyanogenMod release version?', True):
         cm_release_version = get_cyanogenmod_release_version(True)
     else:
         cm_release_version = get_cyanogenmod_release_version(False)
     print('Using release version: %s\n' % cm_release_version)
-
-    url = 'https://download.cyanogenmod.org/?device=%s&type=%s' \
-          % (cm_device_codename, cm_release_type)
-
-    file_name = '%s.%s.%s-%s.zip' % \
-                (handler.args['<definition>'], cm_device_codename,
-                 cm_release_type, cm_release_version)
-
-    print("Download CyanogenMod for and save the file as\n - %s\n"
-          "into the resources folder and then verify the file checksum.\n - %s"
-          % (file_name, url))
 
     # The path to the definition settings.yaml file.
     definition_path = handler.get_definition_path()
@@ -155,6 +150,17 @@ def configure_definition():
         },
     }})
 
+    # Create the apps lock file.
+    create_apps_lock_file()
+
+    # Download the CyanogenMod OS.
+    if input_confirm('Download CyanogenMod OS now?', True):
+        download_os()
+
+    # Download apps.
+    if input_confirm('Download apps now?', True):
+        download_apps()
+
 
 # TODO: Implement the APK lock functionality.
 def create_apps_lock_file():
@@ -172,7 +178,7 @@ def create_apps_lock_file():
 
     definition_path = handler.get_definition_path()
     lock_file_path = os.path.join(definition_path, 'apps_lock.yaml')
-    print("Creating lock file: \n - %s\n" % lock_file_path)
+    print("Creating lock file:\n - %s\n" % lock_file_path)
 
     import yaml
     try:
@@ -183,6 +189,10 @@ def create_apps_lock_file():
         fd.close()
         print('ERROR: Could not save the lock file!')
         return None
+
+    # Download apps.
+    if handler.args['lock'] and input_confirm('Download apps now?', True):
+        download_apps()
 
 
 def get_apps_lock_info(repo_info, repo_apps):
@@ -211,27 +221,27 @@ def get_apps_lock_info(repo_info, repo_apps):
 
     print('Looking for APKs for repo %s' % repo_info['name'])
     for key, app_info in enumerate(repo_apps):
-        if handler.args['--force-latest'] or app_info['app_code'] == 'latest':
+        if handler.args['--force-latest'] or app_info['code'] == 'latest':
             # Get information about the latest version of the application.
             latest_name_xpath = "//application[@id='%s']/package[0]/apkname/text()" % \
-                                (app_info['app_name'])
+                                (app_info['name'])
             app_package_names = xml_document.xpath(latest_name_xpath)
 
             code_xpath = "//application[@id='%s']/marketvercode/text()" % \
-                         app_info['app_name']
+                         app_info['name']
             app_version_codes = xml_document.xpath(code_xpath)
         else:
             # Get information about an exact version of the application.
             name_xpath = "//application[@id='%s']/package/apkname/text()[../../versioncode/text() = %s]" % \
-                         (app_info['app_name'], app_info['app_code'])
+                         (app_info['name'], app_info['code'])
             app_package_names = xml_document.xpath(name_xpath)
             app_version_codes = None
 
         if len(app_package_names):
-            print(' - found: %s:%s' % (app_info['app_name'],
-                                       app_info['app_code']))
+            print(' - found: %s:%s' % (app_info['name'],
+                                       app_info['code']))
         else:
-            print(' - not found: %s' % app_info['app_name'])
+            print(' - not found: %s' % app_info['name'])
             del repo_apps[key]
             continue
 
@@ -251,12 +261,6 @@ def download_apps():
     # Read the definition apps lock data.
     lock_data = handler.get_definition_apps_lock_data()
 
-    if not lock_data:
-        # raise Exception('Definition "%s" already exists!' % definition)
-        print('ERROR: Apps lock file is missing! '
-              'See: mia help definition')
-        sys.exit(1)
-
     # Path where to download the APK files.
     user_apps_folder = os.path.join(handler.get_definition_path(), 'user-apps')
     if not os.path.isdir(user_apps_folder):
@@ -268,3 +272,31 @@ def download_apps():
             print(' - downloaded: %s:' % apk_info['package_url'])
             apk_path = os.path.join(user_apps_folder, apk_info['package_name'])
             urlretrieve(apk_info['package_url'], apk_path)
+
+
+def download_os():
+    print('\nNOTE: Command not finished yet; See instructions!\n')
+
+    # Get the MIA handler singleton.
+    handler = MiaHandler()
+
+    # Read the definition settings.
+    settings = handler.get_definition_settings()
+
+    url = 'https://download.cyanogenmod.org/?device=%s&type=%s' % (
+        settings['general']['cm_device_codename'],
+        settings['general']['cm_release_type']
+    )
+
+    file_name = '%s.%s.%s-%s.zip' % (
+        handler.args['<definition>'],
+        settings['general']['cm_device_codename'],
+        settings['general']['cm_release_type'],
+        settings['general']['cm_release_version']
+    )
+
+    print("Download CyanogenMod for and save the file as\n - %s\n"
+          "into the resources folder, then verify the file checksum.\n - %s\n"
+          % (file_name, url))
+
+    input_pause('Please follow the instructions before continuing!')
