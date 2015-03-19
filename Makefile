@@ -3,11 +3,6 @@
 info:
 	cat README.md
 
-clean:
-	rm -f build/*
-	rm -f definitions/*/*/*app/*.apk
-	# rm -f resources/*
-
 # make DEFINITION=my-phone extract_update_binary
 extract_update_binary:
 	echo "Extracting update-binary from CM zip"

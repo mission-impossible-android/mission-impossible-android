@@ -19,20 +19,20 @@ class Singleton(type):
 class MiaHandler(metaclass=Singleton):
     args = {}
     global_args = {}
-    __root = None
+    __root_path = None
     __definition_path = None
     __definition_settings = {}
     __definition_apps_lock_data = {}
 
-    def __init__(self, script_root=None, workspace_dir=None, global_args=None):
-        if script_root:
-            self.__root = script_root
+    def __init__(self, root_path=None, workspace_path=None, global_args=None):
+        if root_path:
+            self.__root_path = root_path
 
         if global_args:
             self.global_args = global_args
 
-        if workspace_dir:
-            self.workspace = workspace_dir
+        if workspace_path:
+            self.__workspace_path = workspace_path
 
     # Save and display a log message.
     def log(self, msg, log_type='info'):
@@ -52,13 +52,16 @@ class MiaHandler(metaclass=Singleton):
         else:
             logging.error(msg)
 
-    def get_root(self):
-        return self.__root
+    def get_root_path(self):
+        return self.__root_path
+
+    def get_workspace_path(self):
+        return self.__workspace_path
 
     def get_definition_path(self):
         if not self.__definition_path and self.args['<definition>']:
             self.__definition_path = os.path.join(
-                self.workspace, 'definitions',
+                self.__workspace_path, 'definitions',
                 self.args['<definition>']
             )
 

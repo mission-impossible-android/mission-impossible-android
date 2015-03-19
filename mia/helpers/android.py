@@ -48,4 +48,3 @@ def get_cyanogenmod_release_version(recommended=True):
         return input_ask('Please provide a CM release version', None, True)
 
     return 'M12'
-

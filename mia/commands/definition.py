@@ -92,7 +92,7 @@ def create_definition():
             sys.exit(1)
 
     template = handler.args['--template']
-    template_path = os.path.join(handler.get_root(), 'templates', template)
+    template_path = os.path.join(handler.get_root_path(), 'templates', template)
     print('Using template:\n - %s\n' % template_path)
 
     # Check if the template exists.
@@ -102,8 +102,8 @@ def create_definition():
         sys.exit(1)
 
     # Make sure the definitions folder exists.
-    os.makedirs(os.path.join(handler.workspace, 'definitions'), mode=0o755,
-                exist_ok=True)
+    os.makedirs(os.path.join(handler.get_workspace_path, 'definitions'),
+                mode=0o755, exist_ok=True)
 
     # Create the definition using the provided template.
     shutil.copytree(template_path, definition_path)
@@ -203,7 +203,7 @@ def get_apps_lock_info(repo_info, repo_apps):
     # Get the MIA handler singleton.
     handler = MiaHandler()
 
-    index_path = os.path.join(handler.get_root(), 'resources',
+    index_path = os.path.join(handler.get_root_path(), 'resources',
                               repo_info['apps_key'] + '.index.xml')
 
     # Download the repository index.xml file.

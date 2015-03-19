@@ -3,7 +3,7 @@
 __pycache__
 
 # Ignore the workspace files.
-build/*
+builds/*
 definitions/*
 resources/*
 *-ignore
