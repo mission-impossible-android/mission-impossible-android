@@ -2,21 +2,20 @@
 Create and configure a definition in the current workspace using the provided
 template.
 
-Usage patterns:
-    mia definition create [--template=<template>] [--cpu=<cpu>] [<definition>]
+Usage:
+    mia definition create [--cpu=<cpu>] [--force] [--template=<template>]
+                          [<definition>]
     mia definition configure <definition>
     mia definition lock [--force-latest] <definition>
     mia definition dl-apps <definition>
     mia definition dl-os <definition>
 
-Usage Example:
-    mia definition create
-    mia definition create my-xyz-phone
-    mia definition configure my-xyz-phone
-    mia definition lock my-xyz-phone
-    mia definition create --template=extra --cpu=x86 my-mnp-tablet
-    mia definition configure my-mnp-tablet
-    mia definition lock --force-latest my-mnp-tablet
+Command options:
+    --template=<template>  The template to use. [default: mia-default]
+    --cpu=<cpu>            The device CPU architecture. [default: armeabi]
+    --force                Delete existing definition.
+
+    --force-latest         Force using the latest versions.
 
 Notes:
     A valid <definition> name consists of lowercase letters, digits and hyphens.
@@ -25,7 +24,6 @@ Notes:
 """
 
 import re
-import sys
 import shutil
 from urllib.request import urlretrieve
 
@@ -100,7 +98,7 @@ def create_definition():
 
     template = handler.args['--template']
     template_path = os.path.join(handler.get_root(), 'templates', template)
-    print('Using template:\n - %s\n' % definition_path)
+    print('Using template:\n - %s\n' % template_path)
 
     # Check if the template exists.
     if not os.path.exists(template_path):
@@ -186,6 +184,7 @@ def create_apps_lock_file():
     print("Creating lock file:\n - %s\n" % lock_file_path)
 
     import yaml
+
     try:
         fd = open(lock_file_path, 'w')
         fd.write(yaml.dump(lock_data, default_flow_style=False))
@@ -243,8 +242,7 @@ def get_apps_lock_info(repo_info, repo_apps):
             app_version_codes = None
 
         if len(app_package_names):
-            print(' - found: %s:%s' % (app_info['name'],
-                                       app_info['code']))
+            print(' - found: %s:%s' % (app_info['name'], app_info['code']))
         else:
             print(' - not found: %s' % app_info['name'])
             del repo_apps[key]

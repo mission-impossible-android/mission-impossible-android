@@ -3,6 +3,7 @@ Utilities for the mia script.
 """
 
 import os
+import sys
 
 
 class Singleton(type):
@@ -16,18 +17,19 @@ class Singleton(type):
 
 
 class MiaHandler(metaclass=Singleton):
-    args = []
+    args = {}
+    global_args = {}
     __root = None
-    __definition_path = []
-    __definition_settings = []
-    __definition_apps_lock_data = []
+    __definition_path = None
+    __definition_settings = {}
+    __definition_apps_lock_data = {}
 
-    def __init__(self, script_root=None, workspace_dir=None, cli_args=None):
+    def __init__(self, script_root=None, workspace_dir=None, global_args=None):
         if script_root:
             self.__root = script_root
 
-        if cli_args:
-            self.args = cli_args
+        if global_args:
+            self.global_args = global_args
 
         if workspace_dir:
             self.workspace = workspace_dir
@@ -35,7 +37,7 @@ class MiaHandler(metaclass=Singleton):
     # Save and display a log message.
     def log(self, msg, log_type='info'):
         # Display the message to the user.
-        if self.args['--verbose']:
+        if self.global_args['--verbose']:
             print(msg)
 
         # Log the message.
@@ -55,8 +57,10 @@ class MiaHandler(metaclass=Singleton):
 
     def get_definition_path(self):
         if not self.__definition_path and self.args['<definition>']:
-            self.__definition_path = os.path.join(self.workspace, 'definitions',
-                                                  self.args['<definition>'])
+            self.__definition_path = os.path.join(
+                self.workspace, 'definitions',
+                self.args['<definition>']
+            )
 
         return self.__definition_path
 

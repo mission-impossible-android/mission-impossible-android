@@ -11,30 +11,22 @@ given moment. Also, it will likely wipe your Android device, and this is by
 design!
 
 Usage:
-    mia clean
-    mia definition create [--template=<template>] [--cpu=<cpu>] [--force]
-                          [<definition>]
-    mia definition configure <definition>
-    mia definition lock [--force-latest] <definition>
-    mia definition dl-apps <definition>
-    mia definition dl-os <definition>
-    mia help <command>
-    mia (-h | --help | --version)
+    mia [options] <command> [<command_args_and_opts>...]
 
-Options:
-    --template=<template>  The template to use. [default: mia-default]
-    --cpu=<cpu>            The device CPU architecture. [default: armeabi]
-
-    -v, --verbose          Spew out even more information than normal.
-    -q, --quiet            Restrict output to warnings and errors.
-    -h --help              Show this screen.
-    --version              Show version.
+Global options:
+    --debug     Spew out debug information.
+    --verbose   Spew out even more information than normal.
+    --quiet     Restrict output to warnings and errors.
+    -h, --help  Show this screen.
+    --version   Show version.
 
 Available commands:
     clean       Cleanup the current workspace.
-    definition  Create a definition for a new update.zip file based on existing
-                templates.
+    definition  Create and configure a definition for a new update.zip file
+                based on existing templates.
     help        Display detailed information about a certain command.
+
+See 'mia help <command>' for more information on a specific command.
 
 """
 __author__ = 'MIA Team'
@@ -59,37 +51,62 @@ from docopt import docopt
 from mia.helpers.utils import *
 
 
-def delegate_command():
+def delegate_command(command_name, command_args):
     """
     Main command handler.
     """
     # Get the MIA handler singleton.
     handler = MiaHandler()
 
-    if handler.args.get('clean', True):
+    # Prepare the the argv parameter for the command specific docopt.
+    command_argv = [command_name] + command_args
+
+    if command_name == 'clean':
         import mia.commands.clean
+        handler.args = docopt(mia.commands.clean.__doc__,
+                              argv=command_argv)
+
+        # Remove command from the command arguments list.
+        del handler.args[command_name]
+
         mia.commands.clean.main()
-    elif handler.args.get('help', True):
+    elif command_name == 'help':
         import mia.commands.help
+        handler.args = docopt(mia.commands.help.__doc__,
+                              argv=command_argv)
+
+        # Remove command from the command arguments list.
+        del handler.args[command_name]
+
         mia.commands.help.main()
-    elif handler.args.get('definition', True):
+    elif command_name == 'definition':
         import mia.commands.definition
+        handler.args = docopt(mia.commands.definition.__doc__,
+                              argv=command_argv)
+
+        # Remove command from the command arguments list.
+        del handler.args[command_name]
+
         mia.commands.definition.main()
     else:
-        print('Command not implemented yet!')
+        print('Command "%s" not implemented yet! See help!' % command_name)
 
 
 if __name__ == '__main__':
-    # Read the arguments.
-    args = docopt(__doc__, version=__version__)
+    # Read the CLI arguments.
+    # Use options_first to force reading the global options only.
+    global_args = docopt(__doc__, version=__version__, options_first=True)
 
     # Create the MiaHandler instance. It can be used in other modules in order
     # to retrieve arguments, configuration, a logger...
-    MiaHandler(script_root=ROOT, workspace_dir=WORKSPACE, cli_args=args)
+    MiaHandler(ROOT, WORKSPACE, global_args)
 
     # Execute the command.
     try:
-        delegate_command()
+        delegate_command(
+            global_args['<command>'],
+            global_args['<command_args_and_opts>']
+        )
     except KeyboardInterrupt:
         print("\n" + 'Exiting...')
         pass
