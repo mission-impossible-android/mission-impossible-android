@@ -254,3 +254,19 @@ def update_settings(settings_file, changes):
 
     # Load the settings in the main handler file.
     handler.get_definition_settings(True)
+
+
+def format_file_size(file_size, precision=2):
+    import math
+    file_size = int(file_size)
+
+    if file_size is 0:
+        return '0 bytes'
+
+    log = math.floor(math.log(file_size, 1024))
+
+    return "%.*f %s" % (
+        precision,
+        file_size / math.pow(1024, log),
+        ['bytes', 'Kb', 'Mb'][int(log)]
+    )

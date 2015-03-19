@@ -272,9 +272,11 @@ def download_apps():
     for repo_group in lock_data:
         print('Downloading %s...' % repo_group)
         for apk_info in lock_data[repo_group]:
-            print(' - downloaded: %s' % apk_info['package_url'])
+            print(' - downloading: %s' % apk_info['package_url'])
             apk_path = os.path.join(user_apps_folder, apk_info['package_name'])
-            urlretrieve(apk_info['package_url'], apk_path)
+            path, http_message = urlretrieve(apk_info['package_url'], apk_path)
+            print('   - downloaded %s' %
+                  format_file_size(http_message["Content-Length"]))
 
 
 def download_os():
@@ -285,6 +287,11 @@ def download_os():
 
     # Read the definition settings.
     settings = handler.get_definition_settings()
+
+    # Create the resources folder.
+    resources_path = os.path.join(handler.get_workspace_path(), 'resources')
+    if not os.path.isdir(resources_path):
+        os.mkdir(resources_path, mode=0o755)
 
     url = 'https://download.cyanogenmod.org/?device=%s&type=%s' % (
         settings['general']['cm_device_codename'],
