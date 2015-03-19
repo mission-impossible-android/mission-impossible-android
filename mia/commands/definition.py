@@ -55,12 +55,8 @@ def main():
         create_definition()
 
     # Configure the definition.
-    if (handler.args['create'] and input_confirm('Configure now?', True)) \
-            or handler.args['configure']:
-        print()
+    if handler.args['configure']:
         configure_definition()
-    elif handler.args['create']:
-        return None
 
     # Create the apps lock file.
     if handler.args['lock']:
@@ -87,9 +83,8 @@ def create_definition():
     # Make sure the definition does not exist.
     if os.path.exists(definition_path):
         if handler.args['--force']:
-            print('Remove the old definition folder.')
+            print('Removing the old definition folder...')
             shutil.rmtree(definition_path)
-            return None
         else:
             # raise Exception('Definition "%s" already exists!' % definition)
             print('ERROR: Definition "%s" already exists!' %
@@ -112,6 +107,11 @@ def create_definition():
 
     # Create the definition using the provided template.
     shutil.copytree(template_path, definition_path)
+
+    # Configure the definition.
+    if input_confirm('Configure now?', True):
+        print()
+        configure_definition()
 
 
 def configure_definition():
