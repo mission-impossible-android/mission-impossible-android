@@ -61,36 +61,30 @@ def delegate_command(command_name, command_args):
     # Prepare the the argv parameter for the command specific docopt.
     command_argv = [command_name] + command_args
 
+    command_exists = False
     if command_name == 'clean':
         import mia.commands.clean
-        handler.args = docopt(mia.commands.clean.__doc__,
-                              argv=command_argv)
-
-        # Remove command from the command arguments list.
-        del handler.args[command_name]
-
-        mia.commands.clean.main()
+        command_exists = True
     elif command_name == 'help':
         import mia.commands.help
-        handler.args = docopt(mia.commands.help.__doc__,
-                              argv=command_argv)
-
-        # Remove command from the command arguments list.
-        del handler.args[command_name]
-
-        mia.commands.help.main()
+        command_exists = True
     elif command_name == 'definition':
         import mia.commands.definition
-        handler.args = docopt(mia.commands.definition.__doc__,
-                              argv=command_argv)
+        command_exists = True
+
+    if command_exists:
+        # Get the command handler.
+        command_handler = getattr(mia.commands, command_name)
+
+        handler.args = docopt(command_handler.__doc__, argv=command_argv)
 
         # Remove command from the command arguments list.
         del handler.args[command_name]
 
-        mia.commands.definition.main()
+        command_handler.main()
     else:
-        print('Command "%s" not implemented yet! See help!' % command_name)
-
+        msg = 'Command "%s" does not exists or has not been implemented yet!'
+        print(msg % command_name)
 
 if __name__ == '__main__':
     # Read the CLI arguments.
