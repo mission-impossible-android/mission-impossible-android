@@ -102,7 +102,7 @@ def create_definition():
         sys.exit(1)
 
     # Make sure the definitions folder exists.
-    os.makedirs(os.path.join(handler.get_workspace_path, 'definitions'),
+    os.makedirs(os.path.join(handler.get_workspace_path(), 'definitions'),
                 mode=0o755, exist_ok=True)
 
     # Create the definition using the provided template.
@@ -272,7 +272,7 @@ def download_apps():
     for repo_group in lock_data:
         print('Downloading %s...' % repo_group)
         for apk_info in lock_data[repo_group]:
-            print(' - downloaded: %s:' % apk_info['package_url'])
+            print(' - downloaded: %s' % apk_info['package_url'])
             apk_path = os.path.join(user_apps_folder, apk_info['package_name'])
             urlretrieve(apk_info['package_url'], apk_path)
 
