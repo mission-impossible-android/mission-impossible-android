@@ -73,8 +73,7 @@ def create_definition():
 
     definition_path = os.path.join(handler.workspace, 'definitions',
                                    handler.args['<definition>'])
-    print('Destination directory is:')
-    print_nl(' - ' + definition_path)
+    print('Destination directory is:\n - %s\n' % definition_path)
 
     # Make sure the definition does not exist.
     if os.path.exists(definition_path):
@@ -85,8 +84,7 @@ def create_definition():
 
     template = handler.args['--template']
     template_path = os.path.join(handler.root, 'templates', template)
-    print('Using template:')
-    print_nl(' - ' + template_path)
+    print('Using template:\n - %s\n' % definition_path)
 
     # Check if the template exists.
     if not os.path.exists(template_path):
@@ -111,21 +109,21 @@ def configure_definition():
 
     # Detect the device codename.
     cm_device_codename = get_cyanogenmod_codename()
-    print_nl('Using device codename: ' + cm_device_codename)
+    print('Using device codename: %s\n' % cm_device_codename)
 
     # Detect the CM release type.
     if input_confirm('Use recommended CyanogenMod release type?', True):
         cm_release_type = get_cyanogenmod_release_type(True)
     else:
         cm_release_type = get_cyanogenmod_release_type(False)
-    print_nl('Using release type: ' + cm_release_type)
+    print('Using release type: %s\n' % cm_release_type)
 
     # Detect the CM release version.
     if input_confirm('Use recommended CyanogenMod release version?', True):
         cm_release_version = get_cyanogenmod_release_version(True)
     else:
         cm_release_version = get_cyanogenmod_release_version(False)
-    print_nl('Using release version: ' + cm_release_version)
+    print('Using release version: %s\n' % cm_release_version)
 
     url = 'https://download.cyanogenmod.org/?device=%s&type=%s' \
           % (cm_device_codename, cm_release_type)
@@ -135,10 +133,8 @@ def configure_definition():
                  cm_release_type, cm_release_version)
 
     print("Download CyanogenMod for and save the file as\n - %s\n"
-          "into the resources folder and then verify the file checksum"
-          % file_name)
-
-    print_nl(' - ' + url)
+          "into the resources folder and then verify the file checksum.\n - %s"
+          % (file_name, url))
 
     # The path to the definition settings.yaml file.
     settings_file = os.path.join(definition_path, 'settings.yaml')
@@ -168,8 +164,7 @@ def generate_apk_lock_file():
                                    handler.args['<definition>'])
 
     settings_file = os.path.join(definition_path, 'settings.yaml')
-    print('Using settings file:')
-    print_nl(' - ' + settings_file)
+    print('Using settings file:\n - %s\n' % settings_file)
 
     try:
         fd = open(settings_file, 'r')

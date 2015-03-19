@@ -114,10 +114,6 @@ def input_ask(display_text, default_value=None, free_text=False):
         return value
 
 
-def print_nl(string=''):
-    print(string + "\n")
-
-
 # TODO: Find a way to keep comments in the setting files.
 def update_settings(settings_file, changes):
     import yaml
