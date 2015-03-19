@@ -12,6 +12,7 @@ design!
 
 Usage:
     mia [options] <command> [<command_args_and_opts>...]
+    mia --help
 
 Global options:
     --debug     Spew out debug information.
