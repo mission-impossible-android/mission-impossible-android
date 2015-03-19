@@ -88,10 +88,15 @@ def create_definition():
 
     # Make sure the definition does not exist.
     if os.path.exists(definition_path):
-        # raise Exception('Definition "%s" already exists!' % definition)
-        print('ERROR: Definition "%s" already exists!' %
-              handler.args['<definition>'])
-        sys.exit(1)
+        if handler.args['--force']:
+            print('Remove the old definition folder.')
+            shutil.rmtree(definition_path)
+            return None
+        else:
+            # raise Exception('Definition "%s" already exists!' % definition)
+            print('ERROR: Definition "%s" already exists!' %
+                  handler.args['<definition>'])
+            sys.exit(1)
 
     template = handler.args['--template']
     template_path = os.path.join(handler.get_root(), 'templates', template)

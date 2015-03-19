@@ -12,7 +12,8 @@ design!
 
 Usage:
     mia clean
-    mia definition create [--template=<template>] [--cpu=<cpu>] [<definition>]
+    mia definition create [--template=<template>] [--cpu=<cpu>] [--force]
+                          [<definition>]
     mia definition configure <definition>
     mia definition lock [--force-latest] <definition>
     mia definition dl-apps <definition>
