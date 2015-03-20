@@ -9,6 +9,7 @@ Usage:
     mia definition lock [--force-latest] <definition>
     mia definition dl-apps <definition>
     mia definition dl-os <definition>
+    mia definition extract-update <definition>
 
 Command options:
     --template=<template>  The template to use. [default: mia-default]
@@ -69,6 +70,10 @@ def main():
     # Download apps.
     if handler.args['dl-apps']:
         download_apps()
+
+    # Extract the update-binary from the CyanogenMod zip file.
+    if handler.args['extract-update']:
+        extract_update_binary()
 
     return None
 
@@ -298,15 +303,42 @@ def download_os():
         settings['general']['cm_release_type']
     )
 
-    file_name = '%s.%s.%s-%s.zip' % (
-        handler.args['<definition>'],
-        settings['general']['cm_device_codename'],
-        settings['general']['cm_release_type'],
-        settings['general']['cm_release_version']
-    )
+    file_name = get_cyanogenmod_zip_filename()
 
     print("Download CyanogenMod for and save the file as\n - %s\n"
           "into the resources folder, then verify the file checksum.\n - %s\n"
           % (file_name, url))
 
     input_pause('Please follow the instructions before continuing!')
+
+    # Download the CyanogenMod OS.
+    if input_confirm('Extract update binary from the CM zip?', True):
+        extract_update_binary()
+
+
+def extract_update_binary():
+    # Get the MIA handler singleton.
+    handler = MiaHandler()
+
+    # Create the resources folder.
+    resources_path = os.path.join(handler.get_workspace_path(), 'resources')
+
+    definition_path = handler.get_definition_path()
+
+    # Get file path.
+    zip_file_path = os.path.join(resources_path, get_cyanogenmod_zip_filename())
+
+    # The path to the update-binary file inside the zip.
+    update_relative_path = 'META-INF/com/google/android/update-binary'
+
+    print('Extracting the update-binary from:\n - %s' % zip_file_path)
+
+    import zipfile
+
+    if os.path.isfile(zip_file_path) and zipfile.is_zipfile(zip_file_path):
+        # Extract the update-binary in the definition.
+        fd = zipfile.ZipFile(zip_file_path)
+        fd.extract(update_relative_path, definition_path)
+        print('Saved the update-binary to the definition!')
+    else:
+        print('File does not exist or is not a zip file.')

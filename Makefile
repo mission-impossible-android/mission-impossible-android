@@ -3,13 +3,8 @@
 info:
 	cat README.md
 
-# make DEFINITION=my-phone extract_update_binary
-extract_update_binary:
-	echo "Extracting update-binary from CM zip"
-	scripts/extract_update_binary.sh $(DEFINITION)
-
 # make DEFINITION=my-phone generate_update_zip
-generate_update_zip: extract_update_binary
+generate_update_zip:
 	mkdir -p build/$(DEFINITION)/
 	rm -f build/$(DEFINITION)/mia-update.zip
 	(cd definitions/$(DEFINITION); zip --recurse-paths ../../build/$(DEFINITION)/mia-update.zip *)
