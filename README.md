@@ -7,7 +7,7 @@ blog](https://blog.torproject.org/blog/mission-impossible-hardening-android-secu
 It is currently a collection of scripts that require developer tools,
 that will build and deploy an `update.zip` file to your connected
 device. It aspires for be the basis for an installer for a custom
-Android ROM based on Cyanogenmod.
+Android ROM based on CyanogenMod.
 
 Please keep in mind that this is experimental, and may not be functional
 at any given moment. Also, it will likely wipe your Android device, and
@@ -33,19 +33,15 @@ make build_deploy
 
 ### Updating Pre-installed Apps
 
-The names of pre-installed apps are specified in
-`pkg/misc/preinstalled.list`. These names are resolved to their most
-recent download targets, which are stored in
-`pkg/misc/preinstalled.list.lock`. Every so often, these can be updated
-so that new installs give the most recent versions:
+The names of pre-installed apps are specified in `settings.ini`. These names
+are resolved to their most recent download targets, or to the version specified.
+Every so often, these can be updated so that new installs give the most recent
+versions:
 
-This process relies on the `xpath` command in the `libxml-xpath-perl`
-package.
+This process relies on the `xpath` command in the `libxml-xpath-perl` package.
 
 ```
 sudo apt-get install libxml-xpath-perl
-make get_app_index
-make generate_applist_lockfile
 make download_apks
 ```
 

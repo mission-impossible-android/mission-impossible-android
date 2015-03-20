@@ -1,3 +1,8 @@
+
+# Display readme for the default make target.
+info:
+	cat README.md
+
 cm_dl_link:
 	scripts/cyanogenmod_download_link.sh
 
@@ -12,7 +17,7 @@ clean:
 extract_update_binary:
 	unzip -o assets/cm-11.zip META-INF/com/google/android/update-binary -d pkg
 
-package: extract_update_binary
+generate_update_zip: extract_update_binary
 	mkdir -p build
 	rm -f build/mission-impossible-update.zip
 	(cd pkg; zip -r ../build/mission-impossible-update.zip *)
@@ -20,7 +25,7 @@ package: extract_update_binary
 push_emulator:
 	adb -e push build/mission-impossible-update.zip /sdcard/
 
-push_update_zip: package
+push_update_zip: generate_update_zip
 	adb push -p build/mission-impossible-update.zip /sdcard/
 
 push_cm_zip:
@@ -29,13 +34,6 @@ push_cm_zip:
 set_openrecoveryscript:
 	adb push -p assets/openrecoveryscript /sdcard/
 	adb shell "su root cp /sdcard/openrecoveryscript /cache/recovery/"
-
-get_app_index:
-	cd assets && curl --remote-name --progress https://f-droid.org/repo/index.xml
-
-generate_applist_lockfile:
-	rm -f pkg/misc/preinstalled.list.lock
-	scripts/generate_apk_lockfile.sh
 
 update_orwall_init:
 	rm pkg/system/etc/init.d/*
