@@ -11,8 +11,6 @@ setup(
     scripts=['tools/mia'],
     install_requires=[
         'docopt',
-        # 'libxml2-python',
-        'lxml',
         'PyYAML',
     ],
     classifiers=[

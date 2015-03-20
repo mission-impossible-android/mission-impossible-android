@@ -27,9 +27,7 @@ Notes:
 import re
 import shutil
 from urllib.request import urlretrieve
-
-# Import non-standard libraries.
-from lxml import html as lxml_html
+import xml.etree.ElementTree as ElementTree
 
 # Import custom helpers.
 from mia.helpers.android import *
@@ -189,15 +187,15 @@ def create_apps_lock_file():
     print("Creating lock file:\n - %s\n" % lock_file_path)
 
     import yaml
-
+    fd = open(lock_file_path, 'w')
     try:
-        fd = open(lock_file_path, 'w')
         fd.write(yaml.dump(lock_data, default_flow_style=False))
         fd.close()
     except yaml.YAMLError:
-        fd.close()
         print('ERROR: Could not save the lock file!')
-        return None
+        sys.exit(1)
+    finally:
+        fd.close()
 
     # Download apps.
     if handler.args['lock'] and input_confirm('Download apps now?', True):
@@ -208,7 +206,11 @@ def get_apps_lock_info(repo_info, repo_apps):
     # Get the MIA handler singleton.
     handler = MiaHandler()
 
-    index_path = os.path.join(handler.get_root_path(), 'resources',
+    # Make sure the resources folder exists.
+    os.makedirs(os.path.join(handler.get_workspace_path(), 'resources'),
+                mode=0o755, exist_ok=True)
+
+    index_path = os.path.join(handler.get_workspace_path(), 'resources',
                               repo_info['apps_key'] + '.index.xml')
 
     # Download the repository index.xml file.
@@ -218,48 +220,78 @@ def get_apps_lock_info(repo_info, repo_apps):
               (repo_info['name'], index_url))
         urlretrieve(index_url, index_path)
 
-    # Read the whole file index in memory?!?
-    try:
-        with open(index_path, 'r') as index_fd:
-            index_data = index_fd.read()
+    # Parse the repository index file and return the XML root.
+    xml_tree = ElementTree.parse(index_path)
+    if not xml_tree:
+        print('Error parsing file:\n - %s' % index_path)
+    tree_root = xml_tree.getroot()
 
-        xml_document = lxml_html.fromstring(index_data)
-        index_fd.close()
-    except FileNotFoundError:
-        print('File not found:\n - %s' % index_path)
-
-    print('Looking for APKs for repo %s' % repo_info['name'])
+    print('Looking for APKs in the "%s" repository' % repo_info['name'])
+    warnings_count = 0
     for key, app_info in enumerate(repo_apps):
-        if handler.args['--force-latest'] or app_info['code'] == 'latest':
-            # Get information about the latest version of the application.
-            latest_name_xpath = "//application[@id='%s']/package[0]/apkname/text()" % \
-                                (app_info['name'])
-            app_package_names = xml_document.xpath(latest_name_xpath)
+        application = _xml_get_application_tag(tree_root, app_info['name'])
 
-            code_xpath = "//application[@id='%s']/marketvercode/text()" % \
-                         app_info['name']
-            app_version_codes = xml_document.xpath(code_xpath)
-        else:
-            # Get information about an exact version of the application.
-            name_xpath = "//application[@id='%s']/package/apkname/text()[../../versioncode/text() = %s]" % \
-                         (app_info['name'], app_info['code'])
-            app_package_names = xml_document.xpath(name_xpath)
-            app_version_codes = None
-
-        if len(app_package_names):
-            print(' - found: %s:%s' % (app_info['name'], app_info['code']))
-        else:
-            print(' - not found: %s' % app_info['name'])
+        if not application:
+            print(' - no such app: %s' % app_info['name'])
+            warnings_count += 1
             del repo_apps[key]
             continue
 
-        app_info['package_name'] = "%s" % app_package_names[0]
-        app_info['package_url'] = "%s/%s" % (repo_info['base_url'],
-                                             app_package_names[0])
-        if app_version_codes is not None and len(app_version_codes):
-            app_info['code'] = app_version_codes[0]
+        if handler.args['--force-latest'] or app_info['code'] == 'latest':
+            app_package_name, app_version_code = \
+                _xml_get_application_info(application, 'latest')
+        else:
+            app_package_name, app_version_code = \
+                _xml_get_application_info(application, app_info['code'])
+
+        if not app_package_name:
+            print(' - no package: %s:%s' % (app_info['name'], app_info['code']))
+            warnings_count += 1
+            del repo_apps[key]
+            continue
+
+        app_info['package_name'] = "%s" % app_package_name
+        app_info['package_url'] = "%s/%s" % \
+                                  (repo_info['base_url'], app_package_name)
+
+        if app_info['code'] == 'latest':
+            app_info['code'] = int(app_version_code)
+
+        print(' - found: %s:%s' % (app_info['name'], app_info['code']))
+
+    if warnings_count and input_confirm('Warnings found! Continue?'):
+        sys.exit(1)
 
     return repo_apps
+
+
+def _xml_get_application_tag(tree_root, target):
+    for tag in tree_root.findall('application'):
+        if tag.get('id') and tag.get('id') == target:
+            return tag
+
+    return None
+
+
+def _xml_get_application_info(tag, target):
+    name = None
+    code = None
+
+    package = None
+    if target == 'latest':
+        package = tag.find('package')
+    else:
+        for item in tag.findall('package'):
+            version_code = item.find('versioncode').text
+            if int(version_code) == int(target):
+                package = item
+                break
+
+    if package:
+        name = package.find('apkname').text
+        code = package.find('versioncode').text
+
+    return name, code
 
 
 def download_apps():
@@ -320,7 +352,7 @@ def extract_update_binary():
     # Get the MIA handler singleton.
     handler = MiaHandler()
 
-    # Create the resources folder.
+    # Get the resources folder.
     resources_path = os.path.join(handler.get_workspace_path(), 'resources')
 
     definition_path = handler.get_definition_path()
