@@ -1,0 +1,5 @@
+wipe dalvik
+wipe cache
+wipe data
+install /sdcard/mia-cm.zip
+install /sdcard/mia-update.zip
