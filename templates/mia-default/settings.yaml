@@ -1,16 +1,34 @@
 
 # General settings.
 general:
-  system_app_destination: /system/priv-app  # No trailing slash!
-  user_app_destination: /data/app           # No trailing slash!
-  password_file: /path/to/secret/file
-
   # The CyanogenMod codename of the device.
   cm_device_codename:
   # Preferred CyanogenMod release type
   cm_release_type: snapshot
   # Preferred CyanogenMod release version
   cm_release_version: M12
+
+
+# Mapping of the items in the definition and their place in the update archive.
+update_content:
+  - src: init.d
+    dst: system/etc/init.d
+  - src: META-INF
+    dst: META-INF
+  - src: misc
+    dst: sdcard/misc
+  - src: system-apps
+    dst: system/priv-app
+  - src: system-lib
+    dst: system/lib
+  - src: user-apps
+    dst: data/app
+  - src: user-data
+    dst: data/data
+  - src: other/update-binary
+    dst: META-INF/com/google/android/update-binary
+  - src: other/updater-script
+    dst: META-INF/com/google/android/updater-script
 
 
 # Apps with direct download link.
@@ -21,14 +39,14 @@ other_apps:
     url: https://guardianproject.info/builds/OrfoxFennec/latest/OrfoxFennec-debug.apk
 
 
-# A list of repositories.
+# A list of repositories for the F-Droid application.
 repositories:
- - name: F-Droid Main
-   base_url: https://f-droid.org/repo
-   apps_key: fdroid_apps
+  - name: F-Droid
+    base_url: https://f-droid.org/repo
+    apps_key: fdroid_apps
 
 
-# Apps from the main f-droid.org repository, with recommended version codes.
+# Apps from the main F-Droid repository, with recommended version codes.
 fdroid_apps:
   - name: com.artifex.mupdfdemo
     code: 55

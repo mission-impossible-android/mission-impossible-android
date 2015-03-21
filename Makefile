@@ -3,19 +3,13 @@
 info:
 	cat README.md
 
-# make DEFINITION=my-phone generate_update_zip
-generate_update_zip:
-	mkdir -p build/$(DEFINITION)/
-	rm -f build/$(DEFINITION)/mia-update.zip
-	(cd definitions/$(DEFINITION); zip --recurse-paths ../../build/$(DEFINITION)/mia-update.zip *)
-
 # make DEFINITION=my-phone push_emulator
 push_emulator:
 	echo "Pushing MIA update to device"
 	adb -e push build/mia-$(DEFINITION)-update.zip /sdcard/
 
 # make DEFINITION=my-phone push_update_zip
-push_update_zip: generate_update_zip
+push_update_zip:
 	echo "Pushing update zip to device"
 	scripts/push_zip_files.sh $(DEFINITION) update
 

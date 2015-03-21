@@ -22,6 +22,7 @@ Global options:
     --version   Show version.
 
 Available commands:
+    build       Build an update.zip file.
     clean       Cleanup the current workspace.
     definition  Create and configure a definition for a new update.zip file
                 based on existing templates.
@@ -30,7 +31,7 @@ Available commands:
 See 'mia help <command>' for more information on a specific command.
 
 """
-__author__ = 'MIA Team'
+__author__ = 'The MIA Team'
 __version__ = 'mia 0.0.1'
 
 # Get the path of the mission-impossible-android project.
@@ -63,7 +64,10 @@ def delegate_command(command_name, command_args):
     command_argv = [command_name] + command_args
 
     command_exists = False
-    if command_name == 'clean':
+    if command_name == 'build':
+        import mia.commands.build
+        command_exists = True
+    elif command_name == 'clean':
         import mia.commands.clean
         command_exists = True
     elif command_name == 'help':
@@ -87,6 +91,7 @@ def delegate_command(command_name, command_args):
         msg = 'Command "%s" does not exists or has not been implemented yet!'
         print(msg % command_name)
 
+
 if __name__ == '__main__':
     # Read the CLI arguments.
     # Use options_first to force reading the global options only.
@@ -103,5 +108,5 @@ if __name__ == '__main__':
             global_args['<command_args_and_opts>']
         )
     except KeyboardInterrupt:
-        print("\n" + 'Exiting...')
+        print('\n' + 'Exiting...')
         pass

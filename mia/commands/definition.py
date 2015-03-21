@@ -370,7 +370,14 @@ def extract_update_binary():
     if os.path.isfile(zip_file_path) and zipfile.is_zipfile(zip_file_path):
         # Extract the update-binary in the definition.
         fd = zipfile.ZipFile(zip_file_path)
-        fd.extract(update_relative_path, definition_path)
+
+        # Save the file; taken from ZipFile.extract
+        source = fd.open(update_relative_path)
+        destination = os.path.join(definition_path, 'other', 'update-binary')
+        target = open(destination, "wb")
+        with source, target:
+            shutil.copyfileobj(source, target)
+
         print('Saved the update-binary to the definition!')
     else:
         print('File does not exist or is not a zip file.')
