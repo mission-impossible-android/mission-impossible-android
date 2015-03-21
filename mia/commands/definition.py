@@ -259,7 +259,7 @@ def get_apps_lock_info(repo_info, repo_apps):
 
         print(' - found: %s:%s' % (app_info['name'], app_info['code']))
 
-    if warnings_count and input_confirm('Warnings found! Continue?'):
+    if warnings_count and not input_confirm('Warnings found! Continue?'):
         sys.exit(1)
 
     return repo_apps
