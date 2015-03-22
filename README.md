@@ -30,9 +30,11 @@ design!
 1.  Connect your device via USB, authorizing as necessary.
 
 2.  Provide **temporary root access via ADB**, can be revoked later.
-        mia definition create my-phone --yes
-        mia build my-phone
-        mia install my-phone
+    ```
+    mia definition create my-phone --yes
+    mia build my-phone
+    mia install my-phone
+    ```
 
 3.  After the installation completed open F-Droid and update the applications
     list.
