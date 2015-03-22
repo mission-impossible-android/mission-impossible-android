@@ -22,6 +22,7 @@ this is by design!
 * Provide **temporary root access via ADB**. (We will revoke later.)
 
 ```
+cp settings.sample.ini settings.ini
 make cm_dl_link # Follow instructions
 make push_cm_zip
 make build_deploy
