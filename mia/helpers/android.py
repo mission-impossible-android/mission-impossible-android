@@ -77,7 +77,8 @@ def set_open_recovery_script():
                                'other', 'openrecoveryscript')
     push_file_to_device('file', script_path, '/sdcard/openrecoveryscript')
 
-    command = 'su root cp /sdcard/openrecoveryscript /cache/recovery/'
+    # TODO: Cleanup!
+    command = 'cp /sdcard/openrecoveryscript /cache/recovery/openrecoveryscript'
     if handler.args['--emulator']:
         # Run the command on the emulator.
         subprocess.call(['adb', '-e', 'shell', command])
