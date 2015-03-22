@@ -41,11 +41,11 @@ def main():
         sys.exit(1)
 
     # Push the mia-update.zip to the device.
-    # push_file_to_device('update archive', update_zip_path,
-    #                     '/sdcard/mia-update.zip')
+    push_file_to_device('update archive', update_zip_path,
+                        '/sdcard/mia-update.zip')
 
     # Push the mia-os.zip to the device.
-    # push_file_to_device('OS archive', os_zip_path, '/sdcard/mia-os.zip')
+    push_file_to_device('OS archive', os_zip_path, '/sdcard/mia-os.zip')
 
     if handler.args['--push-only']:
         print('\n' + 'Finished pushing the files onto the device.')
