@@ -2,18 +2,17 @@
 Detailed information about the 'install' command goes here!
 
 Usage:
-  mia install [--emulator] [--push-only] [--reboot] <definition>
+  mia install [--emulator] [--push-only] [--no-reboot] <definition>
 
 Command options:
     --emulator   Use running emulator instead of a real device.
     --push-only  Only push the OS and update archives onto the device.
-    --reboot     Reboot the device once all the files are in place.
+    --no-reboot  Do not reboot the device once all the files are in place.
 
 """
 
-import subprocess
-
 # Import custom helpers.
+from mia.helpers.android import *
 from mia.helpers.utils import *
 
 
@@ -42,39 +41,19 @@ def main():
         sys.exit(1)
 
     # Push the mia-update.zip to the device.
-    push_file_to_device('update archive', update_zip_path,
-                        '/sdcard/mia-update.zip')
+    # push_file_to_device('update archive', update_zip_path,
+    #                     '/sdcard/mia-update.zip')
 
     # Push the mia-os.zip to the device.
-    push_file_to_device('OS archive', os_zip_path, '/sdcard/mia-os.zip')
+    # push_file_to_device('OS archive', os_zip_path, '/sdcard/mia-os.zip')
 
     if handler.args['--push-only']:
         print('\n' + 'Finished pushing the files onto the device.')
         sys.exit(0)
 
-    if handler.args['--reboot']:
-        msg = 'Option "%s" has not been implemented yet!'
-        print(msg % '--reboot')
+    # Set the openrecoveryscript.
+    set_open_recovery_script()
 
-
-def push_file_to_device(source_type, source, destination):
-    # Get the MIA handler singleton.
-    handler = MiaHandler()
-
-    # Get the file size.
-    file_size = os.path.getsize(source)
-
-    print('Pushing %s (%s) onto the device:\n - %s' %
-          (source_type, format_file_size(file_size), source))
-    print('Please wait...')
-
-    # TODO: Add progress bar.
-    # http://stackoverflow.com/questions/6595374/adb-push-pull-with-progress-bar
-    print('NOTE: Progress bar has not been implemented yet!')
-
-    if handler.args['--emulator']:
-        # Push file to the emulator.
-        subprocess.call(['adb', '-e', 'push', source, destination])
-    else:
-        # Push file to the device.
-        subprocess.call(['adb', 'push', source, destination])
+    if not handler.args['--no-reboot']:
+        print('\n' + 'Rebooting the device into recovery...')
+        reboot_device('recovery')

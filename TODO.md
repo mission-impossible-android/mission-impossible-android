@@ -9,7 +9,8 @@ Tools:
 - Add `--update` option to the `definition lock` command. This will update a new
   version of the repository index file and check the locked APKs for updates.
 - Add checksum to lock file entries.
-
+- Implement update_orwall_init definition sub-command
+    wget https://raw.githubusercontent.com/EthACKdotOrg/orWall/master/app/src/main/res/raw/userinit.sh ---output-document=91firewall
 
 Android:
 - Try to mount system rw when changing with settings binary.
