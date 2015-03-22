@@ -1,7 +1,7 @@
 
 TODO: Add description of how things work.
 
-## Zip Folders
+## Folders for the generated update.zip
 
 `init.d`:
   This folder will be copied to `/system/etc/init.d` in the generated
@@ -22,7 +22,7 @@ TODO: Add description of how things work.
   mia-update.zip and it will end up in the phone at the same location.
 
 
-## Zip Files
+## Files for the generated update.zip
 `other/updater-script`:
   This script will be copied to `META-INF/com/google/android/updater-script` in
   the generated mia-update.zip.
@@ -34,6 +34,11 @@ TODO: Add description of how things work.
 
 
 ## Other Files
+
+`other/firstboot.sh`:
+  The [OpenRecoveryScript](http://www.teamw.in/OpenRecoveryScript) used to install CM and the Mission Impossible
+  mia-update.zip and it will be copied into the phone at
+  `/data/.firstboot.sh`
 
 `other/openrecoveryscript`:
   The [OpenRecoveryScript](http://www.teamw.in/OpenRecoveryScript) used to install CM and the Mission Impossible

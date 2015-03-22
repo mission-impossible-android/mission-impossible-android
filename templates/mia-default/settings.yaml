@@ -29,6 +29,8 @@ update_content:
     dst: META-INF/com/google/android/update-binary
   - src: other/updater-script
     dst: META-INF/com/google/android/updater-script
+  - src: other/firstboot.sh
+    dst: data/.firstboot.sh
 
 
 # Apps with direct download link.
