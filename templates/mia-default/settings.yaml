@@ -44,9 +44,12 @@ repositories:
   - name: F-Droid
     base_url: https://f-droid.org/repo
     apps_key: fdroid_apps
+  - name: F-Droid Archive
+    base_url: https://f-droid.org/archive
+    apps_key: fdroid_archive_apps
 
 
-# Apps from the main F-Droid repository, with recommended version codes.
+# Apps from the main F-Droid repository.
 fdroid_apps:
   - name: com.artifex.mupdfdemo
     code: 55
@@ -84,5 +87,9 @@ fdroid_apps:
     code: 6
   - name: org.torproject.android
     code: 133
+
+
+# Apps from the F-Droid Archive repository.
+fdroid_archive_apps:
   - name: org.videolan.vlc
     code: 10104
