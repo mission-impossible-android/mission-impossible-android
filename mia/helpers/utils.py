@@ -67,6 +67,16 @@ class MiaHandler(metaclass=Singleton):
 
         return self.__definition_path
 
+    def get_os_zip_filename(self):
+        # Read the definition settings.
+        settings = self.get_definition_settings()
+
+        return 'cm-11-%s.%s-%s.zip' % (
+            settings['general']['cm_device_codename'],
+            settings['general']['cm_release_type'],
+            settings['general']['cm_release_version']
+        )
+
     def get_definition_settings(self, force_update=False):
         if (not self.__definition_settings and self.args['<definition>']) or \
                 force_update:

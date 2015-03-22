@@ -335,7 +335,7 @@ def download_os():
         settings['general']['cm_release_type']
     )
 
-    file_name = get_cyanogenmod_zip_filename()
+    file_name = handler.get_os_zip_filename()
 
     print("Download CyanogenMod for and save the file as\n - %s\n"
           "into the resources folder, then verify the file checksum.\n - %s\n"
@@ -358,7 +358,7 @@ def extract_update_binary():
     definition_path = handler.get_definition_path()
 
     # Get file path.
-    zip_file_path = os.path.join(resources_path, get_cyanogenmod_zip_filename())
+    zip_file_path = os.path.join(resources_path, handler.get_os_zip_filename())
 
     # The path to the update-binary file inside the zip.
     update_relative_path = 'META-INF/com/google/android/update-binary'

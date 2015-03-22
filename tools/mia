@@ -27,6 +27,7 @@ Available commands:
     definition  Create and configure a definition for a new update.zip file
                 based on existing templates.
     help        Display detailed information about a certain command.
+    install     Install the OS and the built update.zip file onto the device.
 
 See 'mia help <command>' for more information on a specific command.
 
@@ -75,6 +76,9 @@ def delegate_command(command_name, command_args):
         command_exists = True
     elif command_name == 'definition':
         import mia.commands.definition
+        command_exists = True
+    elif command_name == 'install':
+        import mia.commands.install
         command_exists = True
 
     if command_exists:
