@@ -64,7 +64,7 @@ Devices currently available for testing:
 | Motorola Moto G 4G | peregrine | mikeperry-tor | no |
 | Samsung Galaxy S II | i9100 | SchnWalter | no |
 | OnePlus One | bacon | SchnWalter | no |
-| Sony Xperia Tablet Z (wifi) | pollux_windy | SchnWalter | yes | 
+| Sony Xperia Tablet Z (wifi) | pollux_windy | SchnWalter | yes |
 
 
 ### Links

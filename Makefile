@@ -12,6 +12,7 @@ download_apks:
 	scripts/download_apks.sh
 
 clean:
+	rm -f assets/fdroid-index.xml
 	rm -f pkg/*/*app/*
 
 extract_update_binary:
