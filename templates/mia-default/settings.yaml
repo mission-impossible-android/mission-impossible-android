@@ -36,9 +36,7 @@ update_content:
 # Apps with direct download link.
 other_apps:
   - name: F-Droid
-    url: https://f-droid.org/FDroid.apk
-  - name: OrfoxFennec Debug
-    url: https://guardianproject.info/builds/OrfoxFennec/latest/OrfoxFennec-debug.apk
+    url: https://f-droid.org/repo/org.fdroid.fdroid_810.apk
 
 
 # A list of repositories for the F-Droid application.
