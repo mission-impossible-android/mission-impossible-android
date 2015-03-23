@@ -22,6 +22,7 @@ this is by design!
 * Provide **temporary root access via ADB**. (We will revoke later.)
 
 ```
+cp settings.sample.ini settings.ini
 make cm_dl_link # Follow instructions
 make push_cm_zip
 make build_deploy
@@ -64,7 +65,7 @@ Devices currently available for testing:
 | Motorola Moto G 4G | peregrine | mikeperry-tor | no |
 | Samsung Galaxy S II | i9100 | SchnWalter | no |
 | OnePlus One | bacon | SchnWalter | no |
-| Sony Xperia Tablet Z (wifi) | pollux_windy | SchnWalter | yes | 
+| Sony Xperia Tablet Z (wifi) | pollux_windy | SchnWalter | yes |
 
 
 ### Links
