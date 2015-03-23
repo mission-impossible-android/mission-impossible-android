@@ -1,5 +1,7 @@
 wipe dalvik
 wipe cache
 wipe data
+set tw_signed_zip_verify 1
 install /sdcard/mia-os.zip
+set tw_signed_zip_verify 0
 install /sdcard/mia-update.zip
