@@ -58,9 +58,9 @@ design!
 2. Install the docopt and PyYAML modules:
 
     * Using Python Package Index [pip](https://pip.pypa.io/en/latest/index.html):
-      `pip3 install docopt pyyaml`
+      `pip install docopt pyyaml`
 
-    * Or using apt-get on Ubuntu/Debian:
+    * Or using apt-get on Ubuntu:
       `apt-get install python3-docopt python3-yaml`
 
     * Or using zypper on openSUSE:
