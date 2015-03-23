@@ -58,6 +58,7 @@ def clean_workspace():
     workspace_path = handler.get_workspace_path()
     print('Workspace directory is:\n - %s\n' % workspace_path)
 
+    # Clean the workspace builds folder.
     builds_path = os.path.join(workspace_path, 'builds')
     if os.path.isdir(builds_path):
         print('Removing items from builds:\n - %s' % builds_path)
@@ -71,6 +72,7 @@ def clean_workspace():
                 print(' - removing file: %s' % item)
                 os.remove(item_path)
 
+    # Clean the workspace resources folder.
     resources_path = os.path.join(workspace_path, 'resources')
     if os.path.isdir(resources_path):
         print('Removing items from resources:\n - %s' % resources_path)
