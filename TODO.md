@@ -1,9 +1,5 @@
-Docs:
-- Add information on how to install requirements, for now I'm cheating and
-  PyCharm does all the work for me.
 
-
-Tools:
+## Tools:
 - Cleanup and review code!
 - Use as few libraries and dependencies as possible; switch settings from YAML?
 - Add `--update` option to the `definition lock` command. This will update a new
@@ -12,7 +8,8 @@ Tools:
 - Implement update_orwall_init definition sub-command
     wget https://raw.githubusercontent.com/EthACKdotOrg/orWall/master/app/src/main/res/raw/userinit.sh ---output-document=91firewall
 
-Android:
+
+## Android:
 - Try to mount system rw when changing with settings binary.
 - move custom adb shell command with captured exit codes into custom script
 - test if `su` command is available before attempting deploy
@@ -26,12 +23,13 @@ Android:
 - why is owner information not on lock screen?
 - allow fdroid access from beginning
 
-- MyAppList
-  + Create app lists for downloading certain tools
+### MyAppList
+  - Create app lists for downloading certain tools. 
   - Seems to be unable to read this list...
 
-- Orwall:
-  - Set OrWall config to use Fennec for the Browser app and CSIPSimple for SIP app
+### Orwall:
+  - Set OrWall config to use Fennec for the Browser app and CSIPSimple for SIP.
     - https://github.com/patcon/mission-impossible-android/issues/2
     - https://github.com/patcon/mission-impossible-android/issues/5
-  +? Figure out how to extract 90firewall from local orwall apk.
+  - Extract 90firewall from local orwall apk?
+    - see: extract_update_binary()

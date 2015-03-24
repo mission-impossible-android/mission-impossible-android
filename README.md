@@ -53,9 +53,9 @@ design!
 
 ### Setup instructions:
 
-1. Install Python 3 if not already installed. Test using: `python3 --version`
+1.  Install Python 3 if not already installed. Test using: `python3 --version`
 
-2. Install the docopt and PyYAML modules:
+2.  Install the docopt and PyYAML modules:
 
     * Using Python Package Index [pip](https://pip.pypa.io/en/latest/index.html):
       `pip install docopt pyyaml`
@@ -66,13 +66,13 @@ design!
     * Or using zypper on openSUSE:
       `zypper install python3-docopt python3-PyYAML`
 
-3. Clone the repository:
+3.  Clone the repository:
     ```
     git clone https://github.com/patcon/mission-impossible-android.git
     ```
 
-4. (optional) Add the tools folder to the PATH environment variable. This will
-   let you run the tool from any folder in your system.
+4.  (optional) Add the tools folder to the PATH environment variable. This will
+    let you run the tool from any folder in your system.
     `export PATH=$PATH:$HOME/mission-impossible-android/tools`
 
     * Make sure to replace `$HOME/mission-impossible-android/tools` with the
