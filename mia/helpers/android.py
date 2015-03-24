@@ -9,8 +9,23 @@ import subprocess
 from mia.helpers.utils import *
 
 
-def check_adb():
-    return True
+def adb_get_version():
+    # The `adb version` command returns a string in the following format:
+    # Android Debug Bridge version 1.0.31
+    std_output = str(subprocess.check_output(['adb', 'version']))
+
+    # Get the version string.
+    import re
+    match_instance = re.search('(\d+\.\d+\.\d+)', std_output)
+    if match_instance is not None and match_instance.group() is not None:
+        return match_instance.group()
+
+    return None
+
+
+def adb_check_device():
+    # TODO: Check if `adb` sees the device.
+    return None
 
 
 def get_cyanogenmod_codename():
@@ -20,12 +35,14 @@ def get_cyanogenmod_codename():
     # TODO: First check the settings.ini file inside the definition, if any.
     codename = None
 
-    # TODO: Try to get the device name using ADB.
-    if check_adb:
-        print('NOTE: ADB integration not implemented yet!')
+    # Try to determine the device name using `adb`.
+    if adb_check_device():
+        # TODO: Try to get the device name using ADB.
+        return None
 
+    # If nothing worked, prompt the user for the device name.
     if codename is None:
-        print('Look up your device codename on the CyanogenMod wiki page:')
+        print('Lookup your device codename on the CyanogenMod wiki page:')
         print(' - http://wiki.cyanogenmod.org/w/Devices')
         codename = input_ask('Please provide the device name')
 
@@ -96,15 +113,19 @@ def push_file_to_device(source_type, source, destination):
 
     print('Pushing %s (%s) onto the device:\n - %s' %
           (source_type, format_file_size(file_size), source))
-    print('Please wait...')
 
-    # TODO: Add progress bar.
-    # http://stackoverflow.com/questions/6595374/adb-push-pull-with-progress-bar
-    print('NOTE: Progress bar has not been implemented yet!')
+    # Create the arguments list for ADB.
+    adb_argument = ['push', source, destination]
 
-    if handler.args['--emulator']:
-        # Push file to the emulator.
-        subprocess.call(['adb', '-e', 'push', source, destination])
+    # Display progress bar on newer versions of ADB.
+    if version_compare(adb_get_version(), '1.0.32', 'ge'):
+        adb_argument.insert(0, '-p')
     else:
-        # Push file to the device.
-        subprocess.call(['adb', 'push', source, destination])
+        print('Please wait...')
+
+    # Check if an emulator should be used instead of a device.
+    if handler.args['--emulator']:
+        adb_argument.insert(0, '-e')
+
+    # Push file to the device.
+    subprocess.call(['adb'] + adb_argument)

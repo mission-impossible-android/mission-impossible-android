@@ -280,3 +280,18 @@ def format_file_size(file_size, precision=2):
         file_size / math.pow(1024, log),
         ['bytes', 'Kb', 'Mb'][int(log)]
     )
+
+
+def version_compare(version1, version2, func='eq'):
+    """
+    Compare two Semantic Versions.
+    @see http://semver.org/spec/v2.0.0.html
+    """
+    # @see https://docs.python.org/3.4/library/operator.html
+    import operator
+
+    from distutils.version import StrictVersion
+    return getattr(operator, func)(
+        StrictVersion(version1),
+        StrictVersion(version2)
+    )
