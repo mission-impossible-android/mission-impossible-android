@@ -231,7 +231,7 @@ def get_apps_lock_info(repo_info, repo_apps):
     for key, app_info in enumerate(repo_apps):
         application = _xml_get_application_tag(tree_root, app_info['name'])
 
-        if not application:
+        if application is None:
             print(' - no such app: %s' % app_info['name'])
             warnings_count += 1
             del repo_apps[key]
@@ -287,7 +287,7 @@ def _xml_get_application_info(tag, target):
                 package = item
                 break
 
-    if package:
+    if package is not None:
         name = package.find('apkname').text
         code = package.find('versioncode').text
 
@@ -304,7 +304,7 @@ def download_apps():
     # Path where to download the APK files.
     user_apps_folder = os.path.join(handler.get_definition_path(), 'user-apps')
     if not os.path.isdir(user_apps_folder):
-        os.mkdir(user_apps_folder, mode=0o755)
+        os.makedirs(user_apps_folder, mode=0o755)
 
     for repo_group in lock_data:
         print('Downloading %s...' % repo_group)
@@ -328,7 +328,7 @@ def download_os():
     # Create the resources folder.
     resources_path = os.path.join(handler.get_workspace_path(), 'resources')
     if not os.path.isdir(resources_path):
-        os.mkdir(resources_path, mode=0o755)
+        os.makedirs(resources_path, mode=0o755)
 
     url = 'https://download.cyanogenmod.org/?device=%s&type=%s' % (
         settings['general']['cm_device_codename'],
