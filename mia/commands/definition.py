@@ -298,6 +298,9 @@ def download_apps():
     # Get the MIA handler singleton.
     handler = MiaHandler()
 
+    # Read the definition settings.
+    settings = handler.get_definition_settings()
+
     # Read the definition apps lock data.
     lock_data = handler.get_definition_apps_lock_data()
 
@@ -314,6 +317,14 @@ def download_apps():
             path, http_message = urlretrieve(apk_info['package_url'], apk_path)
             print('   - downloaded %s' %
                   format_file_size(http_message["Content-Length"]))
+
+    print('Downloading other_apps...')
+    for app_info in settings['other_apps']:
+        print(' - downloading: %s' % app_info['url'])
+        apk_path = os.path.join(user_apps_folder, app_info['name'])
+        path, http_message = urlretrieve(app_info['url'], apk_path)
+        print('   - downloaded %s' %
+              format_file_size(http_message["Content-Length"]))
 
 
 def download_os():
