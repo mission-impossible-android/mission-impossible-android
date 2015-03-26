@@ -321,7 +321,8 @@ def download_apps():
     print('Downloading other_apps...')
     for app_info in settings['other_apps']:
         print(' - downloading: %s' % app_info['url'])
-        apk_path = os.path.join(user_apps_folder, app_info['name'])
+        apk_path = os.path.join(user_apps_folder,
+                                os.path.basename(app_info['url']))
         path, http_message = urlretrieve(app_info['url'], apk_path)
         print('   - downloaded %s' %
               format_file_size(http_message["Content-Length"]))
@@ -392,3 +393,4 @@ def extract_update_binary():
         print('Saved the update-binary to the definition!')
     else:
         print('File does not exist or is not a zip file.')
+
