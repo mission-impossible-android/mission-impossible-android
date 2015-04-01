@@ -115,17 +115,20 @@ def push_file_to_device(source_type, source, destination):
           (source_type, format_file_size(file_size), source))
 
     # Create the arguments list for ADB.
-    adb_argument = ['push', source, destination]
+    adb_arguments = [source, destination]
 
     # Display progress bar on newer versions of ADB.
     if version_compare(adb_get_version(), '1.0.32', 'ge'):
-        adb_argument.insert(0, '-p')
+        adb_arguments.insert(0, '-p')
     else:
         print('Please wait...')
 
+    # Add the `push` command before the `push` specific arguments and options.
+    adb_arguments.insert(0, 'push')
+
     # Check if an emulator should be used instead of a device.
     if handler.args['--emulator']:
-        adb_argument.insert(0, '-e')
+        adb_arguments.insert(0, '-e')
 
     # Push file to the device.
-    subprocess.call(['adb'] + adb_argument)
+    subprocess.call(['adb'] + adb_arguments)
