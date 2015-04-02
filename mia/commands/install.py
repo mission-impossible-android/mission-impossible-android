@@ -1,13 +1,13 @@
 """
-Detailed information about the 'install' command goes here!
+Install MIA custom ROM to a device (real or emulated).
 
 Usage:
   mia install [--emulator] [--skip-os] [--push-only] [--no-reboot] <definition>
 
 Command options:
     --emulator   Use running emulator instead of a real device.
-    --skip-os    Do not push base OS archive. (Prior push required for successful install.)
-    --push-only  Only push the OS and update archives onto the device.
+    --skip-os    Do not push base OS zip. (Prior push required for successful install.)
+    --push-only  Only push the OS and update zips.
     --no-reboot  Do not reboot the device once all the files are in place.
 
 """
