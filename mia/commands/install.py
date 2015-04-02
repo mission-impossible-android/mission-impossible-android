@@ -2,10 +2,11 @@
 Detailed information about the 'install' command goes here!
 
 Usage:
-  mia install [--emulator] [--push-only] [--no-reboot] <definition>
+  mia install [--emulator] [--skip-os] [--push-only] [--no-reboot] <definition>
 
 Command options:
     --emulator   Use running emulator instead of a real device.
+    --skip-os    Do not push base OS archive. (Prior push required for successful install.)
     --push-only  Only push the OS and update archives onto the device.
     --no-reboot  Do not reboot the device once all the files are in place.
 
@@ -45,7 +46,8 @@ def main():
                         '/sdcard/mia-update.zip')
 
     # Push the mia-os.zip to the device.
-    push_file_to_device('OS archive', os_zip_path, '/sdcard/mia-os.zip')
+    if not handler.args['--skip-os']:
+        push_file_to_device('OS archive', os_zip_path, '/sdcard/mia-os.zip')
 
     if handler.args['--push-only']:
         print('\n' + 'Finished pushing the files onto the device.')
