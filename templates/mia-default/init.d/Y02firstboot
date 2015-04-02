@@ -1,0 +1,49 @@
+#!/system/bin/sh
+# execute post-install script on First Boot
+# 01022012
+
+FB_SCRIPT="/data/.firstboot.sh"
+TIMEOUT=5
+
+CHMOD="busybox chmod"
+ECHO="busybox echo"
+GREP="busybox grep"
+PS="busybox ps"
+SLEEP="busybox sleep"
+
+# Search for active process.
+ps_grep () {
+	# Make sure the search down't show up.
+	$PS | $GREP "$@" | $GREP -v "$( echo $GREP $@ )"
+}
+
+fb_logger() {
+	$ECHO $1 >> /sdcard/firstboot.log
+}
+
+# Install apps on first boot after system services have started.
+if [ -f "$FB_SCRIPT" ]; then
+	fb_logger "FirstBoot script found $FB_SCRIPT"
+	$CHMOD 0755 $FB_SCRIPT
+
+	# TODO: Find a way to prevent race conditions.
+	fb_logger "Waiting for system"
+	while : ; do
+		# Check if the system is up and running.
+		if ps_grep com.android.systemui; then
+			fb_logger "com.android.systemui is running"
+			$SLEEP $TIMEOUT
+
+			# Run the First Boot script.
+			log -p i -t boot "Executing $FB_SCRIPT script"
+			fb_logger "Running FirstBoot init"
+			$FB_SCRIPT
+
+			# Exit the loop.
+			break
+		fi
+
+		fb_logger "WAITING: com.android.systemui is not running, next try in ${TIMEOUT}s."
+		$SLEEP $TIMEOUT
+	done
+fi

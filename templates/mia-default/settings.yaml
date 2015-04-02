@@ -1,0 +1,95 @@
+
+# General settings.
+general:
+  # The CyanogenMod codename of the device.
+  cm_device_codename:
+  # Preferred CyanogenMod release type
+  cm_release_type: snapshot
+  # Preferred CyanogenMod release version
+  cm_release_version: M12
+
+
+# Mapping of the items in the definition and their place in the update archive.
+update_content:
+  - src: init.d
+    dst: system/etc/init.d
+  - src: META-INF
+    dst: META-INF
+  - src: misc
+    dst: sdcard/misc
+  - src: system-apps
+    dst: system/priv-app
+  - src: system-lib
+    dst: system/lib
+  - src: user-apps
+    dst: data/app
+  - src: user-data
+    dst: data/data
+  - src: other/update-binary
+    dst: META-INF/com/google/android/update-binary
+  - src: other/updater-script
+    dst: META-INF/com/google/android/updater-script
+  - src: other/firstboot.sh
+    dst: data/.firstboot.sh
+
+
+# Apps with direct download link.
+other_apps:
+  - name: F-Droid
+    url: https://f-droid.org/repo/org.fdroid.fdroid_810.apk
+
+
+# A list of repositories for the F-Droid application.
+repositories:
+  - name: F-Droid
+    base_url: https://f-droid.org/repo
+    apps_key: fdroid_apps
+  - name: F-Droid Archive
+    base_url: https://f-droid.org/archive
+    apps_key: fdroid_archive_apps
+
+
+# Apps from the main F-Droid repository.
+fdroid_apps:
+  - name: com.artifex.mupdfdemo
+    code: 55
+  - name: com.csipsimple
+    code: 2459
+  - name: com.fsck.k9
+    code: 22004
+  - name: com.morlunk.mumbleclient
+    code: 72
+  - name: com.projectsexception.myapplist.open
+    code: 16
+  - name: com.xabber.androiddev
+    code: 136
+  - name: de.schildbach.wallet
+    code: 211
+  - name: fr.kwiatkowski.ApkTrack
+    code: 4
+  - name: indrora.atomic
+    code: 19
+  - name: net.osmand.plus
+    code: 197
+  - name: org.coolreader
+    code: 875
+  - name: org.ethack.orwall
+    code: 36
+  - name: org.mariotaku.twidere
+    code: 98
+  - name: org.mozilla.fennec_fdroid
+    code: 360100
+  - name: org.sufficientlysecure.keychain
+    code: 31200
+  - name: org.nick.cryptfs.passwdmanager
+    code: 1230
+  - name: org.sufficientlysecure.localcalendar
+    code: 6
+  - name: org.torproject.android
+    code: 133
+
+
+# Apps from the F-Droid Archive repository.
+fdroid_archive_apps:
+  - name: org.videolan.vlc
+    code: 10104

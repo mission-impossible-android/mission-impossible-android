@@ -1,74 +1,109 @@
-# Mission Impossible Android Hardening
 
-This project is a attempting to streamline the process of following [Mike
-Perry's Android hardening tutorial on the Tor
-blog](https://blog.torproject.org/blog/mission-impossible-hardening-android-security-and-privacy).
+# MIA - Mission Impossible: Android hardening
 
-It is currently a collection of scripts that require developer tools,
-that will build and deploy an `update.zip` file to your connected
-device. It aspires for be the basis for an installer for a custom
-Android ROM based on CyanogenMod.
+This project is a attempting to streamline the process of following the
+guidelines from Mike Perry's post "Mission Impossible: Hardening Android for
+Security and Privacy" on the [Tor Project Blog](https://blog.torproject.org/blog/mission-impossible-hardening-android-security-and-privacy).
 
-Please keep in mind that this is experimental, and may not be functional
-at any given moment. Also, it will likely wipe your Android device, and
-this is by design!
+It is currently a collection of scripts that require developer tools, that will
+build and deploy an `update.zip` file to your connected device. It aspires for
+be the basis for an installer for a custom Android ROM based on CyanogenMod.
 
-### Usage
+Please keep in mind that this is experimental, and may not be functional at any
+given moment. Also, it will likely wipe your Android device, and this is by
+design!
 
-* [Install](http://teamw.in/project/twrp2) Team Win Recovery Project bootloader. (Follow instructions for your device.)
-* [Enable](https://developer.android.com/tools/device.html#developer-device-options) on-device developer options.
-- [Enable](https://developer.android.com/tools/device.html#setting-up) USB debugging.
-* Connect your device via USB, authorizing as neccessary.
-* Provide **temporary root access via ADB**. (We will revoke later.)
+**These tools come with no warranty. Test them on your own risk.**
 
-```
-cp settings.sample.ini settings.ini
-make cm_dl_link # Follow instructions
-make push_cm_zip
-make build_deploy
-```
 
-* Open F-Droid and update the app list.
-* Open the *My App List* app, and install any desired apps from
-  `misc-apps.xml`.
+## Requirements
+* A supported device - see the compatibility table bellow.
+* A linux/unix operating system - tested on: openSUSE and Ubuntu
+* [Android SDK Tools](https://developer.android.com/sdk/index.html#Other) - with `adb` working globally.
+* [Team Win Recovery Project](http://teamw.in/project/twrp2) bootloader installed onto your device.
+* [Developer Options](https://developer.android.com/tools/device.html#developer-device-options) enabled on your device.
+* [USB debugging](https://developer.android.com/tools/device.html#setting-up) enabled on your device.
+* The MIA CLI tool - follow the setup instructions bellow.
 
-### Updating Pre-installed Apps
 
-The names of pre-installed apps are specified in `settings.ini`. These names
-are resolved to their most recent download targets, or to the version specified.
-Every so often, these can be updated so that new installs give the most recent
-versions:
+## Usage
+1.  Connect your device via USB, authorizing as necessary.
 
-This process relies on the `xpath` command in the `libxml-xpath-perl` package.
+2.  Provide **temporary root access via ADB**, can be revoked later.
+    ```
+    mia definition create my-phone
+    mia build my-phone
+    mia install my-phone
+    ```
 
-```
-sudo apt-get install libxml-xpath-perl
-make download_apks
-```
+3.  After the installation completed open F-Droid and update the applications
+    list.
 
-The above process does **NOT** delete previous APKs, and so you'll need
-to manually delete duplicates and removed apps from `pkg/data/app`. (You
-could also run `make clean` to remove all APKs before running the above.)
+4.  Open the *My App List* app, and install any desired applications from
+    `misc-apps.xml`.
 
-### Compatibility
 
-Currently, project is being tested on the wifi-only Nexus 7, 2012 version
-(`grouper`) and 2013 version (`flo`).
+## MIA - CLI Tool
+### Requirements:
 
+* Python 3
+* [docopt](https://github.com/docopt/docopt)
+* [PyYAML](http://pyyaml.org/wiki/PyYAML)
+
+
+### Setup instructions:
+
+1.  Install Python 3 if not already installed. Test using: `python3 --version`
+
+2.  Install the docopt and PyYAML modules:
+
+    * Using Python Package Index [pip](https://pip.pypa.io/en/latest/index.html):
+      `pip install docopt pyyaml`
+
+    * Or using apt-get on Ubuntu:
+      `apt-get install python3-docopt python3-yaml`
+
+    * Or using zypper on openSUSE:
+      `zypper install python3-docopt python3-PyYAML`
+
+3.  Clone the repository:
+    ```
+    git clone https://github.com/patcon/mission-impossible-android.git
+    ```
+
+4.  (optional) Add the tools folder to the PATH environment variable. This will
+    let you run the tool from any folder in your system.
+    `export PATH=$PATH:$HOME/mission-impossible-android/tools`
+
+    * Make sure to replace `$HOME/mission-impossible-android/tools` with the
+      actual path of the tools folder.
+    * If you skip this step you will need to use an absolute or relative
+      path to the CLI Tool. Eg: `./tools/mia` or
+      `~/mission-impossible-android/tools/mia` instead of `mia`
+
+5. Test if the tool is working properly.
+    ```
+    mia --help
+    ```
+
+## Compatibility
 Devices currently available for testing:
 
 | Device | Codename | Testers | Actively tested? |
-|--------|:--------:|:-----:|:----------------:|
-| LG Nexus 4 | mako | patcon/SchnWalter | no/yes |
-| Google/Asus Nexus 7 (wifi, 2012) | grouper | patcon | yes |
-| Google/Asus Nexus 7 (wifi, 2013) | flo | mikeperry-tor | yes |
+|--------|:--------:|:-------:|:----------------:|
+| LG Nexus 4 | mako | patcon | no |
+| LG Nexus 4 | mako | SchnWalter | yes |
+| Asus Nexus 7 (wifi, 2012) | grouper | patcon | yes |
+| Asus Nexus 7 (wifi, 2013) | flo | mikeperry-tor | yes |
 | Motorola Moto G 4G | peregrine | mikeperry-tor | no |
 | Samsung Galaxy S II | i9100 | SchnWalter | no |
 | OnePlus One | bacon | SchnWalter | no |
 | Sony Xperia Tablet Z (wifi) | pollux_windy | SchnWalter | yes |
 
+NOTE: Other devices supported by CyanogenMod might also be compatible. If you
+      test one, please report it in the [issue queue](https://github.com/patcon/mission-impossible-android/issues).
 
-### Links
 
-- [updater-script syntax](http://forum.xda-developers.com/wiki/Edify_script_language)
-- [TWRP emulator](http://teamw.in/project/twrp2/169)
+## Links
+* [updater-script syntax](http://forum.xda-developers.com/wiki/Edify_script_language)
+* [TWRP for Android Emulator](http://teamw.in/project/twrp2/169)
