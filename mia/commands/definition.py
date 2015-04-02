@@ -229,6 +229,13 @@ def get_apps_lock_info(repo_info, repo_apps):
     print('Looking for APKs in the "%s" repository' % repo_info['name'])
     warnings_count = 0
     for key, app_info in enumerate(repo_apps):
+
+        # If download url provided directly, skip xml parse
+        if 'url' in app_info:
+            app_info['package_url'] = "%s" % app_info['url']
+            app_info['package_name'] = re.match(r'.+/(.+\.apk)$', app_info['url'], re.I).group(1)
+            continue
+
         application = _xml_get_application_tag(tree_root, app_info['name'])
 
         if application is None:
