@@ -31,7 +31,7 @@ design!
 
 2.  Provide **temporary root access via ADB**, can be revoked later.
     ```
-    mia definition create my-phone --yes
+    mia definition create my-phone
     mia build my-phone
     mia install my-phone
     ```
