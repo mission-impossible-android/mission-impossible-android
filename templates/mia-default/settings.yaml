@@ -72,7 +72,7 @@ apps:
   - name: org.mariotaku.twidere
     code: 98
   - name: org.mozilla.fennec_fdroid
-    code: 360100
+    code: 370000
   - name: org.sufficientlysecure.keychain
     code: 31200
   - name: org.nick.cryptfs.passwdmanager
