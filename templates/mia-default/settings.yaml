@@ -43,7 +43,7 @@ apps:
   - name: org.fdroid.fdroid
     code: 830
   - name: info.guardianproject.orfox
-    url: https://guardianproject.info/builds/OrfoxFennec/latest/OrfoxFennec-debug.apk
+    url: https://guardianproject.info/builds/OrfoxFennec/2014-08-22_23-32-22/OrfoxFennec-debug.apk
   - name: com.artifex.mupdfdemo
     code: 55
   - name: com.csipsimple
