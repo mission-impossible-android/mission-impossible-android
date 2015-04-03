@@ -42,6 +42,7 @@ repositories:
 apps:
   - name: org.fdroid.fdroid
     code: 830
+    path: system-apps
   - name: info.guardianproject.orfox
     url: https://guardianproject.info/builds/OrfoxFennec/2014-08-22_23-32-22/OrfoxFennec-debug.apk
   - name: com.artifex.mupdfdemo
