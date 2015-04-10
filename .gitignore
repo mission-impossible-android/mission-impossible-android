@@ -9,6 +9,7 @@ __pycache__/
 /builds/
 /definitions/
 /resources/
+/templates
 *-ignore
 
 # Ignore virtual environment files.
