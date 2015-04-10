@@ -1,9 +1,21 @@
-# Ignore local files.
+# Ignore IDE specific files.
 .idea
-__pycache__
+
+# Ignore binary files.
+__pycache__/
+*.py[cod]
 
 # Ignore the workspace files.
-builds
-definitions
-resources
+/builds/
+/definitions/
+/resources/
+/templates
 *-ignore
+
+# Ignore virtual environment files.
+/.venv/
+
+# Ignore distribution and packaging files.
+/build/
+/dist/
+*.egg-info/

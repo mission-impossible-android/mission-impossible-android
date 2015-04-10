@@ -9,15 +9,17 @@ Usage:
 # Import custom helpers.
 from mia.helpers.utils import *
 
+# TODO: Find a dynamic way to import the right command.
+#       getattr() does not work on sub-modules that were not imported.
+import mia.commands.build
+import mia.commands.clean
+import mia.commands.definition
+import mia.commands.install
+
 
 def main():
     # Get the MIA handler singleton.
     handler = MiaHandler()
-
-    # TODO: Find a dynamic way to import the right command.
-    #       getattr() does not work on sub-module that were not imported.
-    import mia.commands.clean
-    import mia.commands.definition
 
     # Get the command name.
     command_name = handler.args['<command>']

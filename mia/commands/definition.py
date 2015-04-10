@@ -25,9 +25,16 @@ Notes:
 """
 
 import re
+import os
 import shutil
+import sys
+import zipfile
 from urllib.request import urlretrieve
 import xml.etree.ElementTree as ElementTree
+from pkg_resources import Requirement, resource_filename, resource_isdir
+
+
+import yaml
 
 # Import custom helpers.
 from mia.helpers.android import *
@@ -94,15 +101,19 @@ def create_definition():
                   handler.args['<definition>'])
             sys.exit(1)
 
+    # Get the template name.
     template = handler.args['--template']
-    template_path = os.path.join(handler.get_root_path(), 'templates', template)
-    print('Using template:\n - %s\n' % template_path)
+    template_rel_path = os.path.join('mia', 'templates', template)
 
     # Check if the template exists.
-    if not os.path.exists(template_path):
+    if not resource_isdir(Requirement.parse('mia'), template_rel_path):
         # raise Exception('Template "%s" does not exist!' % template)
         print('ERROR: Template "%s" does not exist!' % template)
         sys.exit(1)
+
+    template_path = resource_filename(Requirement.parse('mia'),
+                                      template_rel_path)
+    print('Using template:\n - %s\n' % template_path)
 
     # Make sure the definitions folder exists.
     os.makedirs(os.path.join(handler.get_workspace_path(), 'definitions'),
@@ -186,7 +197,6 @@ def create_apps_lock_file():
     lock_file_path = os.path.join(definition_path, 'apps_lock.yaml')
     print("Creating lock file:\n - %s\n" % lock_file_path)
 
-    import yaml
     fd = open(lock_file_path, 'w')
     try:
         fd.write(yaml.dump(lock_data, default_flow_style=False))
@@ -372,8 +382,6 @@ def extract_update_binary():
     update_relative_path = 'META-INF/com/google/android/update-binary'
 
     print('Extracting the update-binary from:\n - %s' % zip_file_path)
-
-    import zipfile
 
     if os.path.isfile(zip_file_path) and zipfile.is_zipfile(zip_file_path):
         # Extract the update-binary in the definition.
