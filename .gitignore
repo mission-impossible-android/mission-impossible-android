@@ -12,11 +12,7 @@ __pycache__/
 *-ignore
 
 # Ignore virtual environment files.
-/bin/
-/lib/
-/lib64
-/include/
-/pip-selfcheck.json
+/.venv/
 
 # Ignore distribution and packaging files.
 /build/

@@ -18,7 +18,7 @@ clean-all: clean clean-py
 define INFOTEXT
 ---
 A Python3 virtual environment has been created. You can activate it using:
-  $$ source bin/activate
+  $$ source .venv/bin/activate
 
 To exit out of the virtual environment just call the `deactivate` function:
   $$ deactivate
@@ -29,5 +29,5 @@ export INFOTEXT
 
 prepare: clean
 	@echo "Creating a python3 virtual environment..."
-	virtualenv -p python3 .
+	virtualenv -p python3 .venv/
 	@echo "$$INFOTEXT"
