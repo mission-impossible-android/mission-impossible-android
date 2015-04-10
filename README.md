@@ -71,7 +71,9 @@ design!
 1.  Install Python 3 if not already installed. Test using:
     `python3 --version`
 
-2.  Install the docopt and PyYAML modules:
+2.  Install system dependencies: `apt-get install libyaml-dev libpython3-dev`
+
+3.  Install the docopt and PyYAML modules:
 
     * Using Python Package Index [pip](https://pip.pypa.io/en/latest/index.html):
       `pip install docopt pyyaml`
@@ -82,12 +84,12 @@ design!
     * Or using zypper on openSUSE:
       `zypper install python3-docopt python3-PyYAML`
 
-3.  Clone the repository:
+4.  Clone the repository:
     ```bash
     git clone https://github.com/patcon/mission-impossible-android.git
     ```
 
-4.  (optional) Add the tools folder to the PATH environment variable. This will
+5.  (optional) Add the tools folder to the PATH environment variable. This will
     let you run the tool from any folder in your system.
     `export PATH=$PATH:$HOME/mission-impossible-android/tools`
 
@@ -97,7 +99,7 @@ design!
       path to the CLI Tool. Eg: `./tools/mia` or
       `~/mission-impossible-android/tools/mia` instead of `mia`
 
-5. Test if the tool is working properly.
+6. Test if the tool is working properly.
     ```bash
     mia --help
     ```
