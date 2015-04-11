@@ -130,8 +130,9 @@ def create_definition():
     print('Using template:\n - %s\n' % template_path)
 
     # Make sure the definitions folder exists.
-    os.makedirs(os.path.join(handler.get_workspace_path(), 'definitions'),
-                mode=0o755, exist_ok=True)
+    definitions_path = os.path.join(handler.get_workspace_path(), 'definitions')
+    if not os.path.isdir:
+        os.makedirs(definitions_path, mode=0o755)
 
     # Create the definition using the provided template.
     shutil.copytree(template_path, definition_path)
@@ -252,8 +253,9 @@ def get_apps_lock_info():
         sys.exit(1)
 
     # Make sure the resources folder exists.
-    os.makedirs(os.path.join(handler.get_workspace_path(), 'resources'),
-                mode=0o755, exist_ok=True)
+    resources_path = os.path.join(handler.get_workspace_path(), 'resources')
+    if not os.path.isdir(resources_path):
+        os.makedirs(resources_path, mode=0o755)
 
     # Download and read info from the index.xml file of all repositories.
     repositories_data = {}

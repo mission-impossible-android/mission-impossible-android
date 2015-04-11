@@ -23,7 +23,7 @@ def main():
     # Create the builds folder.
     builds_path = os.path.join(handler.get_workspace_path(), 'builds')
     if not os.path.isdir(builds_path):
-        os.makedirs(builds_path, mode=0o755, exist_ok=True)
+        os.makedirs(builds_path, mode=0o755)
 
     zip_name = '%s.%s' % (handler.args['<definition>'], 'mia-update.zip')
     zip_path = os.path.join(handler.get_workspace_path(), 'builds',
