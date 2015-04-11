@@ -84,7 +84,7 @@ design!
       `apt-get install libyaml-dev libpython-dev`
 
     * Or using zypper on openSUSE:
-      `zypper install python-docopt python-PyYAML`
+      `zypper install libyaml-devel python-devel`
 
     NOTE: If you skip this step you'll see some warnings on the next step.
 
