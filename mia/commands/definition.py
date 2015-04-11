@@ -9,7 +9,8 @@ Usage:
     mia definition lock [--force-latest] <definition>
     mia definition dl-apps <definition>
     mia definition dl-os <definition>
-    mia definition extract-update <definition>
+    mia definition extract-update-binary <definition>
+    mia definition update-from-template <definition>
 
 Command options:
     --template=<template>  The template to use. [default: mia-default]
@@ -29,6 +30,7 @@ import os
 import shutil
 import sys
 import zipfile
+import distutils.dir_util
 from urllib.request import urlretrieve
 import xml.etree.ElementTree as ElementTree
 from pkg_resources import Requirement, resource_filename, resource_isdir
@@ -64,6 +66,10 @@ def main():
     if handler.args['configure']:
         configure_definition()
 
+    # Update definition from template
+    if handler.args['update-from-template']:
+        update_definition()
+
     # Create the apps lock file.
     if handler.args['lock']:
         create_apps_lock_file()
@@ -77,7 +83,7 @@ def main():
         download_apps()
 
     # Extract the update-binary from the CyanogenMod zip file.
-    if handler.args['extract-update']:
+    if handler.args['extract-update-binary']:
         extract_update_binary()
 
     return None
@@ -127,6 +133,26 @@ def create_definition():
         print()
         configure_definition()
 
+def update_definition():
+    # Get the MIA handler singleton.
+    handler = MiaHandler()
+
+    definition_path = handler.get_definition_path()
+    print('Destination directory is:\n - %s\n' % definition_path)
+
+    settings = handler.get_definition_settings()
+    template = settings['general']['template']
+    template_path = os.path.join(handler.get_root_path(), 'templates', template)
+    print('Using template:\n - %s\n' % template_path)
+
+    # Check if the template exists.
+    if not os.path.exists(template_path):
+        # raise Exception('Template "%s" does not exist!' % template)
+        print('ERROR: Template "%s" does not exist!' % template)
+        sys.exit(1)
+
+    # Create the definition using the provided template.
+    distutils.dir_util.copy_tree(template_path, definition_path)
 
 def configure_definition():
     # Get the MIA handler singleton.
@@ -395,11 +421,6 @@ def download_os():
 
     input_pause('Please follow the instructions before continuing!')
 
-    # Download the CyanogenMod OS.
-    if input_confirm('Extract update binary from the CM zip?', True):
-        extract_update_binary()
-
-
 def extract_update_binary():
     # Get the MIA handler singleton.
     handler = MiaHandler()
@@ -427,6 +448,7 @@ def extract_update_binary():
         target = open(destination, 'wb')
         with source, target:
             shutil.copyfileobj(source, target)
+        os.chmod(destination, 0o755)
 
         print('Saved the update-binary to the definition!')
     else:

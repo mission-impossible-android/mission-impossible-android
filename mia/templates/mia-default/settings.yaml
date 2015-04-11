@@ -7,6 +7,7 @@ general:
   cm_release_type: snapshot
   # Preferred CyanogenMod release version
   cm_release_version: M12
+  template: mia-default
 
 defaults:
   # The default repository for apps.
@@ -55,7 +56,7 @@ apps:
   - name: org.anhonesteffort.flock
     url: https://flock-supplychain.s3.amazonaws.com/apks/org.anhonesteffort.flock-4b93f078-cae6-4997-a1c2-ef833b2ac2c1.apk
   - name: com.artifex.mupdfdemo
-    code: 55
+    code: 62
   - name: com.csipsimple
     code: 2459
   - name: com.fsck.k9
