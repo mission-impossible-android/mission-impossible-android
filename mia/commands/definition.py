@@ -140,7 +140,8 @@ def update_definition():
     definition_path = handler.get_definition_path()
     print('Destination directory is:\n - %s\n' % definition_path)
 
-    template = handler.args['--template']
+    settings = handler.get_definition_settings()
+    template = settings['general']['template']
     template_path = os.path.join(handler.get_root_path(), 'templates', template)
     print('Using template:\n - %s\n' % template_path)
 

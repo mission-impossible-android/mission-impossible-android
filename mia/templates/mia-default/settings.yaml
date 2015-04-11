@@ -7,6 +7,7 @@ general:
   cm_release_type: snapshot
   # Preferred CyanogenMod release version
   cm_release_version: M12
+  template: mia-default
 
 
 # Mapping of the items in the definition and their place in the update archive.
