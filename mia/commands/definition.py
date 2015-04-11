@@ -31,7 +31,15 @@ import shutil
 import sys
 import zipfile
 import distutils.dir_util
-from urllib.request import urlretrieve
+
+try:
+    # For Python 3.
+    from urllib.request import urlretrieve
+except ImportError:
+    # For Python 2.
+    from urllib import urlretrieve
+    pass
+
 import xml.etree.ElementTree as ElementTree
 from pkg_resources import Requirement, resource_filename, resource_isdir
 
