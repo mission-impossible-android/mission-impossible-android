@@ -139,7 +139,6 @@ def create_definition():
 
     # Configure the definition.
     if input_confirm('Configure now?', True):
-        print()
         configure_definition()
 
 
