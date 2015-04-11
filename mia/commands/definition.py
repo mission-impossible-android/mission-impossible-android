@@ -30,7 +30,6 @@ import shutil
 import sys
 import zipfile
 from urllib.request import urlretrieve
-from urllib.parse import urljoin
 import xml.etree.ElementTree as ElementTree
 from pkg_resources import Requirement, resource_filename, resource_isdir
 
@@ -320,7 +319,7 @@ def _xml_get_app_lock_info(data, app_info):
         'repository_id': repo,
         'package_name': app_package_name,
         'package_code': int(app_version_code),
-        'package_url': urljoin(data[repo]['url'], app_package_name),
+        'package_url': data[repo]['url'].strip('/') + '/' + app_package_name,
     }
 
 
