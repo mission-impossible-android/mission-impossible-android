@@ -31,7 +31,15 @@ import shutil
 import sys
 import zipfile
 import distutils.dir_util
-from urllib.request import urlretrieve
+
+try:
+    # For Python 3.
+    from urllib.request import urlretrieve
+except ImportError:
+    # For Python 2.
+    from urllib import urlretrieve
+    pass
+
 import xml.etree.ElementTree as ElementTree
 from pkg_resources import Requirement, resource_filename, resource_isdir
 
@@ -122,16 +130,17 @@ def create_definition():
     print('Using template:\n - %s\n' % template_path)
 
     # Make sure the definitions folder exists.
-    os.makedirs(os.path.join(handler.get_workspace_path(), 'definitions'),
-                mode=0o755, exist_ok=True)
+    definitions_path = os.path.join(handler.get_workspace_path(), 'definitions')
+    if not os.path.isdir(definitions_path):
+        os.makedirs(definitions_path, mode=0o755)
 
     # Create the definition using the provided template.
     shutil.copytree(template_path, definition_path)
 
     # Configure the definition.
     if input_confirm('Configure now?', True):
-        print()
         configure_definition()
+
 
 def update_definition():
     # Get the MIA handler singleton.
@@ -153,6 +162,7 @@ def update_definition():
 
     # Create the definition using the provided template.
     distutils.dir_util.copy_tree(template_path, definition_path)
+
 
 def configure_definition():
     # Get the MIA handler singleton.
@@ -244,8 +254,9 @@ def get_apps_lock_info():
         sys.exit(1)
 
     # Make sure the resources folder exists.
-    os.makedirs(os.path.join(handler.get_workspace_path(), 'resources'),
-                mode=0o755, exist_ok=True)
+    resources_path = os.path.join(handler.get_workspace_path(), 'resources')
+    if not os.path.isdir(resources_path):
+        os.makedirs(resources_path, mode=0o755)
 
     # Download and read info from the index.xml file of all repositories.
     repositories_data = {}
@@ -314,6 +325,7 @@ def get_apps_lock_info():
 
 
 def _xml_get_app_lock_info(data, app_info):
+    repo = None
     app_name = None
     app_package_name = None
     app_version_code = None
@@ -376,16 +388,14 @@ def download_apps():
     # Get the MIA handler singleton.
     handler = MiaHandler()
 
-    # Read the definition settings.
-    settings = handler.get_definition_settings()
-
     # Read the definition apps lock data.
     lock_data = handler.get_definition_apps_lock_data()
 
     for apk_info in lock_data:
         print(' - downloading: %s' % apk_info['package_url'])
         download_dir = apk_info.get('path', 'user-apps')
-        download_path = os.path.join(handler.get_definition_path(), download_dir)
+        download_path = os.path.join(handler.get_definition_path(),
+                                     download_dir)
         if not os.path.isdir(download_path):
             os.makedirs(download_path, mode=0o755)
         apk_path = os.path.join(download_path, apk_info['package_name'])
@@ -421,6 +431,7 @@ def download_os():
 
     input_pause('Please follow the instructions before continuing!')
 
+
 def extract_update_binary():
     # Get the MIA handler singleton.
     handler = MiaHandler()
@@ -453,4 +464,3 @@ def extract_update_binary():
         print('Saved the update-binary to the definition!')
     else:
         print('File does not exist or is not a zip file.')
-

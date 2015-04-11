@@ -5,6 +5,16 @@ Utilities for the mia script.
 import os
 import sys
 
+# Use six module to replace the input() function in Python 2.
+from six import PY2
+if PY2:
+    from six.moves import input
+
+# For now add six module as a compatibility layer.
+# @see https://pypi.python.org/pypi/six
+# @TODO: Remove dependency on six.
+from six import add_metaclass
+
 
 class Singleton(type):
     _instances = {}
@@ -16,7 +26,8 @@ class Singleton(type):
         return cls._instances[cls]
 
 
-class MiaHandler(metaclass=Singleton):
+@add_metaclass(Singleton)
+class MiaHandler():
     args = {}
     global_args = {}
     __root_path = None

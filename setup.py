@@ -1,4 +1,4 @@
-#!/usr/bin/env python3
+#!/usr/bin/env python
 
 import io
 import os
@@ -43,6 +43,7 @@ setup(
     install_requires=[
         'docopt',
         'PyYAML',
+        'six',
     ],
     classifiers=[
         'Development Status :: 1 - Planning',
@@ -50,9 +51,8 @@ setup(
         'Intended Audience :: Developers',
         'Operating System :: POSIX',
         'Programming Language :: Python',
-        'Programming Language :: Python :: 3.2',
-        'Programming Language :: Python :: 3.3',
-        'Programming Language :: Python :: 3.4',
+        'Programming Language :: Python :: 2.7',
+        'Programming Language :: Python :: 3',
         'Topic :: Utilities',
     ]
 )
