@@ -5,6 +5,11 @@ Utilities for the mia script.
 import os
 import sys
 
+# Use six module to replace the input() function in Python 2.
+from six import PY2
+if PY2:
+    from six.moves import input
+
 # For now add six module as a compatibility layer.
 # @see https://pypi.python.org/pypi/six
 # @TODO: Remove dependency on six.
