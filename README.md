@@ -49,29 +49,44 @@ design!
 ## MIA - CLI Tool
 
 ### Setup instructions for non-developers:
-1.  Install Python 3 if not already installed. Test using:
-    `python3 --version`
+1.  Install Python if not already installed. Test using:
+    `python --version`
 
-2.  Install [`pip`](https://pip.pypa.io/en/latest/index.html) (for Python 3) if not already installed. Test using:
-    `pip3 --version`
+2.  Install [`pip`](https://pip.pypa.io/en/latest/index.html) if not already installed. Test using:
+    `pip --version`
 
-3.  Install the `mia` CLI tool:
+3.  Install git if not already installed. Test using:
+    `git --version`
+
+4.  Install the `mia` CLI tool:
     ```bash
-    sudo pip3 install git+https://github.com/patcon/mission-impossible-android.git
+    sudo pip install git+https://github.com/patcon/mission-impossible-android.git
     ```
     NOTE: You can follow the setup instructions for developers if you don't want
           to install the script globally or if you don't have `sudo` access.
 
-4.  Test if the CLI tool is working properly.
+5.  Test if the CLI tool is working properly.
     ```bash
     mia --help
     ```
 
 ### Setup instructions for developers:
-1.  Install Python 3 if not already installed. Test using:
-    `python3 --version`
+1.  Install Python if not already installed. Test using:
+    `python --version`
 
-2.  Install system dependencies: `apt-get install libyaml-dev libpython3-dev`
+    NOTE: If you want to use Python 3 you will need to install the Python 3
+          versions of the dependencies.
+
+2.  (optional) Install development files for libyaml and libpython if you want
+    to use LibYAML bindings for [pyyaml](http://pyyaml.org/wiki/PyYAML):
+
+    * Using apt-get on Ubuntu:
+      `apt-get install libyaml-dev libpython-dev`
+
+    * Or using zypper on openSUSE:
+      `zypper install python-docopt python-PyYAML`
+
+    NOTE: If you skip this step you'll see some warnings on the next step.
 
 3.  Install the docopt and PyYAML modules:
 
@@ -79,10 +94,10 @@ design!
       `pip install docopt pyyaml`
 
     * Or using apt-get on Ubuntu:
-      `apt-get install python3-docopt python3-yaml`
+      `apt-get install python-docopt python-yaml`
 
     * Or using zypper on openSUSE:
-      `zypper install python3-docopt python3-PyYAML`
+      `zypper install python-docopt python-PyYAML`
 
 4.  Clone the repository:
     ```bash
@@ -105,8 +120,8 @@ design!
     ```
 
 ### Setup instructions for developers (with virtualenv):
-1.  Install Python 3 if not already installed. Test using:
-    `python3 --version`
+1.  Install Python if not already installed. Test using:
+    `python --version`
 
 2.  Install [`python-virtualenv`](https://virtualenv.pypa.io/en/latest/installation.html) if not already installed. Test using:
     `virtualenv --version`
@@ -128,7 +143,7 @@ design!
     pip install -e .
     ```
 
-    Notes:
+    NOTES:
     * Every time you need to use mia make sure you activate the virtualenv.
     * You can exit the virtualenv by executing `deactivate`
     * To recreate the virtual environment from scratch you can run:
