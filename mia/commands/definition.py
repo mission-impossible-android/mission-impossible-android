@@ -386,15 +386,6 @@ def download_os():
 
     input_pause('Please follow the instructions before continuing!')
 
-    # Download the CyanogenMod OS.
-
-    # XXX: Do not extract the update binary by default. Each version
-    # of CM has different syntax for updater-script, and our script
-    # is written in the CM11 version of etsy.
-    #if input_confirm('Extract update binary from the CM zip?', True):
-    #    extract_update_binary()
-
-
 def extract_update_binary():
     # Get the MIA handler singleton.
     handler = MiaHandler()
