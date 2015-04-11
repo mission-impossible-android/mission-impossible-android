@@ -43,6 +43,7 @@ setup(
     install_requires=[
         'docopt',
         'PyYAML',
+        'six',
     ],
     classifiers=[
         'Development Status :: 1 - Planning',
