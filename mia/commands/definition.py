@@ -131,7 +131,7 @@ def create_definition():
 
     # Make sure the definitions folder exists.
     definitions_path = os.path.join(handler.get_workspace_path(), 'definitions')
-    if not os.path.isdir:
+    if not os.path.isdir(definitions_path):
         os.makedirs(definitions_path, mode=0o755)
 
     # Create the definition using the provided template.
