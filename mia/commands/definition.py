@@ -356,18 +356,16 @@ def download_apps():
     # Read the definition apps lock data.
     lock_data = handler.get_definition_apps_lock_data()
 
-    for repo_group in lock_data:
-        print('Downloading %s...' % repo_group)
-        for apk_info in lock_data[repo_group]:
-            print(' - downloading: %s' % apk_info['package_url'])
-            download_dir = apk_info.get('path', 'user-apps')
-            download_path = os.path.join(handler.get_definition_path(), download_dir)
-            if not os.path.isdir(download_path):
-                os.makedirs(download_path, mode=0o755)
-            apk_path = os.path.join(download_path, apk_info['package_name'])
-            path, http_message = urlretrieve(apk_info['package_url'], apk_path)
-            print('   - downloaded %s' %
-                  format_file_size(http_message['Content-Length']))
+    for apk_info in lock_data:
+        print(' - downloading: %s' % apk_info['package_url'])
+        download_dir = apk_info.get('path', 'user-apps')
+        download_path = os.path.join(handler.get_definition_path(), download_dir)
+        if not os.path.isdir(download_path):
+            os.makedirs(download_path, mode=0o755)
+        apk_path = os.path.join(download_path, apk_info['package_name'])
+        path, http_message = urlretrieve(apk_info['package_url'], apk_path)
+        print('   - downloaded %s' %
+              format_file_size(http_message['Content-Length']))
 
 
 def download_os():
