@@ -142,6 +142,7 @@ def create_definition():
         print()
         configure_definition()
 
+
 def update_definition():
     # Get the MIA handler singleton.
     handler = MiaHandler()
@@ -162,6 +163,7 @@ def update_definition():
 
     # Create the definition using the provided template.
     distutils.dir_util.copy_tree(template_path, definition_path)
+
 
 def configure_definition():
     # Get the MIA handler singleton.
@@ -324,6 +326,7 @@ def get_apps_lock_info():
 
 
 def _xml_get_app_lock_info(data, app_info):
+    repo = None
     app_name = None
     app_package_name = None
     app_version_code = None
@@ -386,16 +389,14 @@ def download_apps():
     # Get the MIA handler singleton.
     handler = MiaHandler()
 
-    # Read the definition settings.
-    settings = handler.get_definition_settings()
-
     # Read the definition apps lock data.
     lock_data = handler.get_definition_apps_lock_data()
 
     for apk_info in lock_data:
         print(' - downloading: %s' % apk_info['package_url'])
         download_dir = apk_info.get('path', 'user-apps')
-        download_path = os.path.join(handler.get_definition_path(), download_dir)
+        download_path = os.path.join(handler.get_definition_path(),
+                                     download_dir)
         if not os.path.isdir(download_path):
             os.makedirs(download_path, mode=0o755)
         apk_path = os.path.join(download_path, apk_info['package_name'])
@@ -431,6 +432,7 @@ def download_os():
 
     input_pause('Please follow the instructions before continuing!')
 
+
 def extract_update_binary():
     # Get the MIA handler singleton.
     handler = MiaHandler()
@@ -463,4 +465,3 @@ def extract_update_binary():
         print('Saved the update-binary to the definition!')
     else:
         print('File does not exist or is not a zip file.')
-
