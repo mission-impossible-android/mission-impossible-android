@@ -1,7 +1,7 @@
 
 clean:
 	@echo "Clean the python virtualenv, distribution and package folders/files."
-	rm -rf bin build dist include lib lib64 *.egg-info
+	rm -rf .venv build dist *.egg-info
 
 
 clean-py:
