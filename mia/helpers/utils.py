@@ -3,7 +3,10 @@ Utilities for the mia script.
 """
 
 import os
+import re
+import shlex
 import sys
+import subprocess
 
 # Use six module to replace the input() function in Python 2.
 from six import PY2
@@ -292,29 +295,30 @@ def format_file_size(file_size, precision=2):
         ['bytes', 'Kb', 'Mb'][int(log)]
     )
 
-def urlretrieve(url, output_filepath, cache_dir=None):
+
+def urlretrieve(url, filename, cache_dir=None):
     """
     Use wget to download files to specific location.
     (Caching not yet implemented.)
     """
-    import re
-    import shlex
-    import subprocess
 
-    cmd = "wget --server-response --no-verbose --continue --output-document=" + output_filepath + " " + url
+    cmd = 'wget --server-response --no-verbose --continue ' \
+          '--output-document=%s %s' % (filename, url)
     args = shlex.split(cmd)
-    child_process = subprocess.Popen(args, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
+    child_process = subprocess.Popen(args, stdout=subprocess.PIPE,
+                                     stderr=subprocess.PIPE)
     stdout, stderr = child_process.communicate()
 
     # Line ranges below hold true for `--no-verbose` mode output
     raw_response_data = stderr.splitlines()[0]
     raw_headers = stderr.splitlines()[1:-1]
 
-    matches = re.match(r'^ *HTTP\/[\d\.]+ (?P<code>\d{3}) (?P<msg>[\w ]*)$', raw_response_data)
+    matches = re.match(r'^ *HTTP/[\d\.]+ (?P<code>\d{3}) (?P<msg>[\w ]*)$',
+                       raw_response_data)
     response_data = {
-            'status_code': int(matches.group('code')),
-            'status_message': matches.group('msg'),
-            }
+        'status_code': int(matches.group('code')),
+        'status_message': matches.group('msg'),
+    }
 
     headers = {}
     it = iter(raw_headers)
@@ -326,13 +330,12 @@ def urlretrieve(url, output_filepath, cache_dir=None):
     if child_process.returncode != 0:
         raise IOError(stderr)
 
-    path = output_filepath
+    path = filename
     http_message = {}
     http_message.update(response_data)
     http_message.update(headers)
 
     return path, http_message
-
 
 
 def version_compare(version1, version2, func='eq'):
