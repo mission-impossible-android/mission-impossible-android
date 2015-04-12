@@ -1,6 +1,8 @@
 
 # MIA - Mission Impossible: Android hardening
 
+[![#guardianproject on Freenode IRC](http://img.shields.io/badge/freenode-join%20%23guardianproject-green.svg?style=flat)](https://kiwiirc.com/client/chat.freenode.net/guardianproject)
+
 This project is a attempting to streamline the process of following the
 guidelines from Mike Perry's post "Mission Impossible: Hardening Android for
 Security and Privacy" on the [Tor Project Blog](https://blog.torproject.org/blog/mission-impossible-hardening-android-security-and-privacy).
