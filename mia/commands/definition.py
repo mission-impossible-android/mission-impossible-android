@@ -32,14 +32,6 @@ import sys
 import zipfile
 import distutils.dir_util
 
-try:
-    # For Python 3.
-    from urllib.request import urlretrieve
-except ImportError:
-    # For Python 2.
-    from urllib import urlretrieve
-    pass
-
 import xml.etree.ElementTree as ElementTree
 from pkg_resources import Requirement, resource_filename, resource_isdir
 
@@ -400,8 +392,13 @@ def download_apps():
             os.makedirs(download_path, mode=0o755)
         apk_path = os.path.join(download_path, apk_info['package_name'])
         path, http_message = urlretrieve(apk_info['package_url'], apk_path)
-        print('   - downloaded %s' %
-              format_file_size(http_message['Content-Length']))
+        if any(http_message['status_code'] == code for code in (200, 206)):
+            print('   - downloaded %s' %
+                  format_file_size(http_message['Content-Length']))
+        elif http_message['status_code'] == 416:
+            print('   - already downloaded. Skipping...')
+        else:
+            raise
 
 
 def download_os():
