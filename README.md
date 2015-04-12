@@ -60,7 +60,7 @@ design!
 
 4.  Install the `mia` CLI tool:
     ```bash
-    sudo pip install git+https://github.com/patcon/mission-impossible-android.git
+    sudo pip install git+https://github.com/mission-impossible-android/mission-impossible-android.git
     ```
     NOTE: You can follow the setup instructions for developers if you don't want
           to install the script globally or if you don't have `sudo` access.
@@ -101,7 +101,7 @@ design!
 
 4.  Clone the repository:
     ```bash
-    git clone https://github.com/patcon/mission-impossible-android.git
+    git clone https://github.com/mission-impossible-android/mission-impossible-android.git
     ```
 
 5.  (optional) Add the tools folder to the PATH environment variable. This will
@@ -128,7 +128,7 @@ design!
 
 3.  Clone the repository:
     ```bash
-    git clone https://github.com/patcon/mission-impossible-android.git
+    git clone https://github.com/mission-impossible-android/mission-impossible-android.git
     ```
 
 4.  Setup the virtual environment and install the dependencies:
@@ -173,7 +173,7 @@ Devices currently available for testing:
 | Sony Xperia Tablet Z (wifi) | pollux_windy | SchnWalter | yes |
 
 NOTE: Other devices supported by CyanogenMod might also be compatible. If you
-      test one, please report it in the [issue queue](https://github.com/patcon/mission-impossible-android/issues).
+      test one, please report it in the [issue queue](https://github.com/mission-impossible-android/mission-impossible-android/issues).
 
 
 ## Links
