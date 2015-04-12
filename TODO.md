@@ -1,10 +1,8 @@
 
 ## Tools:
-- Cleanup and review code!
 - Use as few libraries and dependencies as possible; switch settings from YAML?
 - Add `--update` option to the `definition lock` command. This will update a new
   version of the repository index file and check the locked APKs for updates.
-- Add checksum to lock file entries.
 - Implement update_orwall_init definition sub-command
     wget https://raw.githubusercontent.com/EthACKdotOrg/orWall/master/app/src/main/res/raw/userinit.sh ---output-document=91firewall
 
@@ -29,7 +27,4 @@
 
 ### Orwall:
   - Set OrWall config to use Fennec for the Browser app and CSIPSimple for SIP.
-    - https://github.com/patcon/mission-impossible-android/issues/2
-    - https://github.com/patcon/mission-impossible-android/issues/5
   - Extract 90firewall from local orwall apk?
-    - see: extract_update_binary()
