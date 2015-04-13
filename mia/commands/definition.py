@@ -401,7 +401,7 @@ def download_apps():
         elif http_message['status_code'] == 416:
             print('   - already downloaded. Skipped.')
         else:
-            raise
+            raise Exception('   - error downloading file.')
 
 
 def download_os():
