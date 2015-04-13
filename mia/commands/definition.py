@@ -396,7 +396,7 @@ def download_apps():
             print('   - downloaded %s' %
                   format_file_size(http_message['Content-Length']))
         elif http_message['status_code'] == 416:
-            print('   - already downloaded. Skipping...')
+            print('   - already downloaded. Skipped.')
         else:
             raise
 
