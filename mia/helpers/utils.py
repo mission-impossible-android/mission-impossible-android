@@ -5,6 +5,7 @@ Utilities for the mia script.
 import os
 import re
 import shlex
+import shutil
 import sys
 import subprocess
 
@@ -295,15 +296,22 @@ def format_file_size(file_size, precision=2):
         ['bytes', 'Kb', 'Mb'][int(log)]
     )
 
-
-def urlretrieve(url, filename, cache_dir=None):
+def urlretrieve(url, install_filepath, cache_path=None):
     """
     Use wget to download files to specific location.
     (Caching not yet implemented.)
     """
 
+    cache_enabled = False if (cache_path == None) else True
+
+    if cache_enabled:
+        filename = url.split('/')[-1]
+        download_filepath = os.path.join(cache_path, filename)
+    else:
+        download_filepath = install_filepath
+
     cmd = 'wget --server-response --no-verbose --continue ' \
-          '--output-document=%s %s' % (filename, url)
+          '--output-document=%s %s' % (download_filepath, url)
     args = shlex.split(cmd)
     child_process = subprocess.Popen(args, stdout=subprocess.PIPE,
                                      stderr=subprocess.PIPE)
@@ -330,7 +338,11 @@ def urlretrieve(url, filename, cache_dir=None):
     if child_process.returncode != 0:
         raise IOError(stderr)
 
-    path = filename
+    if cache_enabled:
+        shutil.copyfile(download_filepath, install_filepath)
+
+    path = install_filepath
+
     http_message = {}
     http_message.update(response_data)
     http_message.update(headers)
