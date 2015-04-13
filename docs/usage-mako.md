@@ -17,9 +17,11 @@ onto your device. This way you can know for sure that things work.**
 
 # Reset the device
 [Download](https://developers.google.com/android/nexus/images) and extract the
-factory image zip for the device and follow the instructions provided on the download page. Here's a summary:
+factory image zip for the device and follow the instructions provided on the
+download page. Here's a summary:
 
-1.  Reboot the device into the bootloader. You can press and hold `VolumeDown + Power` until you see the bootloader or You can use `adb reboot bootloader`.
+1.  Reboot the device into the bootloader. You can press and hold `VolumeDown +
+    Power` until you see the bootloader or You can use `adb reboot bootloader`.
 2.  Once in recovery run the `flash-all.sh` script extracted from the downloaded
     image zip and wait for it to finish reinstalling the OS (about 90s).
 3.  Boot into the OS and make sure everything is OK.
