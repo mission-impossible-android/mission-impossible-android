@@ -425,9 +425,14 @@ def download_os():
 
     file_name = handler.get_os_zip_filename()
 
-    print('Download CyanogenMod for and save the file as\n - %s\n'
-          'into the resources folder, then verify the file checksum.\n - %s\n'
-          % (file_name, url))
+    message = '\n'.join((
+        'Download CyanogenMod from:\n - %s',
+        'and save the file as\n - %s',
+        'into the resources folder, and remember to open a new terminal and',
+        'verify the that provided md5 checksum matches the the output of:',
+        ' ~$ md5sum resources/%s',
+    ))
+    print(message % (url, file_name, file_name))
 
     input_pause('Please follow the instructions before continuing!')
 
