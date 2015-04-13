@@ -405,6 +405,10 @@ def download_apps():
 
 
 def download_os():
+    """
+    Display information to the user on how to download the OS and verify it's
+    checksum.
+    """
     print('\nNOTE: Command not finished yet; See instructions!\n')
 
     # Get the MIA handler singleton.
@@ -434,7 +438,17 @@ def download_os():
     ))
     print(message % (url, file_name, file_name))
 
-    input_pause('Please follow the instructions before continuing!')
+    # Make sure the OS archive exists.
+    zip_file_path = os.path.join(resources_path, file_name)
+    while True:
+        input_pause('Please follow the instructions before continuing.')
+
+        # Only allow the user to continue if the OS image exists.
+        if os.path.isfile(zip_file_path):
+            break
+
+        # Display message and try again.
+        print('File not found:\n - %s' % zip_file_path)
 
 
 def extract_update_binary():
