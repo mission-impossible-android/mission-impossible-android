@@ -61,6 +61,11 @@ def main():
     # Create the definition.
     if handler.args['create']:
         create_definition()
+    elif not os.path.exists(handler.get_definition_path()):
+        # Make sure the definition exists.
+        print('ERROR: Definition "%s" does not exist!' %
+              handler.args['<definition>'])
+        sys.exit(1)
 
     # Configure the definition.
     if handler.args['configure']:
