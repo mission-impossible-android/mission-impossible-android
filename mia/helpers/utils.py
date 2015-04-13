@@ -149,7 +149,7 @@ class MiaHandler():
 
 
 def input_pause(display_text='Paused.'):
-    input("%s\nPress enter to continue!\n" % display_text)
+    input("%s\nPress enter to continue.\n" % display_text)
 
 
 def input_confirm(display_text='Confirm', default_value=False):
