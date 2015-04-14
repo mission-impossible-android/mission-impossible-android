@@ -1,18 +1,18 @@
 
-## Usage example: Google Nexus 4 (mako) and CyanogenMod
-
-### Requirements
-For best chances of success you might want to download and install a fresh
-standard image from the Google [Factory Images for Nexus Devices](https://developers.google.com/android/nexus/images)
-page.
+# Usage example: Google Nexus 4 (mako) and CyanogenMod
 
 For this example we are going to use Android KitKat (v4.4.4) and CyanogenMod 11
 since, at the moment, there is no stable snapshot of CyanogenMod 12 based on
 Android Lollipop (v5.0.x).
 
-**NOTE: It is best if this is not the first time you have installed
-[CyanogenMod](http://wiki.cyanogenmod.org/w/Install_CM_for_mako?setlang=en)
-onto your device. This way you can know for sure that things work.**
+
+### Notes
+ *  It is best if this is not the first time you have installed
+    [CyanogenMod](http://wiki.cyanogenmod.org/w/Install_CM_for_mako?setlang=en)
+    onto your device. This way you can know for sure that things work.
+ *  For best chances of success you might want to download and install a fresh
+    standard image from the Google [Factory Images for Nexus Devices](https://developers.google.com/android/nexus/images)
+    page and then follow the [Flashing Instructions](https://developers.google.com/android/nexus/images#instructions)
 
 
 # Reset the device
