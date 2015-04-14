@@ -15,37 +15,19 @@ Android Lollipop (v5.0.x).
     page and then follow the [Flashing Instructions](https://developers.google.com/android/nexus/images#instructions)
 
 
-# Reset the device
-[Download](https://developers.google.com/android/nexus/images) and extract the
-factory image zip for the device and follow the instructions provided on the
-download page. Here's a summary:
+## Install the TWRP and Root
+[Team Win Recovery Project](http://www.teamw.in/project/twrp2) is the custom
+recovery that is needed in order to auto install the generated update.zip and
+perform various tasks. Download TWRP for your device and follow the [install
+instructions](http://twrp.me/devices/lgnexus4.html#fastboot-install).
 
-1.  Reboot the device into the bootloader. You can press and hold `VolumeDown +
-    Power` until you see the bootloader or You can use `adb reboot bootloader`.
-2.  Once in recovery run the `flash-all.sh` script extracted from the downloaded
-    image zip and wait for it to finish reinstalling the OS (about 90s).
-3.  Boot into the OS and make sure everything is OK.
-
-
-# Install the TWRP
-Team Win Recovery Project is custom recovery that is needed in order to install
-the custom ROM.
-
-1.  Go to the [TWRP page](http://www.teamw.in/project/twrp2) and download the
-    recovery image for the device.
-2.  Reboot the device into recovery.
-3.  Flash the TWRP recovery image onto the device.
-    ```bash
-    fastboot flash recovery twrp-*-mako.img
-    ```
-4.  Reboot into recovery mode in order to root the devices.
-5.  Simply select "Reboot > System" and you will be notified that the devices
-    is not rooted and you will have the option to install "SuperSu".
-6.  Confirm the SuperSu installation
-7.  Wait for the reboot and continue with the next section.
+Then Manually root the device or reboot into recovery and simply select
+"Reboot > System" and you will be notified that the devices is not rooted and
+you will have the option to install "SuperSu" in order to root the device. Just
+confirm the installation and you are done.
 
 
-# Generate and install an update.zip
+## Generate and install an update.zip
 Follow the instruction from this repo and use the installed tool to customize
 
 1.  Install the `mia` tool. Test using:
