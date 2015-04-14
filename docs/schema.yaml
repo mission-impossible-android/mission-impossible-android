@@ -1,0 +1,31 @@
+config_version: map(int(), str())
+
+general:
+  cm_device_codename: str()
+  cm_release_type: str()
+  cm_release_version: str()
+  template: str(required=False)
+
+repositories: list(include('repository'))
+
+apps: list(include('app'))
+
+defaults:
+  repository: str(required=False)
+  install_type: str(required=False)
+
+---
+
+repository:
+  id: str()
+  name: str()
+  url: str()
+  fallback: str(required=False)
+
+app:
+  id: str()
+  versioncode: int(required=False)
+  version: str(required=False)
+  repository: str(required=False)
+  url: str(required=False)
+  install_type: enum('system', 'privileged', 'user', required=False)
