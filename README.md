@@ -21,10 +21,14 @@ design!
 ## Requirements
 * A supported device - see the compatibility table bellow.
 * A linux/unix operating system - tested on: openSUSE and Ubuntu
-* [Android SDK Tools](https://developer.android.com/sdk/index.html#Other) - with `adb` working globally.
-* [Team Win Recovery Project](http://teamw.in/project/twrp2) bootloader installed onto your device.
-* [Developer Options](https://developer.android.com/tools/device.html#developer-device-options) enabled on your device.
-* [USB debugging](https://developer.android.com/tools/device.html#setting-up) enabled on your device.
+* [Android SDK Tools](https://developer.android.com/sdk/index.html#Other) - with
+  `adb` working globally.
+* [Team Win Recovery Project](http://teamw.in/project/twrp2) bootloader
+  installed onto your device.
+* [Developer Options](https://developer.android.com/tools/device.html#developer-device-options)
+  enabled on your device.
+* [USB debugging](https://developer.android.com/tools/device.html#setting-up)
+  enabled on your device.
 * The MIA CLI tool - follow the setup instructions bellow.
 
 
@@ -34,7 +38,8 @@ design!
 2.  Provide **temporary root access via ADB**, can be revoked later.
 
 3.  Create a definition, customizing as necessary, see the template specific
-    [README.md](templates/README.md), build a custom update.zip file and install onto the device:
+    [README.md](templates/README.md), build a custom update.zip file and install
+    onto the device:
     ```bash
     mia definition create my-phone
     mia build my-phone
@@ -54,7 +59,8 @@ design!
 1.  Install Python if not already installed. Test using:
     `python --version`
 
-2.  Install [`pip`](https://pip.pypa.io/en/latest/index.html) if not already installed. Test using:
+2.  Install [`pip`](https://pip.pypa.io/en/latest/index.html) if not already
+    installed. Test using:
     `pip --version`
 
 3.  Install git if not already installed. Test using:
@@ -125,7 +131,8 @@ design!
 1.  Install Python if not already installed. Test using:
     `python --version`
 
-2.  Install [`python-virtualenv`](https://virtualenv.pypa.io/en/latest/installation.html) if not already installed. Test using:
+2.  Install [`python-virtualenv`](https://virtualenv.pypa.io/en/latest/installation.html)
+    if not already installed. Test using:
     `virtualenv --version`
 
 3.  Clone the repository:

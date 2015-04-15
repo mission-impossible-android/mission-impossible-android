@@ -36,13 +36,15 @@ TODO: Add description of how things work.
 ## Other Files
 
 `other/firstboot.sh`:
-  The [OpenRecoveryScript](http://www.teamw.in/OpenRecoveryScript) used to install CM and the Mission Impossible
-  mia-update.zip and it will be copied into the phone at
+  The [OpenRecoveryScript](http://www.teamw.in/OpenRecoveryScript) used to
+  install CM and the Mission Impossible mia-update.zip and it will be copied
+  into the phone at
   `/data/.firstboot.sh`
 
 `other/openrecoveryscript`:
-  The [OpenRecoveryScript](http://www.teamw.in/OpenRecoveryScript) used to install CM and the Mission Impossible
-  mia-update.zip and it will be copied into the phone at
+  The [OpenRecoveryScript](http://www.teamw.in/OpenRecoveryScript) used to
+  install CM and the Mission Impossible mia-update.zip and it will be copied
+  into the phone at
   `/cache/recovery/openrecoveryscript`
 
 `settings.yaml`:
