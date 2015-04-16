@@ -32,27 +32,6 @@ design!
 * The MIA CLI tool - follow the setup instructions bellow.
 
 
-## Usage
-1.  Connect your device via USB, authorizing as necessary.
-
-2.  Provide **temporary root access via ADB**, can be revoked later.
-
-3.  Create a definition, customizing as necessary, see the template specific
-    [README.md](templates/README.md), build a custom update.zip file and install
-    onto the device:
-    ```bash
-    mia definition create my-phone
-    mia build my-phone
-    mia install my-phone
-    ```
-
-3.  After the installation completed open F-Droid and update the applications
-    list.
-
-4.  Open the *My App List* app, and install any desired applications from
-    `misc-apps.xml`.
-
-
 ## MIA CLI Tool setup instructions:
 1.  Install Python if not already installed. Test using:
     `python --version`
@@ -101,6 +80,27 @@ design!
     ```bash
     mia --help
     ```
+
+
+## Usage
+1.  Connect your device via USB, authorizing as necessary.
+
+2.  Provide **temporary root access via ADB**, can be revoked later.
+
+3.  Create a definition, customizing as necessary, see the template specific
+    [README.md](templates/README.md), build a custom update.zip file and install
+    onto the device:
+    ```bash
+    mia definition create my-phone
+    mia build my-phone
+    mia install my-phone
+    ```
+
+3.  After the installation completed open F-Droid and update the applications
+    list.
+
+4.  Open the *My App List* app, and install any desired applications from
+    `misc-apps.xml`.
 
 
 ## Compatibility
