@@ -106,16 +106,16 @@ design!
 ## Compatibility
 Devices currently available for testing:
 
-| Device | Codename | Testers | Actively tested? |
-|--------|:--------:|:-------:|:----------------:|
-| LG Nexus 4 | mako | patcon | no |
-| LG Nexus 4 | mako | SchnWalter | yes |
-| Asus Nexus 7 (wifi, 2012) | grouper | patcon | yes |
-| Asus Nexus 7 (wifi, 2013) | flo | mikeperry-tor | yes |
-| Motorola Moto G 4G | peregrine | mikeperry-tor | no |
-| Samsung Galaxy S II | i9100 | SchnWalter | no |
-| OnePlus One | bacon | SchnWalter | no |
-| Sony Xperia Tablet Z (wifi) | pollux_windy | SchnWalter | yes |
+ Device                      | Codename     | Testers       | Actively tested?
+-----------------------------|:------------:|:-------------:|:----------------:
+ LG Nexus 4                  | mako         | patcon        | no
+ LG Nexus 4                  | mako         | SchnWalter    | yes
+ Asus Nexus 7 (wifi, 2012)   | grouper      | patcon        | yes
+ Asus Nexus 7 (wifi, 2013)   | flo          | mikeperry-tor | yes
+ Motorola Moto G 4G          | peregrine    | mikeperry-tor | no
+ Samsung Galaxy S II         | i9100        | SchnWalter    | no
+ OnePlus One                 | bacon        | SchnWalter    | no
+ Sony Xperia Tablet Z (wifi) | pollux_windy | SchnWalter    | yes
 
 NOTE: Other devices supported by CyanogenMod might also be compatible. If you
       test one, please report it in the [issue queue](https://github.com/mission-impossible-android/mission-impossible-android/issues).
