@@ -31,10 +31,7 @@ import shutil
 import sys
 import zipfile
 import distutils.dir_util
-
 import xml.etree.ElementTree as ElementTree
-from pkg_resources import Requirement, resource_filename, resource_isdir
-
 
 import yaml
 
@@ -114,16 +111,12 @@ def create_definition():
 
     # Get the template name.
     template = handler.args['--template']
-    template_rel_path = os.path.join('mia', 'templates', template)
-
-    # Check if the template exists.
-    if not resource_isdir(Requirement.parse('mia'), template_rel_path):
+    template_path = handler.get_template_path(template)
+    if template_path is None:
         # raise Exception('Template "%s" does not exist!' % template)
         print('ERROR: Template "%s" does not exist!' % template)
         sys.exit(1)
 
-    template_path = resource_filename(Requirement.parse('mia'),
-                                      template_rel_path)
     print('Using template:\n - %s\n' % template_path)
 
     # Make sure the definitions folder exists.
@@ -148,7 +141,7 @@ def update_definition():
 
     settings = handler.get_definition_settings()
     template = settings['general']['template']
-    template_path = os.path.join(handler.get_root_path(), 'templates', template)
+    template_path = handler.get_template_path(template)
     print('Using template:\n - %s\n' % template_path)
 
     # Check if the template exists.

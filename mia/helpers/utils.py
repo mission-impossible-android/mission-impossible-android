@@ -9,6 +9,9 @@ import shutil
 import sys
 import subprocess
 
+from pkg_resources import DistributionNotFound, Requirement, \
+    resource_filename, resource_isdir
+
 # Use six module to replace the input() function in Python 2.
 from six import PY2
 if PY2:
@@ -81,6 +84,27 @@ class MiaHandler():
             )
 
         return self.__definition_path
+
+    def get_template_path(self, template):
+        relative_path = os.path.join('mia', 'templates', template)
+        full_path = None
+
+        try:
+            # Try to use the pip distribution to determine the template path.
+            resource_name = Requirement.parse('mia')
+
+            # Check if the template directory exists in the distribution.
+            if resource_isdir(resource_name, relative_path):
+                full_path = resource_filename(resource_name, relative_path)
+
+        except DistributionNotFound:
+            # Otherwise, just use the script root path.
+            tmp_path = os.path.join(self.get_root_path(), relative_path)
+
+            if os.path.exists(tmp_path):
+                full_path = tmp_path
+
+        return full_path
 
     def get_os_zip_filename(self):
         # Read the definition settings.
