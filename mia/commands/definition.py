@@ -293,8 +293,8 @@ def get_apps_lock_info():
                 app_info['repo'] = settings['defaults']['repository_id']
 
             # Use the latest application version code.
-            if handler.args['--force-latest'] or 'code' not in app_info:
-                app_info['code'] = 'latest'
+            if handler.args['--force-latest'] or 'versioncode' not in app_info:
+                app_info['versioncode'] = 'latest'
 
             # Get the application info.
             app_info = _xml_get_app_lock_info(repositories_data, app_info)
@@ -316,9 +316,9 @@ def get_apps_lock_info():
 
 def _xml_get_app_lock_info(data, app_info):
     repo = None
-    app_name = None
-    app_package_name = None
-    app_version_code = None
+    name = None
+    package_name = None
+    package_versioncode = None
 
     # Prepare a list of repositories to look into.
     repositories = [app_info['repo']]
@@ -328,41 +328,42 @@ def _xml_get_app_lock_info(data, app_info):
     for repo in repositories:
         for tag in data[repo]['tree'].findall('application'):
             if tag.get('id') and tag.get('id') == app_info['name']:
-                app_name, app_package_name, app_version_code = \
-                    _xml_get_app_download_info(tag, app_info['code'])
+                name, package_name, package_versioncode = \
+                    _xml_get_app_download_info(tag, app_info['versioncode'])
 
         # Only try the fallback repository if the application was not found.
-        if app_package_name is not None:
+        if package_name is not None:
             break
 
-    if app_package_name is None and app_info['code'] == 'latest':
+    if package_name is None and app_info['versioncode'] == 'latest':
         print(' - no such app: %s' % app_info['name'])
         return None
-    elif app_package_name is None:
-        print(' - no package: %s:%s' % (app_info['name'], app_info['code']))
+    elif package_name is None:
+        print(' - no package: %s:%s' % (app_info['name'],
+                                        app_info['versioncode']))
         return None
 
     return {
-        'name': app_name,
+        'name': name,
         'repository_id': repo,
-        'package_name': app_package_name,
-        'package_code': int(app_version_code),
-        'package_url': data[repo]['url'].strip('/') + '/' + app_package_name,
+        'package_name': package_name,
+        'package_versioncode': int(package_versioncode),
+        'package_url': data[repo]['url'].strip('/') + '/' + package_name,
     }
 
 
-def _xml_get_app_download_info(tag, target_code):
+def _xml_get_app_download_info(tag, target_versioncode):
     name = None
     apkname = None
     versioncode = None
 
     package = None
-    if target_code == 'latest':
+    if target_versioncode == 'latest':
         package = tag.find('package')
     else:
         for item in tag.findall('package'):
-            version_code = item.find('versioncode').text
-            if int(version_code) == int(target_code):
+            versioncode = item.find('versioncode').text
+            if int(versioncode) == int(target_versioncode):
                 package = item
                 break
 
