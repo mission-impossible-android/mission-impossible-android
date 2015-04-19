@@ -274,16 +274,19 @@ def get_apps_lock_info():
     for key, app_info in enumerate(settings['apps']):
         # Add app to list if download url was provided directly.
         if 'url' in app_info:
-            app_info['package_name'] = os.path.basename(app_info['url'])
-            app_info['package_url'] = app_info['url']
-            del app_info['url']
+            lock_info = {
+                'package_name': os.path.basename(app_info['url']),
+                'package_url': app_info['url'],
+            }
 
-            if 'name' not in app_info:
+            if 'name' in app_info:
+                lock_info['name'] = app_info['name']
+            else:
                 # Use file name for application name.
-                app_info['name'] = os.path.splitext(app_info['package_name'])[0]
+                lock_info['name'] = os.path.splitext(app_info['package_name'])[0]
 
-            print(' - adding `%s`' % app_info['package_name'])
-            apps_list.append(app_info)
+            print(' - adding `%s`' % lock_info['name'])
+            apps_list.append(lock_info)
             continue
 
         # Lookup the app by name and versioncode in the repository index.xml.
@@ -297,12 +300,13 @@ def get_apps_lock_info():
                 app_info['versioncode'] = 'latest'
 
             # Get the application info.
-            app_info = _xml_get_app_lock_info(repositories_data, app_info)
-            if app_info is not None:
-                repo_name = repositories_data[app_info['repository_id']]['name']
+            lock_info = _xml_get_app_lock_info(repositories_data, app_info)
+            if lock_info is not None:
+                repo_id = lock_info['repository_id']
+                repo_name = repositories_data[repo_id]['name']
                 msg = ' - found `%s` in the %s repository.'
-                print(msg % (app_info['package_name'], repo_name))
-                apps_list.append(app_info)
+                print(msg % (lock_info['name'], repo_name))
+                apps_list.append(lock_info)
                 continue
 
         warnings_found = True
