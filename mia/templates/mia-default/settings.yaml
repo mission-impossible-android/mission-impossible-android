@@ -48,29 +48,29 @@ repositories:
 
 # Apps from the main F-Droid repository.
 apps:
-  - name: org.fdroid.fdroid
+  - id: org.fdroid.fdroid
     versioncode: 830
     path: system-apps
-  - name: info.guardianproject.orfox
+  - id: info.guardianproject.orfox
     url: https://guardianproject.info/builds/OrfoxFennec/2014-08-22_23-32-22/OrfoxFennec-debug.apk
-  - name: org.anhonesteffort.flock
+  - id: org.anhonesteffort.flock
     url: https://flock-supplychain.s3.amazonaws.com/apks/org.anhonesteffort.flock-4b93f078-cae6-4997-a1c2-ef833b2ac2c1.apk
-  - name: com.artifex.mupdfdemo
-  - name: com.csipsimple
-  - name: com.fsck.k9
-  - name: com.morlunk.mumbleclient
-  - name: com.projectsexception.myapplist.open
-  - name: com.xabber.androiddev
-  - name: de.schildbach.wallet
-  - name: fr.kwiatkowski.ApkTrack
-  - name: indrora.atomic
-  - name: net.osmand.plus
-  - name: org.coolreader
-  - name: org.ethack.orwall
-  - name: org.mariotaku.twidere
-  - name: org.mozilla.fennec_fdroid
-  - name: org.sufficientlysecure.keychain
-  - name: org.nick.cryptfs.passwdmanager
-  - name: org.sufficientlysecure.localcalendar
-  - name: org.torproject.android
-  - name: org.videolan.vlc
+  - id: com.artifex.mupdfdemo
+  - id: com.csipsimple
+  - id: com.fsck.k9
+  - id: com.morlunk.mumbleclient
+  - id: com.projectsexception.myapplist.open
+  - id: com.xabber.androiddev
+  - id: de.schildbach.wallet
+  - id: fr.kwiatkowski.ApkTrack
+  - id: indrora.atomic
+  - id: net.osmand.plus
+  - id: org.coolreader
+  - id: org.ethack.orwall
+  - id: org.mariotaku.twidere
+  - id: org.mozilla.fennec_fdroid
+  - id: org.sufficientlysecure.keychain
+  - id: org.nick.cryptfs.passwdmanager
+  - id: org.sufficientlysecure.localcalendar
+  - id: org.torproject.android
+  - id: org.videolan.vlc

@@ -276,22 +276,17 @@ def get_apps_lock_info():
         # Add app to list if download url was provided directly.
         if 'url' in app_info:
             lock_info = {
+                'id': app_info['id'],
                 'package_name': os.path.basename(app_info['url']),
                 'package_url': app_info['url'],
             }
 
-            if 'name' in app_info:
-                lock_info['name'] = app_info['name']
-            else:
-                # Use file name for application name.
-                lock_info['name'] = os.path.splitext(app_info['package_name'])[0]
-
-            print(' - adding `%s`' % lock_info['name'])
+            print(' - adding `%s`' % lock_info['id'])
             apps_list.append(lock_info)
             continue
 
-        # Lookup the app by name and versioncode in the repository index.xml.
-        if 'name' in app_info:
+        # Lookup the app by id and versioncode in the repository index.xml.
+        if 'id' in app_info:
             # Use the default repository if no repo has been provided.
             if 'repo' not in app_info:
                 app_info['repo'] = settings['defaults']['repository_id']
@@ -306,7 +301,7 @@ def get_apps_lock_info():
                 repo_id = lock_info['repository_id']
                 repo_name = repositories_data[repo_id]['name']
                 msg = ' - found `%s` in the %s repository.'
-                print(msg % (lock_info['name'], repo_name))
+                print(msg % (lock_info['id'], repo_name))
                 apps_list.append(lock_info)
                 continue
 

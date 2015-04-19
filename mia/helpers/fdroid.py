@@ -5,9 +5,7 @@ Helper functions dealing with F-Droid.
 
 def fdroid_get_app_lock_info(data, app_info):
     repo = None
-    name = None
-    package_name = None
-    package_versioncode = None
+    app_lock_info = None
 
     # Prepare a list of repositories to look into.
     repositories = [app_info['repo']]
@@ -15,51 +13,53 @@ def fdroid_get_app_lock_info(data, app_info):
         repositories.append(data[app_info['repo']]['fallback'])
 
     for repo in repositories:
+        # @TODO: Improve detection!
         for tag in data[repo]['tree'].findall('application'):
-            if tag.get('id') and tag.get('id') == app_info['name']:
-                name, package_name, package_versioncode = \
-                    _fdroid_index_get_app_info(tag, app_info['versioncode'])
+            if tag.get('id') != app_info['id']:
+                continue
+
+            app_lock_info = \
+                _fdroid_index_get_app_info(tag, app_info['versioncode'])
 
         # Only try the fallback repository if the application was not found.
-        if package_name is not None:
+        if app_lock_info is not None:
             break
 
-    if package_name is None and app_info['versioncode'] == 'latest':
-        print(' - no such app: %s' % app_info['name'])
+    if app_lock_info is None and app_info['versioncode'] == 'latest':
+        print(' - no such app: %s' % app_info['id'])
         return None
-    elif package_name is None:
-        print(' - no package: %s:%s' % (app_info['name'],
-                                        app_info['versioncode']))
+    elif app_lock_info is None:
+        msg = ' - no package: %s:%s'
+        print(msg % (app_info['id'], app_info['versioncode']))
         return None
 
-    return {
-        'name': name,
-        'repository_id': repo,
-        'package_name': package_name,
-        'package_versioncode': int(package_versioncode),
-        'package_url': data[repo]['url'].strip('/') + '/' + package_name,
-    }
+    app_lock_info['package_url'] = '%s/%s' % (
+        data[repo]['url'].strip('/'),
+        app_lock_info['package_name']
+    )
+    app_lock_info['repository_id'] = repo
+
+    return app_lock_info
 
 
 def _fdroid_index_get_app_info(tag, target_versioncode):
-    name = None
-    apkname = None
-    versioncode = None
-
     package = None
     if target_versioncode == 'latest':
         package = tag.find('package')
     else:
         for item in tag.findall('package'):
-            versioncode = item.find('versioncode').text
-            if int(versioncode) == int(target_versioncode):
+            package_versioncode = item.find('versioncode').text
+            if int(package_versioncode) == int(target_versioncode):
                 package = item
                 break
 
-    if package is not None:
-        name = tag.find('name').text
-        apkname = package.find('apkname').text
-        versioncode = package.find('versioncode').text
+    if package is None:
+        return None
 
-    return name, apkname, versioncode
+    return {
+        'id': tag.find('id').text,
+        'name': tag.find('name').text,
+        'package_name': package.find('apkname').text,
+        'package_versioncode': package.find('versioncode').text,
+    }
 
