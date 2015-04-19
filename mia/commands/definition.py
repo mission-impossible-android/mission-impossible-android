@@ -31,11 +31,7 @@ import shutil
 import sys
 import zipfile
 import distutils.dir_util
-
 import xml.etree.ElementTree as ElementTree
-from pkg_resources import DistributionNotFound, Requirement, \
-    resource_filename, resource_isdir
-
 
 import yaml
 
@@ -115,7 +111,7 @@ def create_definition():
 
     # Get the template name.
     template = handler.args['--template']
-    template_path = _get_template_path(template)
+    template_path = handler.get_template_path(template)
     if template_path is None:
         # raise Exception('Template "%s" does not exist!' % template)
         print('ERROR: Template "%s" does not exist!' % template)
@@ -134,31 +130,6 @@ def create_definition():
     # Configure the definition.
     if input_confirm('Configure now?', True):
         configure_definition()
-
-
-def _get_template_path(template):
-    # Get the MIA handler singleton.
-    handler = MiaHandler()
-
-    rel_path = os.path.join('mia', 'templates', template)
-    full_path = None
-
-    try:
-        # First, try to use the pip distribution to determine the template path.
-        resource_name = Requirement.parse('mia')
-
-        # Check if the template directory exists in the distribution.
-        if resource_isdir(resource_name, rel_path):
-            full_path = resource_filename(resource_name, rel_path)
-
-    except DistributionNotFound:
-        # Otherwise, just use the script root path.
-        tmp_path = os.path.join(handler.get_root_path(), rel_path)
-
-        if os.path.exists(tmp_path):
-            full_path = tmp_path
-
-    return full_path
 
 
 def update_definition():
