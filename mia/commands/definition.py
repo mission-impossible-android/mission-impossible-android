@@ -141,7 +141,7 @@ def update_definition():
 
     settings = handler.get_definition_settings()
     template = settings['general']['template']
-    template_path = os.path.join(handler.get_root_path(), 'templates', template)
+    template_path = handler.get_template_path(template)
     print('Using template:\n - %s\n' % template_path)
 
     # Check if the template exists.
