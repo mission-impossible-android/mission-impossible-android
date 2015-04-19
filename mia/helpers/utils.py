@@ -296,6 +296,7 @@ def format_file_size(file_size, precision=2):
         ['bytes', 'Kb', 'Mb'][int(log)]
     )
 
+
 def urlretrieve(url, install_filepath, cache_path=None):
     """
     Use wget to download files to specific location.
@@ -322,7 +323,7 @@ def urlretrieve(url, install_filepath, cache_path=None):
     raw_headers = stderr.splitlines()[1:-1]
 
     matches = re.match(r'^ *HTTP/[\d\.]+ (?P<code>\d{3}) (?P<msg>[\w ]*)$',
-                       raw_response_data)
+                       str(raw_response_data))
     response_data = {
         'status_code': int(matches.group('code')),
         'status_message': matches.group('msg'),
