@@ -78,10 +78,13 @@ def reboot_device(mode):
     if mode == 'bootloader' or mode == 'recovery':
         if handler.args['--emulator']:
             # Restart the emulator.
-            subprocess.call(['adb', '-e', 'reboot', mode])
+            adb_exit_code = subprocess.call(['adb', '-e', 'reboot', mode])
         else:
             # Restart the device.
-            subprocess.call(['adb', 'reboot', mode])
+            adb_exit_code = subprocess.call(['adb', 'reboot', mode])
+
+        if adb_exit_code != 0:
+            raise RuntimeError('Could not reboot the device!')
 
 
 def set_open_recovery_script():
@@ -94,14 +97,18 @@ def set_open_recovery_script():
                                'other', 'openrecoveryscript')
     push_file_to_device('file', script_path, '/sdcard/openrecoveryscript')
 
-    # TODO: Cleanup!
-    command = 'su root cp /sdcard/openrecoveryscript /cache/recovery/openrecoveryscript'
+    # TODO: See whether `su` is really required, works fine in recovery mode?!?
+    command = 'su root cp /sdcard/openrecoveryscript ' \
+              '/cache/recovery/openrecoveryscript'
     if handler.args['--emulator']:
         # Run the command on the emulator.
-        subprocess.call(['adb', '-e', 'shell', command])
+        adb_exit_code = subprocess.call(['adb', '-e', 'shell', command])
     else:
         # Run the command on the device.
-        subprocess.call(['adb', 'shell', command])
+        adb_exit_code = subprocess.call(['adb', 'shell', command])
+
+    if adb_exit_code != 0:
+        raise RuntimeError('Could not set the open recovery script!')
 
 
 def push_file_to_device(source_type, source, destination):
@@ -131,4 +138,6 @@ def push_file_to_device(source_type, source, destination):
         adb_arguments.insert(0, '-e')
 
     # Push file to the device.
-    subprocess.call(['adb'] + adb_arguments)
+    adb_exit_code = subprocess.call(['adb'] + adb_arguments)
+    if adb_exit_code != 0:
+        raise RuntimeError('Could not push to the device!')
