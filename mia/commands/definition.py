@@ -37,6 +37,7 @@ import yaml
 
 # Import custom helpers.
 from mia.helpers.android import *
+from mia.helpers.fdroid import *
 from mia.helpers.utils import *
 
 
@@ -274,35 +275,34 @@ def get_apps_lock_info():
     for key, app_info in enumerate(settings['apps']):
         # Add app to list if download url was provided directly.
         if 'url' in app_info:
-            app_info['package_name'] = os.path.basename(app_info['url'])
-            app_info['package_url'] = app_info['url']
-            del app_info['url']
+            lock_info = {
+                'id': app_info['id'],
+                'package_name': os.path.basename(app_info['url']),
+                'package_url': app_info['url'],
+            }
 
-            if 'name' not in app_info:
-                # Use file name for application name.
-                app_info['name'] = os.path.splitext(app_info['package_name'])[0]
-
-            print(' - adding `%s`' % app_info['package_name'])
-            apps_list.append(app_info)
+            print(' - adding `%s`' % lock_info['id'])
+            apps_list.append(lock_info)
             continue
 
-        # Lookup the app by name and versioncode in the repository index.xml.
-        if 'name' in app_info:
+        # Lookup the app by id and versioncode in the repository index.xml.
+        if 'id' in app_info:
             # Use the default repository if no repo has been provided.
             if 'repo' not in app_info:
                 app_info['repo'] = settings['defaults']['repository_id']
 
             # Use the latest application version code.
-            if handler.args['--force-latest'] or 'code' not in app_info:
-                app_info['code'] = 'latest'
+            if handler.args['--force-latest'] or 'versioncode' not in app_info:
+                app_info['versioncode'] = 'latest'
 
             # Get the application info.
-            app_info = _xml_get_app_lock_info(repositories_data, app_info)
-            if app_info is not None:
-                repo_name = repositories_data[app_info['repository_id']]['name']
+            lock_info = fdroid_get_app_lock_info(repositories_data, app_info)
+            if lock_info is not None:
+                repo_id = lock_info['repository_id']
+                repo_name = repositories_data[repo_id]['name']
                 msg = ' - found `%s` in the %s repository.'
-                print(msg % (app_info['package_name'], repo_name))
-                apps_list.append(app_info)
+                print(msg % (lock_info['id'], repo_name))
+                apps_list.append(lock_info)
                 continue
 
         warnings_found = True
@@ -312,66 +312,6 @@ def get_apps_lock_info():
         sys.exit(1)
 
     return apps_list
-
-
-def _xml_get_app_lock_info(data, app_info):
-    repo = None
-    app_name = None
-    app_package_name = None
-    app_version_code = None
-
-    # Prepare a list of repositories to look into.
-    repositories = [app_info['repo']]
-    if 'fallback' in data[app_info['repo']]:
-        repositories.append(data[app_info['repo']]['fallback'])
-
-    for repo in repositories:
-        for tag in data[repo]['tree'].findall('application'):
-            if tag.get('id') and tag.get('id') == app_info['name']:
-                app_name, app_package_name, app_version_code = \
-                    _xml_get_app_download_info(tag, app_info['code'])
-
-        # Only try the fallback repository if the application was not found.
-        if app_package_name is not None:
-            break
-
-    if app_package_name is None and app_info['code'] == 'latest':
-        print(' - no such app: %s' % app_info['name'])
-        return None
-    elif app_package_name is None:
-        print(' - no package: %s:%s' % (app_info['name'], app_info['code']))
-        return None
-
-    return {
-        'name': app_name,
-        'repository_id': repo,
-        'package_name': app_package_name,
-        'package_code': int(app_version_code),
-        'package_url': data[repo]['url'].strip('/') + '/' + app_package_name,
-    }
-
-
-def _xml_get_app_download_info(tag, target_code):
-    name = None
-    apkname = None
-    versioncode = None
-
-    package = None
-    if target_code == 'latest':
-        package = tag.find('package')
-    else:
-        for item in tag.findall('package'):
-            version_code = item.find('versioncode').text
-            if int(version_code) == int(target_code):
-                package = item
-                break
-
-    if package is not None:
-        name = tag.find('name').text
-        apkname = package.find('apkname').text
-        versioncode = package.find('versioncode').text
-
-    return name, apkname, versioncode
 
 
 def download_apps():
