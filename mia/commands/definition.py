@@ -328,13 +328,18 @@ def download_apps():
                                      download_dir)
         if not os.path.isdir(download_path):
             os.makedirs(download_path, mode=0o755)
+
         apk_path = os.path.join(download_path, apk_info['package_name'])
         cache_path = os.path.join(handler.get_workspace_path(), 'resources', 'apps')
         if not os.path.isdir(cache_path):
             os.makedirs(cache_path, mode=0o755)
+
         path, http_message = urlretrieve(apk_info['package_url'], apk_path, cache_path)
-        if any(http_message['status_code'] == code for code in (200, 206)):
-            print('   - downloaded %s' %
+        if http_message['status_code'] == 200:
+            print('   - downloaded: %s' %
+                  format_file_size(http_message['Content-Length']))
+        elif http_message['status_code'] == 206:
+            print('   - download continued: %s' %
                   format_file_size(http_message['Content-Length']))
         elif http_message['status_code'] == 416:
             print('   - already downloaded. Skipped.')
