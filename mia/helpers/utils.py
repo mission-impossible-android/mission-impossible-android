@@ -327,40 +327,51 @@ def urlretrieve(url, install_filepath, cache_path=None):
     (Caching not yet implemented.)
     """
 
-    cache_enabled = False if (cache_path == None) else True
+    # Create the arguments list for wget.
+    wget_arguments = ['--no-verbose', '--server-response']
 
-    if cache_enabled:
-        filename = url.split('/')[-1]
-        download_filepath = os.path.join(cache_path, filename)
-    else:
+    if cache_path is None:
+        cache_enabled = False
         download_filepath = install_filepath
+    else:
+        cache_enabled = True
+        wget_arguments.append('--continue')
+        filename = install_filepath.split('/')[-1]
+        download_filepath = os.path.join(cache_path, filename)
 
-    cmd = 'wget --server-response --no-verbose --continue ' \
-          '--output-document=%s %s' % (download_filepath, url)
-    args = shlex.split(cmd)
-    child_process = subprocess.Popen(args, stdout=subprocess.PIPE,
-                                     stderr=subprocess.PIPE)
-    stdout, stderr = child_process.communicate()
+    wget_arguments.append('--output-document=%s' % download_filepath)
+    wget_arguments.append('%s' % url)
+
+    proc = subprocess.Popen(['wget'] + wget_arguments, stdout=subprocess.PIPE,
+                            stderr=subprocess.PIPE)
+
+    try:
+        stdout, stderr = proc.communicate()
+    except subprocess.TimeoutExpired:
+        proc.kill()
+        print('ERROR: wget has timed out...')
+        sys.exit(1)
 
     # Line ranges below hold true for `--no-verbose` mode output
     raw_response_data = stderr.splitlines()[0]
     raw_headers = stderr.splitlines()[1:-1]
 
     matches = re.match(r'^ *HTTP/[\d\.]+ (?P<code>\d{3}) (?P<msg>[\w ]*)$',
-                       str(raw_response_data))
+                       raw_response_data.decode())
+
     response_data = {
         'status_code': int(matches.group('code')),
         'status_message': matches.group('msg'),
     }
 
     headers = {}
-    it = iter(raw_headers)
-    for i in it:
-        matches = re.match(r'^ *(?P<name>[\dA-Za-z\-]+): (?P<value>.+)$', i)
+    for raw_header in iter(raw_headers):
+        matches = re.match(r'^ *(?P<name>[\dA-Za-z\-]+): (?P<value>.+)$',
+                           raw_header.decode())
         if matches:
             headers[matches.group('name')] = matches.group('value')
 
-    if child_process.returncode != 0:
+    if proc.returncode != 0:
         raise IOError(stderr)
 
     if cache_enabled:
