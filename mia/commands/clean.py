@@ -1,8 +1,13 @@
 """
-Detailed information about the 'clean' command goes here!
+The clean command can be use to cleanup the workspace or definition files.
 
 Usage:
-  mia clean [<definition>]
+    mia clean <definition>
+    mia clean --help
+
+Command options:
+    -h, --help  Show this screen.
+
 
 """
 

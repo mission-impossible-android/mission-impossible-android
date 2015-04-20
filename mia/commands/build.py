@@ -1,8 +1,14 @@
 """
-Detailed information about the 'build' command goes here!
+This command can be used to generate a custom update.zip file using information
+from a definition.
 
 Usage:
-  mia build <definition>
+    mia build <definition>
+    mia build --help
+
+Command options:
+    -h, --help  Show this screen.
+
 
 """
 

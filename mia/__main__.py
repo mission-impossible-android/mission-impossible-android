@@ -25,10 +25,11 @@ Available commands:
     clean       Cleanup the current workspace.
     definition  Create and configure a definition for a new update.zip file
                 based on existing templates.
-    help        Display detailed information about a certain command.
     install     Install the OS and the built update.zip file onto the device.
 
-See 'mia help <command>' for more information on a specific command.
+
+Notes:
+  You can use 'mia <command> --help' for more information on a specific command.
 
 """
 
@@ -68,9 +69,6 @@ def delegate_command(command_name, command_args):
     elif command_name == 'clean':
         import mia.commands.clean
         command_exists = True
-    elif command_name == 'help':
-        import mia.commands.help
-        command_exists = True
     elif command_name == 'definition':
         import mia.commands.definition
         command_exists = True
@@ -82,6 +80,7 @@ def delegate_command(command_name, command_args):
         # Get the command handler.
         command_handler = getattr(mia.commands, command_name)
 
+        # Note that docopt deals with the help option.
         handler.args = docopt(command_handler.__doc__, argv=command_argv)
 
         # Remove command from the command arguments list.
@@ -91,6 +90,7 @@ def delegate_command(command_name, command_args):
     else:
         msg = 'Command "%s" does not exists or has not been implemented yet!'
         print(msg % command_name)
+        sys.exit(1)
 
 
 def main():
