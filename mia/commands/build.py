@@ -2,7 +2,12 @@
 Detailed information about the 'build' command goes here!
 
 Usage:
-  mia build <definition>
+    mia build <definition>
+    mia build --help
+
+Command options:
+    -h, --help  Show this screen.
+
 
 """
 

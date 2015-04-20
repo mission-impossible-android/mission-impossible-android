@@ -2,7 +2,12 @@
 Detailed information about the 'clean' command goes here!
 
 Usage:
-  mia clean [<definition>]
+    mia clean <definition>
+    mia clean --help
+
+Command options:
+    -h, --help  Show this screen.
+
 
 """
 

@@ -11,17 +11,20 @@ Usage:
     mia definition dl-os <definition>
     mia definition extract-update-binary <definition>
     mia definition update-from-template <definition>
+    mia definition --help
 
 Command options:
     --template=<template>  The template to use. [default: mia-default]
     --cpu=<cpu>            The device CPU architecture. [default: armeabi]
     --force                Delete existing definition.
-
     --force-latest         Force using the latest versions.
+    -h, --help             Show this screen.
+
 
 Notes:
     A valid <definition> name consists of lowercase letters, digits and hyphens.
     And it must start with a letter name.
+
 
 """
 
