@@ -17,8 +17,11 @@ clean-all: clean clean-py
 
 define INFOTEXT
 ---
-A Python3 virtual environment has been created. You can activate it using:
+A Python virtual environment has been created. You can activate it using:
   $$ source .venv/bin/activate
+
+Once inside the virtual environment you will need to install the package using:
+  $$ pip install -e .
 
 To exit out of the virtual environment just call the `deactivate` function:
   $$ deactivate
@@ -30,4 +33,9 @@ export INFOTEXT
 prepare: clean
 	@echo "Creating a python3 virtual environment..."
 	virtualenv -p python3 .venv/
+	@echo "$$INFOTEXT"
+
+prepare-py2: clean
+	@echo "Creating a python2 virtual environment..."
+	virtualenv -p python2 .venv/
 	@echo "$$INFOTEXT"
