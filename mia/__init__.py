@@ -1,5 +1,5 @@
 
-__version__ = '0.0.4'
+__version__ = '0.1.0'
 __description__ = 'Mission Impossible: Hardening Android for Security & Privacy'
 __author__ = 'The MIA Team'
 __author_email__ = ''
