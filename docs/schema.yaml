@@ -38,5 +38,6 @@ app_fdroid_versioncode:
 
 app_direct_download:
   id: str()
+  name: str(required=False)
   url: str()
   install_type: enum('system', 'privileged', 'user', required=False)
