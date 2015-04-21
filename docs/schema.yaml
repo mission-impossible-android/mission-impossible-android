@@ -8,7 +8,14 @@ general:
 
 repositories: list(include('repository'))
 
-apps: list(str(), include('app_fdroid_latest'), include('app_fdroid_version'), include('app_fdroid_versioncode'), include('app_direct_download'))
+apps: >
+  list(
+    str(),
+    include('app_fdroid_latest'),
+    include('app_fdroid_version'),
+    include('app_fdroid_versioncode'),
+    include('app_direct_download'),
+  )
 
 defaults:
   repository_id: str()
