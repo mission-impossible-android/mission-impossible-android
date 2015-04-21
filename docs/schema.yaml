@@ -11,8 +11,8 @@ repositories: list(include('repository'))
 apps: list(include('app_fdroid_simple'), include('app_fdroid_version'), include('app_fdroid_versioncode'), include('app_direct_download'))
 
 defaults:
-  repository: str(required=False)
-  install_type: str(required=False)
+  repository: str()
+  install_type: str()
 
 ---
 
