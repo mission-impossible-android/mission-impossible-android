@@ -80,9 +80,9 @@ design!
 6.  (optional) Enable Bash or Zsh completion.
     * For Bash:
         * Either by copying the Bash/Zsh file to `/etc/bash_completion.d/`
-            `cp mia/mia.bash_completion.sh /etc/bash_completion.d/`
+            `cp ~/mission-impossible-android/tools/mia_completion.sh /etc/bash_completion.d/`
         * Or by sourcing it from your your `.bashrc`:
-            `source ~/mission-impossible-android/mia/mia.bash_completion.sh`
+            `source ~/mission-impossible-android/tools/mia_completion.sh`
     * For Zsh:
         * Copy this file into the site-functions folder as `_mia`:
             `cp mia_completion.zsh /usr/share/zsh/site-functions/_mia`
