@@ -8,7 +8,7 @@ general:
 
 repositories: list(include('repository'))
 
-apps: list(include('app'))
+apps: list(include('app_fdroid_simple'), include('app_fdroid_version'), include('app_fdroid_versioncode'), include('app_direct_download'))
 
 defaults:
   repository: str(required=False)
@@ -22,10 +22,21 @@ repository:
   url: str()
   fallback: str(required=False)
 
-app:
+app_fdroid_simple: str()
+
+app_fdroid_version:
   id: str()
-  versioncode: int(required=False)
   version: str(required=False)
   repository: str(required=False)
-  url: str(required=False)
+  install_type: enum('system', 'privileged', 'user', required=False)
+
+app_fdroid_versioncode:
+  id: str()
+  versioncode: int(required=False)
+  repository: str(required=False)
+  install_type: enum('system', 'privileged', 'user', required=False)
+
+app_direct_download:
+  id: str()
+  url: str()
   install_type: enum('system', 'privileged', 'user', required=False)
