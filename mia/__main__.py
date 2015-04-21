@@ -11,12 +11,14 @@ design!
 
 Usage:
     mia [options] <command> [<command_args_and_opts>...]
+    mia [ --commands | --options ] [<command>]
     mia --help
 
 Global options:
-    --debug     Spew out debug information.
-    --verbose   Spew out even more information than normal.
+    --commands  Displays a list of available commands or sub-commands.
+    --options   Displays a list of global or command specific options.
     --quiet     Restrict output to warnings and errors.
+    --verbose   Spew out even more information than normal.
     -h, --help  Show this screen.
     --version   Show version.
 
@@ -33,6 +35,7 @@ Notes:
 
 """
 
+import re
 import os
 import sys
 
@@ -59,6 +62,17 @@ def delegate_command(command_name, command_args):
     # Get the MIA handler singleton.
     handler = MiaHandler()
 
+    if not command_name:
+        # Display a list of commands and exit.
+        if handler.global_args['--commands']:
+            print(get_doc_section(__doc__, 'commands'))
+            sys.exit(0)
+
+        # Display a list of global options and exit.
+        if handler.global_args['--options']:
+            print(get_doc_section(__doc__, 'global-options'))
+            sys.exit(0)
+
     # Prepare the the argv parameter for the command specific docopt.
     command_argv = [command_name] + command_args
 
@@ -80,17 +94,56 @@ def delegate_command(command_name, command_args):
         # Get the command handler.
         command_handler = getattr(mia.commands, command_name)
 
-        # Note that docopt deals with the help option.
-        handler.args = docopt(command_handler.__doc__, argv=command_argv)
+        # Display a list of commands and exit.
+        if handler.global_args['--commands']:
+            print(get_doc_section(command_handler.__doc__, 'sub-commands'))
+            sys.exit(0)
 
-        # Remove command from the command arguments list.
-        del handler.args[command_name]
-
-        command_handler.main()
+        # Display a list of global options and exit.
+        if handler.global_args['--options']:
+            print(get_doc_section(command_handler.__doc__, 'command-options'))
+            sys.exit(0)
     else:
         msg = 'Command "%s" does not exists or has not been implemented yet!'
         print(msg % command_name)
-        sys.exit(1)
+        return 1
+
+    # Note that docopt deals with the help option.
+    handler.args = docopt(command_handler.__doc__, argv=command_argv)
+
+    # Remove command from the command arguments list.
+    del handler.args[command_name]
+
+    # Execute the command and return the exit code.
+    return command_handler.main()
+
+
+def get_doc_section(doc, section):
+    """
+    :return: A string with the available commands or options from the section.
+    """
+
+    if section == 'global-options':
+        section_name = 'Global options'
+        usage_split = re.split(r'(Global options:)', doc, flags=re.IGNORECASE)
+    elif section == 'command-options':
+        section_name = 'Command options'
+        usage_split = re.split(r'(Command options:)', doc, flags=re.IGNORECASE)
+    elif section == 'sub-commands':
+        section_name = 'Available sub-commands'
+        usage_split = re.split(r'(Available sub-commands:)', doc, flags=re.IGNORECASE)
+    else:
+        section_name = 'Available commands'
+        usage_split = re.split(r'(Available commands:)', doc, flags=re.IGNORECASE)
+
+    if len(usage_split) < 3:
+        # No section was found.
+        return ''
+    elif len(usage_split) > 3:
+        msg = 'More than one "%s:" (case-insensitive).' % section_name
+        raise DocParserError(msg)
+
+    return re.split(r'\n\s*\n', ''.join(usage_split[1:]))[0].strip()
 
 
 def main():
@@ -102,17 +155,17 @@ def main():
     # to retrieve arguments, configuration, a logger...
     MiaHandler(ROOT, WORKSPACE, global_args)
 
-    # Execute the command.
     try:
-        delegate_command(
+        # Execute the command and exit the program.
+        return delegate_command(
             global_args['<command>'],
             global_args['<command_args_and_opts>']
         )
     except KeyboardInterrupt:
         print('\n' + 'Exiting...')
-        pass
 
-    return 0
+    # The program did not finish successfully.
+    return 1
 
 
 if __name__ == "__main__":
