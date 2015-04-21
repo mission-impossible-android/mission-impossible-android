@@ -24,18 +24,20 @@ install_types:
     path: data/app
 
 defaults:
-  repository: fdroid
+  repository_id: fdroid
   install_type: user
 
 apps:
 - id: org.fdroid.fdroid
-  vercode: 830
+  versioncode: 830
   install_type: system
 - id: info.guardianproject.orfox
+  name: Orfox
   url: https://guardianproject.info/builds/OrfoxFennec/latest/OrfoxFennec-debug.apk
-- com.artifex.mupdfdemo
-- com.csipsimple
-- com.fsck.k9
+- id: com.artifex.mupdfdemo
+  version: "1.2.3"
+- id: com.csipsimple
+- id: com.fsck.k9
 - com.morlunk.mumbleclient
 - com.projectsexception.myapplist.open
 - com.xabber.androiddev

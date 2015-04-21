@@ -1,18 +1,18 @@
-config_version: map(int(), str())
+config_version: int()
 
 general:
-  cm_device_codename: str()
+  cm_device_codename: str(required=False)
   cm_release_type: str()
   cm_release_version: str()
   template: str(required=False)
 
 repositories: list(include('repository'))
 
-apps: list(include('app_fdroid_simple'), include('app_fdroid_version'), include('app_fdroid_versioncode'), include('app_direct_download'))
+apps: list(str(), include('app_fdroid_latest'), include('app_fdroid_version'), include('app_fdroid_versioncode'), include('app_direct_download'))
 
 defaults:
-  repository: str()
-  install_type: str()
+  repository_id: str()
+  install_type: str(required=False)
 
 ---
 
@@ -22,22 +22,25 @@ repository:
   url: str()
   fallback: str(required=False)
 
-app_fdroid_simple: str()
+app_fdroid_latest:
+  id: str()
+  repository: str(required=False)
+  install_type: enum('system', 'privileged', 'user', required=False)
 
 app_fdroid_version:
   id: str()
-  version: str(required=False)
+  version: str()
   repository: str(required=False)
   install_type: enum('system', 'privileged', 'user', required=False)
 
 app_fdroid_versioncode:
   id: str()
-  versioncode: int(required=False)
+  versioncode: int()
   repository: str(required=False)
   install_type: enum('system', 'privileged', 'user', required=False)
 
 app_direct_download:
   id: str()
-  name: str(required=False)
+  name: str()
   url: str()
   install_type: enum('system', 'privileged', 'user', required=False)
