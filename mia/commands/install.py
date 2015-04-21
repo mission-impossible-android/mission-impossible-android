@@ -13,7 +13,6 @@ Command options:
     --push-only  Only push the OS and update zips.
     --skip-os    Do not push base OS zip.
                  NOTE: A prior push is required for a successful install.
-    -h, --help   Show this screen.
 
 
 """

@@ -6,9 +6,6 @@ Usage:
     mia build <definition>
     mia build --help
 
-Command options:
-    -h, --help  Show this screen.
-
 
 """
 
