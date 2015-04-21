@@ -77,7 +77,13 @@ design!
       path to the CLI Tool. Eg: `./tools/mia` or
       `~/mission-impossible-android/tools/mia` instead of `mia`
 
-6. Test if the tool is working properly.
+6.  (optional) Enable Bash completion.
+    * Either by copying the bash file to `/etc/bash_completion.d/`
+        `cp mia/mia.bash_completion.sh /etc/bash_completion.d/`
+    * Or by sourcing it from your your `.bashrc`:
+        `source ~/mission-impossible-android/mia/mia.bash_completion.sh`
+
+7.  Test if the tool is working properly.
     ```bash
     mia --help
     ```
