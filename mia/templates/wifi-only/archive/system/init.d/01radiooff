@@ -1,0 +1,4 @@
+#!/system/bin/sh
+#!/system/bin/radiooptions
+
+radiooptions 1

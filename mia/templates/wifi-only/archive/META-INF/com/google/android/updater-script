@@ -1,0 +1,71 @@
+
+ui_print("                                 ");
+ui_print("                                 ");
+ui_print("                                 ");
+ui_print("_________________________________");
+ui_print("                                 ");
+ui_print("|-------------------------------|");
+ui_print("|      Mission: Impossible      |");
+ui_print("|-------------------------------|");
+ui_print("|  0%  Install Started          |");
+set_progress(0.0);
+
+ui_print("| 10%  Mounting filesystem      |");
+set_progress(0.1);
+run_program("/sbin/busybox", "mount", "/system");
+run_program("/sbin/busybox", "mount", "/cache");
+run_program("/sbin/busybox", "mount", "/data");
+
+ui_print("| 20%  Writing global settings  |");
+set_progress(0.2);
+run_program("/system/bin/settings", "put", "global", "install_non_market_apps", "0");
+run_program("/system/bin/settings", "put", "global", "wifi_on", "0");
+run_program("/system/bin/settings", "put", "global", "bluetooth_on", "0");
+run_program("/system/bin/settings", "put", "global", "assisted_gps_enabled", "0");
+run_program("/system/bin/settings", "put", "global", "backup_auto_restore", "0");
+run_program("/system/bin/settings", "put", "global", "backup_enabled", "0");
+run_program("/system/bin/settings", "put", "secure", "privacy_guard_default", "1");
+
+ui_print("| 30%  Installing /system files |");
+set_progress(0.3);
+package_extract_dir("system", "/system");
+set_perm_recursive(0, 0, 0755, 0644, "/system/priv-app");
+set_perm(0, 2000, 0755, "/system/etc/init.d/Y02firstboot");
+# Save a restart by placing a file Orwall would normally create during setup.
+set_perm(0, 2000, 0755, "/system/etc/init.d/91firewall");
+
+ui_print("| 40%  Installing /data files   |");
+set_progress(0.4);
+package_extract_dir("data", "/data");
+set_perm_recursive(1000, 1000, 0771, 0644, "/data/app");
+set_perm(0, 0, 0755, "/data/.firstboot.sh");
+
+ui_print("| 70%  Installing App List      |");
+set_progress(0.7);
+package_extract_dir("sdcard/misc/MyAppList", "/sdcard/MyAppList");
+# Linux UIDs: 0(root), 1028(sdcard_r)
+set_perm_recursive(1023, 1023, 0770, 0660, "/sdcard/MyAppList");
+
+ui_print("| 75%  Copying misc boot files  |");
+set_progress(0.75);
+package_extract_dir("sdcard/misc", "/sdcard/misc");
+set_perm_recursive(1023, 1023, 0770, 0660, "/sdcard/misc");
+
+ui_print("| 80%  Disable CM Setup Wizard  |");
+set_progress(0.8);
+delete("/system/priv-app/CMAccount.apk");
+
+ui_print("| 85%  Removing stock browser   |");
+set_progress(0.85);
+delete("/system/app/Browser.apk");
+
+ui_print("| 90%  Unmounting filesystems   |");
+set_progress(0.9);
+run_program("/sbin/busybox", "umount", "/system");
+run_program("/sbin/busybox", "umount", "/cache");
+run_program("/sbin/busybox", "umount", "/data");
+
+ui_print("| 100% Setup complete           |");
+set_progress(1.0);
+ui_print("|-------------------------------|");
+ui_print("_________________________________");
