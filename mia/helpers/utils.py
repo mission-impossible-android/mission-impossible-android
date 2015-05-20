@@ -23,6 +23,10 @@ if PY2:
 from six import add_metaclass
 
 
+class DocParserError(Exception):
+    pass
+
+
 class Singleton(type):
     _instances = {}
 

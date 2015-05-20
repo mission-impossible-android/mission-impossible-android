@@ -11,9 +11,8 @@ Command options:
     --emulator   Use running emulator instead of a real device.
     --no-reboot  Do not reboot the device once all the files are in place.
     --push-only  Only push the OS and update zips.
-    --skip-os    Do not push base OS zip.
+    --skip-os    Do not push base OS zip. \
                  NOTE: A prior push is required for a successful install.
-    -h, --help   Show this screen.
 
 
 """

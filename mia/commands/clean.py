@@ -5,9 +5,6 @@ Usage:
     mia clean <definition>
     mia clean --help
 
-Command options:
-    -h, --help  Show this screen.
-
 
 """
 

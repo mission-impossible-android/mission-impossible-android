@@ -13,12 +13,20 @@ Usage:
     mia definition update-from-template <definition>
     mia definition --help
 
+Available sub-commands:
+    create                 Creates a definition.
+    configure              Configures a definition.
+    lock                   Creates a lock file for the applications.
+    dl-apps                Downloads the applications using data from the lock file.
+    dl-os                  Show information on how to download and verify an OS zip.
+    extract-update-binary  Extract the update-binary from the CyanogenMod zip file.
+    update-from-template   Update definition from template
+
 Command options:
     --template=<template>  The template to use. [default: mia-default]
     --cpu=<cpu>            The device CPU architecture. [default: armeabi]
     --force                Delete existing definition.
     --force-latest         Force using the latest versions.
-    -h, --help             Show this screen.
 
 
 Notes:
@@ -72,7 +80,7 @@ def main():
     if handler.args['configure']:
         configure_definition()
 
-    # Update definition from template
+    # Update definition from template.
     if handler.args['update-from-template']:
         update_definition()
 
