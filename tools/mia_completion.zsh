@@ -8,61 +8,78 @@
 #   `ln -s ~/mission-impossible-android/tools/mia_completion.zsh /usr/share/zsh/site-functions/_mia`
 #
 
-# Sub-commands for `mia definition`
-_mia_cmd__definition() {
-    local -a _definition_cmds
-    _definition_cmds=(
-        'create:Creates a definition.'
-        'configure:Configures a definition.'
-        'lock:Creates a lock file for the applications.'
-        'dl-apps:Downloads the applications using data from the lock file.'
-        'dl-os:Show information on how to download and verify an OS zip.'
-        'extract-update-binary:Extract the update-binary from the CyanogenMod zip file.'
-        'update-from-template:Update definition from template'
-    )
+# Determine the path to the MIA command.
+MIA=$(command -v mia)
+if [ ! -x "$MIA" ]
+then
+    return 1
+fi
+
+# Try to describe available sub-commands, if any.
+_mia_sub_commands() {
+    local -a _available_sub_commands
+
+    # Available sub-commands.
+    IFS=$'\n'
+    _available_sub_commands=($($MIA --commands $1 | sed -e "/^Available sub-commands:$/d" -e :a -e 's/^ \+\([a-z-]\+\) \+/\1:/g' -e 's/ \+/ /g' -e :p | xargs -n1 -d "\n"))
+    unset IFS
+
+    _describe -t commands "$1 sub-commands" _available_sub_commands
 }
 
-# Commands for `mia`
+# Try to describe available command options, if any.
+_mia_command_options() {
+    local -a _available_command_options
+
+    # Get available sub-commands.
+    IFS=$'\n'
+    _available_command_options=($($MIA --options definition | sed -e "/^Command options:$/d" -e :a -e 's/^ \+\([^ ]\+\) \+\(.*\)/\1[\2]/g' -e 's/ \+/ /g' -e :p | xargs -n1 -d "\n"))
+    unset IFS
+
+    _describe -t commands "$1 command options" _available_command_options
+}
+
+# Describe the global mia commands.
 _mia_command() {
     local -a _mia_cmds
-    _mia_cmds=(
-        'build:Build an update.zip file.'
-        'clean:Cleanup the current workspace.'
-        'definition:Create and configure a definition for a new update.zip file based on existing templates.'
-        'install:Install the OS and the built update.zip file onto the device.'
-    )
+
+    # Available commands.
+    IFS=$'\n'
+    _mia_cmds=($($MIA --commands | sed -e "/^Available commands:$/d" -e :a -e 's/^ \+\([a-z-]\+\) \+/\1:/g' -e 's/ \+/ /g' -e :p | xargs -n1 -d "\n"))
+    unset IFS
 
     if (( CURRENT == 1 )); then
         _describe -t commands 'mia commands' _mia_cmds
-    else
+    elif (( CURRENT == 2 )); then
         local curcontext="$curcontext"
         local cmd="${${_mia_cmds[(r)$words[1]:*]%%:*}}"
+        echo "> $cmd"
+
         if (( $#cmd )); then
-            if (( $+functions[_mia_cmd__$cmd] )); then
-                _mia_cmd__$cmd
-            else
-                _message "no more options"
-            fi
+            # Try to describe available sub-commands, if any.
+            _mia_sub_commands $cmd
         else
             _message "unknown mia command: $words[1]"
         fi
+    elif (( CURRENT == 3 )); then
+        _mia_sub_commands ${words[1]}
+    else
+        _message "unknown mia command: $words[1]"
     fi
 }
 
-# Main arguments list.
-_mia_arglist=(
-    '--commands[Displays a list of available commands or sub-commands.]'
-    '--options[Displays a list of global or command specific options.]'
-    '--quiet[Restrict output to warnings and errors.]'
-    '--verbose[Spew out even more information than normal.]'
-    '--help[Show this screen.]'
-    '--version[Show version.]'
-    '*::mia commands:_mia_command'
-)
-
 # Main function.
 _mia_autocomplete() {
-    _arguments -s $_mia_arglist
+    local -a _mia_args_list
+
+    # Describe the global options.
+    IFS=$'\n'
+    _mia_args_list=($($MIA --options | sed -e "/^Global options:$/d" -e :a -e 's/^ \+\([a-z-]\+\) \+\(.*\)/\1[\2]/g' -e 's/ \+/ /g' -e :p | xargs -n1 -d "\n"))
+    unset IFS
+
+    # Describe the global commands list.
+    _mia_args_list+=('*::mia commands:_mia_command')
+    _arguments -s $_mia_args_list
 }
 
 case "$service" in

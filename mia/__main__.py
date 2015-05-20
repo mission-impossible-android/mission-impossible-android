@@ -19,13 +19,13 @@ Global options:
     --options   Displays a list of global or command specific options.
     --quiet     Restrict output to warnings and errors.
     --verbose   Spew out even more information than normal.
-    -h, --help  Show this screen.
+    --help      Show this screen.
     --version   Show version.
 
 Available commands:
     build       Build an update.zip file.
     clean       Cleanup the current workspace.
-    definition  Create and configure a definition for a new update.zip file
+    definition  Create and configure a definition for a new update.zip file \
                 based on existing templates.
     install     Install the OS and the built update.zip file onto the device.
 

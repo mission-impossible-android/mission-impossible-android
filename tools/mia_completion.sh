@@ -13,8 +13,9 @@ _mia() {
 
     # The MIA executable.
     MIA="${COMP_WORDS[0]}"
+
+    # The path to the `ls` executable.
     LS=`which ls`
-    # MIA="/usr/local/bin/mia"
 
     # Array variable storing the possible completions.
     COMPREPLY=()
