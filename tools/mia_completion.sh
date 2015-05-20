@@ -7,6 +7,8 @@
 # Or you can copy the file into the bash completion:
 #   `cp mia.bash_complition.sh /etc/bash_completion.d/`
 #
+# TODO: Implement properly in python.
+#
 
 _mia() {
     _init_completion || return

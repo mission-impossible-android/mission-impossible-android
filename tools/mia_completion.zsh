@@ -7,6 +7,9 @@
 # Or you can use a symbolic link:
 #   `ln -s ~/mission-impossible-android/tools/mia_completion.zsh /usr/share/zsh/site-functions/_mia`
 #
+# TODO: Implement properly in python.
+# @see https://github.com/zsh-users/zsh-completions/blob/master/src/_console#L42-L44
+#
 
 # Determine the path to the MIA command.
 MIA=$(command -v mia)
