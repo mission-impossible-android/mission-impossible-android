@@ -45,7 +45,8 @@ from docopt import docopt
 
 # Import custom helpers.
 from mia import (__version__)
-from mia.helpers.utils import *
+from mia.helpers import MiaHandler
+from mia.commands import Build, Clean, Definition, Install
 
 # Get the current directory.
 WORKSPACE = os.getcwd()
@@ -76,40 +77,34 @@ def delegate_command(command_name, command_args):
     # Prepare the the argv parameter for the command specific docopt.
     command_argv = [command_name] + command_args
 
-    command_exists = False
+    # Get the command handler.
+    command_handler = None
     if command_name == 'build':
-        import mia.commands.build
-        command_exists = True
+        command_handler = Build()
     elif command_name == 'clean':
-        import mia.commands.clean
-        command_exists = True
+        command_handler = Clean()
     elif command_name == 'definition':
-        import mia.commands.definition
-        command_exists = True
+        command_handler = Definition()
     elif command_name == 'install':
-        import mia.commands.install
-        command_exists = True
+        command_handler = Install()
 
-    if command_exists:
-        # Get the command handler.
-        command_handler = getattr(mia.commands, command_name)
-
-        # Display a list of commands and exit.
-        if handler.global_args['--commands']:
-            print(get_doc_section(command_handler.__doc__, 'sub-commands'))
-            sys.exit(0)
-
-        # Display a list of global options and exit.
-        if handler.global_args['--options']:
-            print(get_doc_section(command_handler.__doc__, 'command-options'))
-            sys.exit(0)
-    else:
-        msg = 'Command "%s" does not exists or has not been implemented yet!'
+    if command_handler is None:
+        msg = 'Command "%s" does not exist or has not been implemented yet!'
         print(msg % command_name)
-        return 1
+        sys.exit(1)
 
     # Note that docopt deals with the help option.
     handler.args = docopt(command_handler.__doc__, argv=command_argv)
+
+    # Display a list of commands and exit.
+    if handler.global_args['--commands']:
+        print(get_doc_section(command_handler.__doc__, 'sub-commands'))
+        sys.exit(0)
+
+    # Display a list of global options and exit.
+    if handler.global_args['--options']:
+        print(get_doc_section(command_handler.__doc__, 'command-options'))
+        sys.exit(0)
 
     # Remove command from the command arguments list.
     del handler.args[command_name]

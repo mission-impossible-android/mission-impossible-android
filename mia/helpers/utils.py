@@ -4,13 +4,11 @@ Utilities for the mia script.
 
 import os
 import re
-import shlex
 import shutil
 import sys
 import subprocess
 
-from pkg_resources import DistributionNotFound, Requirement, \
-    resource_filename, resource_isdir
+from pkg_resources import DistributionNotFound, Requirement, resource_filename, resource_isdir
 
 # Use six module to replace the input() function in Python 2.
 from six import PY2
@@ -19,7 +17,7 @@ if PY2:
 
 # For now add six module as a compatibility layer.
 # @see https://pypi.python.org/pypi/six
-# @TODO: Remove dependency on six.
+# TODO: Remove dependency on six.
 from six import add_metaclass
 
 
@@ -121,8 +119,7 @@ class MiaHandler():
         )
 
     def get_definition_settings(self, force_update=False):
-        if (not self.__definition_settings and self.args['<definition>']) or \
-                force_update:
+        if (not self.__definition_settings and self.args['<definition>']) or force_update:
             definition_path = self.get_definition_path()
             settings_file = os.path.join(definition_path, 'settings.yaml')
             if not force_update:
@@ -153,9 +150,7 @@ class MiaHandler():
             print('Using lock file:\n - %s\n' % lock_file_path)
 
             if not os.path.isfile(lock_file_path):
-                # raise Exception('Definition "%s" already exists!' % definition)
-                print('ERROR: Apps lock file is missing! '
-                      'See: mia help definition')
+                print('ERROR: Apps lock file is missing! See: mia help definition')
                 sys.exit(1)
 
             import yaml
@@ -176,230 +171,232 @@ class MiaHandler():
         return self.__definition_apps_lock_data
 
 
-def input_pause(display_text='Paused.'):
-    input("%s\nPress enter to continue.\n" % display_text)
+class MiaUtils(object):
+    @staticmethod
+    def input_pause(display_text='Paused.'):
+        input("%s\nPress enter to continue.\n" % display_text)
 
+    @staticmethod
+    def input_confirm(display_text='Confirm', default_value=False):
+        """
+        Ask the user to confirm an action.
+        :param display_text:
+        :param default_value:
+        :return: boolean
+        """
 
-def input_confirm(display_text='Confirm', default_value=False):
-    """
-    Ask the user to confirm an action.
-    :param display_text:
-    :param default_value:
-    :return: boolean
-    """
+        # Update the text depending on the default return value.
+        if default_value:
+            display_text = '%s [%s/%s]: ' % (display_text, 'Y', 'n')
+        else:
+            display_text = '%s [%s/%s]: ' % (display_text, 'y', 'N')
 
-    # Update the text depending on the default return value.
-    if default_value:
-        display_text = '%s [%s/%s]: ' % (display_text, 'Y', 'n')
-    else:
-        display_text = '%s [%s/%s]: ' % (display_text, 'y', 'N')
+        while True:
+            value = input(display_text)
+            value = value.lower()
 
-    while True:
-        value = input(display_text)
-        value = value.lower()
+            # Return the default value.
+            if not value:
+                return default_value
 
-        # Return the default value.
-        if not value:
-            return default_value
-
-        if value not in ['y', 'yes', 'n', 'no']:
-            print('This is a yes and no question!')
-            continue
-
-        if value == 'y' or value == 'yes':
-            return True
-        if value == 'n' or value == 'no':
-            return False
-
-
-def input_ask(display_text, default_value=None, free_text=False):
-    """
-    Ask the user to provide a string.
-    :param display_text:
-    :param default_value:
-    :return: string
-    """
-
-    # Update the text depending on the default return value.
-    if default_value:
-        display_text = '%s [%s]: ' % (display_text, default_value)
-    else:
-        display_text = '%s: ' % display_text
-
-    while True:
-        value = input(display_text)
-
-        # Return the default value, if any.
-        if not value and default_value is not None:
-            return default_value
-        elif not value:
-            continue
-
-        # Limit the allowed characters.
-        if not free_text:
-            import re
-            if not re.search(r'^[a-z][a-z0-9-]+$', value):
-                print('A sting containing letters, numbers, hyphens.')
-                print('The string must start with a letter.')
+            if value not in ['y', 'yes', 'n', 'no']:
+                print('This is a yes and no question!')
                 continue
 
-        return value
+            if value == 'y' or value == 'yes':
+                return True
+            if value == 'n' or value == 'no':
+                return False
 
+    @staticmethod
+    def input_ask(display_text, default_value=None, free_text=False):
+        """
+        Ask the user to provide a string.
+        :param display_text:
+        :param default_value:
+        :return: string
+        """
 
-# TODO: Find a way to keep comments in the setting files.
-def update_settings(settings_file, changes):
-    import yaml
+        # Update the text depending on the default return value.
+        if default_value:
+            display_text = '%s [%s]: ' % (display_text, default_value)
+        else:
+            display_text = '%s: ' % display_text
 
-    # Make sure the settings file exists.
-    if not os.path.isfile(settings_file):
-        print('Settings file "%s" not found' % settings_file)
-        return None
+        while True:
+            value = input(display_text)
 
-    try:
-        fd = open(settings_file, 'r')
+            # Return the default value, if any.
+            if not value and default_value is not None:
+                return default_value
+            elif not value:
+                continue
 
-        # Load the yaml and sort the top level entries.
-        settings = yaml.load(fd)
+            # Limit the allowed characters.
+            if not free_text:
+                import re
+                if not re.search(r'^[a-z][a-z0-9-]+$', value):
+                    print('A sting containing letters, numbers, hyphens.')
+                    print('The string must start with a letter.')
+                    continue
 
-        fd.close()
-    except yaml.YAMLError:
-        print('ERROR: Could not read configuration file!')
-        return None
+            return value
 
-    for section in changes:
-        # Update entries.
-        if hasattr(changes[section], 'update'):
-            for key in changes[section]['update']:
-                settings[section][key] = changes[section]['update'][key]
+    # TODO: Find a way to keep comments in the setting files.
+    @staticmethod
+    def update_settings(settings_file, changes):
+        import yaml
 
-        # Remove entries.
-        if hasattr(changes[section], 'remove'):
-            for key in changes[section]['remove']:
-                del settings[section][key]
+        # Make sure the settings file exists.
+        if not os.path.isfile(settings_file):
+            print('Settings file "%s" not found' % settings_file)
+            return None
 
-    # Save the changes.
-    print("Updating settings file:\n - %s\n" % settings_file)
+        try:
+            fd = open(settings_file, 'r')
 
-    try:
-        # Define a custom order of the sections
-        order = ['general', 'apps']
-        for section in settings.keys():
-            if section not in order:
-                order.append(section)
+            # Load the YAML file and sort the top level entries.
+            settings = yaml.load(fd)
 
-        # Open the file.
-        fd = open(settings_file, 'w')
+            fd.close()
+        except yaml.YAMLError:
+            print('ERROR: Could not read configuration file!')
+            return None
 
-        # Save all the settings in oder.
-        for section in order:
-            if section in settings.keys():
-                data = {section: settings[section]}
-                fd.write(yaml.dump(data, default_flow_style=False))
+        for section in changes:
+            # Update entries.
+            if hasattr(changes[section], 'update'):
+                for key in changes[section]['update']:
+                    settings[section][key] = changes[section]['update'][key]
 
-        fd.close()
-    except yaml.YAMLError:
-        fd.close()
-        print('ERROR: Could not save configuration file!')
-        return None
+            # Remove entries.
+            if hasattr(changes[section], 'remove'):
+                for key in changes[section]['remove']:
+                    del settings[section][key]
 
-    # Get the MIA handler singleton.
-    handler = MiaHandler()
+        # Save the changes.
+        print("Updating settings file:\n - %s\n" % settings_file)
 
-    # Load the settings in the main handler file.
-    handler.get_definition_settings(True)
+        try:
+            # Define a custom order of the sections
+            order = ['general', 'apps']
+            for section in settings.keys():
+                if section not in order:
+                    order.append(section)
 
+            # Open the file.
+            fd = open(settings_file, 'w')
 
-def format_file_size(file_size, precision=2):
-    import math
-    file_size = int(file_size)
+            # Save all the settings in oder.
+            for section in order:
+                if section in settings.keys():
+                    data = {section: settings[section]}
+                    fd.write(yaml.dump(data, default_flow_style=False))
 
-    if file_size is 0:
-        return '0 bytes'
+            fd.close()
+        except yaml.YAMLError:
+            fd.close()
+            print('ERROR: Could not save configuration file!')
+            return None
 
-    log = math.floor(math.log(file_size, 1024))
+        # Get the MIA handler singleton.
+        handler = MiaHandler()
 
-    return "%.*f %s" % (
-        precision,
-        file_size / math.pow(1024, log),
-        ['bytes', 'Kb', 'Mb'][int(log)]
-    )
+        # Load the settings in the main handler file.
+        handler.get_definition_settings(True)
 
+    @staticmethod
+    def format_file_size(file_size, precision=2):
+        import math
+        file_size = int(file_size)
 
-def urlretrieve(url, install_filepath, cache_path=None):
-    """
-    Use wget to download files to specific location.
-    (Caching not yet implemented.)
-    """
+        if file_size is 0:
+            return '0 bytes'
 
-    # Create the arguments list for wget.
-    wget_arguments = ['--no-verbose', '--server-response']
+        log = math.floor(math.log(file_size, 1024))
 
-    if cache_path is None:
-        cache_enabled = False
-        download_filepath = install_filepath
-    else:
-        cache_enabled = True
-        wget_arguments.append('--continue')
-        filename = install_filepath.split('/')[-1]
-        download_filepath = os.path.join(cache_path, filename)
+        return "%.*f %s" % (
+            precision,
+            file_size / math.pow(1024, log),
+            ['bytes', 'Kb', 'Mb'][int(log)]
+        )
 
-    wget_arguments.append('--output-document=%s' % download_filepath)
-    wget_arguments.append('%s' % url)
+    @staticmethod
+    def urlretrieve(url, install_filepath, cache_path=None):
+        """
+        Use wget to download files to specific location.
+        (Caching not yet implemented.)
+        """
 
-    proc = subprocess.Popen(['wget'] + wget_arguments, stdout=subprocess.PIPE,
-                            stderr=subprocess.PIPE)
+        # Create the arguments list for wget.
+        wget_arguments = ['--no-verbose', '--server-response']
 
-    try:
-        stdout, stderr = proc.communicate()
-    except subprocess.TimeoutExpired:
-        proc.kill()
-        print('ERROR: wget has timed out...')
-        sys.exit(1)
+        if cache_path is None:
+            cache_enabled = False
+            download_filepath = install_filepath
+        else:
+            cache_enabled = True
+            wget_arguments.append('--continue')
+            filename = install_filepath.split('/')[-1]
+            download_filepath = os.path.join(cache_path, filename)
 
-    # Line ranges below hold true for `--no-verbose` mode output
-    raw_response_data = stderr.splitlines()[0]
-    raw_headers = stderr.splitlines()[1:-1]
+        wget_arguments.append('--output-document=%s' % download_filepath)
+        wget_arguments.append('%s' % url)
 
-    matches = re.match(r'^ *HTTP/[\d\.]+ (?P<code>\d{3}) (?P<msg>[\w ]*)$',
-                       raw_response_data.decode())
+        proc = subprocess.Popen(['wget'] + wget_arguments, stdout=subprocess.PIPE,
+                                stderr=subprocess.PIPE)
 
-    response_data = {
-        'status_code': int(matches.group('code')),
-        'status_message': matches.group('msg'),
-    }
+        try:
+            stdout, stderr = proc.communicate()
+        except subprocess.TimeoutExpired:
+            proc.kill()
+            print('ERROR: wget has timed out...')
+            sys.exit(1)
 
-    headers = {}
-    for raw_header in iter(raw_headers):
-        matches = re.match(r'^ *(?P<name>[\dA-Za-z\-]+): (?P<value>.+)$',
-                           raw_header.decode())
-        if matches:
-            headers[matches.group('name')] = matches.group('value')
+        # Line ranges below hold true for `--no-verbose` mode output
+        raw_response_data = stderr.splitlines()[0]
+        raw_headers = stderr.splitlines()[1:-1]
 
-    if proc.returncode != 0:
-        raise IOError(stderr)
+        matches = re.match(r'^ *HTTP/[\d\.]+ (?P<code>\d{3}) (?P<msg>[\w ]*)$',
+                           raw_response_data.decode())
 
-    if cache_enabled:
-        shutil.copyfile(download_filepath, install_filepath)
+        response_data = {
+            'status_code': int(matches.group('code')),
+            'status_message': matches.group('msg'),
+        }
 
-    path = install_filepath
+        headers = {}
+        for raw_header in iter(raw_headers):
+            matches = re.match(r'^ *(?P<name>[\dA-Za-z\-]+): (?P<value>.+)$',
+                               raw_header.decode())
+            if matches:
+                headers[matches.group('name')] = matches.group('value')
 
-    http_message = {}
-    http_message.update(response_data)
-    http_message.update(headers)
+        if proc.returncode != 0:
+            raise IOError(stderr)
 
-    return path, http_message
+        if cache_enabled:
+            shutil.copyfile(download_filepath, install_filepath)
 
+        path = install_filepath
 
-def version_compare(version1, version2, func='eq'):
-    """
-    Compare two Semantic Versions.
-    @see http://semver.org/spec/v2.0.0.html
-    """
-    # @see https://docs.python.org/3.4/library/operator.html
-    import operator
+        http_message = {}
+        http_message.update(response_data)
+        http_message.update(headers)
 
-    from distutils.version import StrictVersion
-    return getattr(operator, func)(
-        StrictVersion(version1),
-        StrictVersion(version2)
-    )
+        return path, http_message
+
+    @staticmethod
+    def version_compare(version1, version2, func='eq'):
+        """
+        Compare two Semantic Versions.
+        @see http://semver.org/spec/v2.0.0.html
+        """
+        # @see https://docs.python.org/3.4/library/operator.html
+        import operator
+
+        from distutils.version import StrictVersion
+        return getattr(operator, func)(
+            StrictVersion(version1),
+            StrictVersion(version2)
+        )
