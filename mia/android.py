@@ -8,8 +8,8 @@ import os
 import subprocess
 
 # Import custom helpers.
-from mia.helpers.utils import MiaHandler
-from mia.helpers.utils import MiaUtils
+from mia.handler import MiaHandler
+from mia.utils import MiaUtils
 
 
 class MiaAndroid(object):

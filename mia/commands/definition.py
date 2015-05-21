@@ -47,10 +47,10 @@ import xml.etree.ElementTree as ElementTree
 import yaml
 
 # Import custom helpers.
-from mia.helpers.android import MiaAndroid
-from mia.helpers.fdroid import MiaFDroid
-from mia.helpers.utils import MiaHandler
-from mia.helpers.utils import MiaUtils
+from mia.android import MiaAndroid
+from mia.fdroid import MiaFDroid
+from mia.handler import MiaHandler
+from mia.utils import MiaUtils
 
 
 class Definition(object):

@@ -22,8 +22,8 @@ import sys
 
 # Import custom helpers.
 from mia.commands import Build
-from mia.helpers.android import MiaAndroid
-from mia.helpers.utils import MiaHandler
+from mia.android import MiaAndroid
+from mia.handler import MiaHandler
 
 
 class Install(object):

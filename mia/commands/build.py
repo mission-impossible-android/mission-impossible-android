@@ -13,7 +13,7 @@ import os
 import zipfile
 
 # Import custom helpers.
-from mia.helpers.utils import MiaHandler
+from mia.handler import MiaHandler
 
 
 class Build(object):

@@ -45,7 +45,7 @@ from docopt import docopt
 
 # Import custom helpers.
 from mia import (__version__)
-from mia.helpers import MiaHandler
+from mia.handler import MiaHandler
 from mia.commands import Build, Clean, Definition, Install
 
 # Get the current directory.

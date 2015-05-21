@@ -14,7 +14,7 @@ import shutil
 import sys
 
 # Import custom helpers.
-from mia.helpers.utils import MiaHandler
+from mia.handler import MiaHandler
 
 
 class Clean(object):
