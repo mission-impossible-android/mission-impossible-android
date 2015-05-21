@@ -2,7 +2,9 @@
 This sub-module contains the commands for "mia".
 """
 
-# Import classes to the sub-module level.
+available_commands = {}
+
+# Populate the available commands with classes and help information.
 from .build import Build
 from .clean import Clean
 from .definition import Definition

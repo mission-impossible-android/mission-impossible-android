@@ -13,6 +13,7 @@ import os
 import zipfile
 
 # Import custom helpers.
+from mia.commands import available_commands
 from mia.handler import MiaHandler
 
 
@@ -65,3 +66,10 @@ class Build(object):
 
                 print(' - %s' % path_in_zip)
                 zf.write(os.path.join(path, file_name), path_in_zip)
+
+
+# Add command to the list of available commands.
+available_commands['build'] = {
+    'class': Build,
+    'help': __doc__,
+}

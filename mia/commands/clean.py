@@ -14,6 +14,7 @@ import shutil
 import sys
 
 # Import custom helpers.
+from mia.commands import available_commands
 from mia.handler import MiaHandler
 
 
@@ -81,3 +82,9 @@ class Clean(object):
                 else:
                     print('   - removing file: %s' % item)
                     os.remove(item_path)
+
+# Add command to the list of available commands.
+available_commands['clean'] = {
+    'class': Clean,
+    'help': __doc__,
+}

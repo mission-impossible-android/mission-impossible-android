@@ -47,6 +47,7 @@ import xml.etree.ElementTree as ElementTree
 import yaml
 
 # Import custom helpers.
+from mia.commands import available_commands
 from mia.android import MiaAndroid
 from mia.fdroid import MiaFDroid
 from mia.handler import MiaHandler
@@ -401,3 +402,9 @@ class Definition(object):
             print('Saved the update-binary to the definition!')
         else:
             print('File does not exist or is not a zip file.')
+
+# Add command to the list of available commands.
+available_commands['definition'] = {
+    'class': Definition,
+    'help': __doc__,
+}

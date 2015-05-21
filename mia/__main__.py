@@ -46,7 +46,7 @@ from docopt import docopt
 # Import custom helpers.
 from mia import (__version__)
 from mia.handler import MiaHandler
-from mia.commands import Build, Clean, Definition, Install
+from mia.commands import available_commands
 
 # Get the current directory.
 WORKSPACE = os.getcwd()
@@ -77,24 +77,16 @@ def delegate_command(command_name, command_args):
     # Prepare the the argv parameter for the command specific docopt.
     command_argv = [command_name] + command_args
 
-    # Get the command handler.
-    command_handler = None
-    if command_name == 'build':
-        command_handler = Build()
-    elif command_name == 'clean':
-        command_handler = Clean()
-    elif command_name == 'definition':
-        command_handler = Definition()
-    elif command_name == 'install':
-        command_handler = Install()
-
-    if command_handler is None:
+    if command_name not in available_commands.keys():
         msg = 'Command "%s" does not exist or has not been implemented yet!'
         print(msg % command_name)
         sys.exit(1)
 
+    # Get the command handler.
+    command_handler = available_commands[command_name]['class']()
+
     # Note that docopt deals with the help option.
-    handler.args = docopt(command_handler.__doc__, argv=command_argv)
+    handler.args = docopt(available_commands[command_name]['help'], argv=command_argv)
 
     # Display a list of commands and exit.
     if handler.global_args['--commands']:

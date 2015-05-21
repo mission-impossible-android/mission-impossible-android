@@ -21,7 +21,7 @@ import os
 import sys
 
 # Import custom helpers.
-from mia.commands import Build
+from mia.commands import available_commands, Build
 from mia.android import MiaAndroid
 from mia.handler import MiaHandler
 
@@ -32,9 +32,10 @@ class Install(object):
         self.handler = MiaHandler()
 
     def main(self):
-        # @TODO: Make sure build is successful before running the installer.
+        # TODO: Make sure build is successful before running the installer.
         if self.handler.args['--build']:
-            Build.main()
+            build_command_handler = Build()
+            build_command_handler.main()
 
         # Create the builds folder.
         update_zip_name = '%s.%s' % (self.handler.args['<definition>'], 'mia-update.zip')
@@ -72,3 +73,9 @@ class Install(object):
         if not self.handler.args['--no-reboot']:
             print('\n' + 'Rebooting the device into recovery...')
             android.reboot_device('recovery')
+
+# Add command to the list of available commands.
+available_commands['install'] = {
+    'class': Install,
+    'help': __doc__,
+}
