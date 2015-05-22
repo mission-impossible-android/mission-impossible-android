@@ -4,12 +4,15 @@ import shutil
 import subprocess
 import sys
 
-# Use six module to replace the input() function in Python 2.
-from six import PY2
-if PY2:
-    from six.moves import input
-
 from mia.handler import MiaHandler
+
+# Replace the input() function in Python 2 with raw_input.
+try:
+    if sys.version_info[0] == 2:
+        import __builtin__
+        input = getattr(__builtin__, 'raw_input', input)
+except ImportError or NameError:
+    pass
 
 
 class DocParserError(Exception):
@@ -188,12 +191,12 @@ class MiaUtils(object):
         wget_arguments.append('--output-document=%s' % download_filepath)
         wget_arguments.append('%s' % url)
 
-        proc = subprocess.Popen(['wget'] + wget_arguments, stdout=subprocess.PIPE,
-                                stderr=subprocess.PIPE)
+        proc = subprocess.Popen(['wget'] + wget_arguments, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
 
         try:
             stdout, stderr = proc.communicate()
         except subprocess.TimeoutExpired:
+            # TODO: Fix, subprocess.TimeoutExpired does not exist in PY2.
             proc.kill()
             print('ERROR: wget has timed out...')
             sys.exit(1)
