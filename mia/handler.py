@@ -7,24 +7,7 @@ import sys
 
 from pkg_resources import DistributionNotFound, Requirement, resource_filename, resource_isdir
 
-# For now add six module as a compatibility layer.
-# @see https://pypi.python.org/pypi/six
-# TODO: Remove dependency on six.
-from six import add_metaclass
-
-
-class Singleton(type):
-    _instances = {}
-
-    def __call__(cls, *args, **kwargs):
-        if cls not in cls._instances:
-            super_class = super(Singleton, cls)
-            cls._instances[cls] = super_class.__call__(*args, **kwargs)
-        return cls._instances[cls]
-
-
-@add_metaclass(Singleton)
-class MiaHandler():
+class MiaHandler:
     args = {}
     global_args = {}
     __root_path = None
