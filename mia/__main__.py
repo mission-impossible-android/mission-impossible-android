@@ -45,8 +45,9 @@ from docopt import docopt
 
 # Import custom helpers.
 from mia import (__version__)
-from mia.handler import MiaHandler
 from mia.commands import available_commands
+from mia.handler import MiaHandler
+from mia.utils import DocParserError
 
 # Get the current directory.
 WORKSPACE = os.getcwd()
