@@ -5,7 +5,7 @@ This sub-module contains the commands for "mia".
 available_commands = {}
 
 # Populate the available commands with classes and help information.
-from .build import Build
-from .clean import Clean
-from .definition import Definition
-from .install import Install
+from mia.commands.build import Build
+from mia.commands.clean import Clean
+from mia.commands.definition import Definition
+from mia.commands.install import Install
