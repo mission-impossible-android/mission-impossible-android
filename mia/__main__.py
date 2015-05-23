@@ -60,17 +60,14 @@ def delegate_command(command_name, command_args):
     """
     Main command handler.
     """
-    # Get the MIA handler singleton.
-    handler = MiaHandler()
-
     if not command_name:
         # Display a list of commands and exit.
-        if handler.global_args['--commands']:
+        if MiaHandler.global_args['--commands']:
             print(get_doc_section(__doc__, 'commands'))
             sys.exit(0)
 
         # Display a list of global options and exit.
-        if handler.global_args['--options']:
+        if MiaHandler.global_args['--options']:
             print(get_doc_section(__doc__, 'global-options'))
             sys.exit(0)
 
@@ -86,20 +83,20 @@ def delegate_command(command_name, command_args):
     command_handler = available_commands[command_name]['class']()
 
     # Note that docopt deals with the help option.
-    handler.args = docopt(available_commands[command_name]['help'], argv=command_argv)
+    MiaHandler.args = docopt(available_commands[command_name]['help'], argv=command_argv)
 
     # Display a list of commands and exit.
-    if handler.global_args['--commands']:
+    if MiaHandler.global_args['--commands']:
         print(get_doc_section(command_handler.__doc__, 'sub-commands'))
         sys.exit(0)
 
     # Display a list of global options and exit.
-    if handler.global_args['--options']:
+    if MiaHandler.global_args['--options']:
         print(get_doc_section(command_handler.__doc__, 'command-options'))
         sys.exit(0)
 
     # Remove command from the command arguments list.
-    del handler.args[command_name]
+    del MiaHandler.args[command_name]
 
     # Execute the command and return the exit code.
     return command_handler.main()

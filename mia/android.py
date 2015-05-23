@@ -13,11 +13,8 @@ from mia.utils import MiaUtils
 
 
 class MiaAndroid(object):
-    def __init__(self):
-        # Get the MIA handler singleton.
-        self.handler = MiaHandler()
-
-    def adb_get_version(self):
+    @staticmethod
+    def adb_get_version():
         # The `adb version` command returns a string in the following format:
         # Android Debug Bridge version 1.0.31
         std_output = str(subprocess.check_output(['adb', 'version']))
@@ -29,11 +26,13 @@ class MiaAndroid(object):
 
         return None
 
-    def adb_check_device(self):
+    @staticmethod
+    def adb_check_device():
         # TODO: Check if `adb` sees the device.
         return None
 
-    def get_cyanogenmod_codename(self):
+    @classmethod
+    def get_cyanogenmod_codename(cls):
         """
         Try to determine the device name.
         """
@@ -41,7 +40,7 @@ class MiaAndroid(object):
         codename = None
 
         # Try to determine the device name using `adb`.
-        if self.adb_check_device():
+        if cls.adb_check_device():
             # TODO: Try to get the device name using ADB.
             return None
 
@@ -53,7 +52,8 @@ class MiaAndroid(object):
 
         return codename
 
-    def get_cyanogenmod_release_type(self, recommended=True):
+    @staticmethod
+    def get_cyanogenmod_release_type(recommended=True):
         """
         Try to determine what kind of CyanogenMod release type to use.
         """
@@ -63,7 +63,8 @@ class MiaAndroid(object):
 
         return 'snapshot'
 
-    def get_cyanogenmod_release_version(self, recommended=True):
+    @staticmethod
+    def get_cyanogenmod_release_version(recommended=True):
         """
         Try to determine what kind of CyanogenMod release version to use.
         """
@@ -73,9 +74,10 @@ class MiaAndroid(object):
 
         return 'M12'
 
-    def reboot_device(self, mode):
+    @staticmethod
+    def reboot_device(mode):
         if mode == 'bootloader' or mode == 'recovery':
-            if self.handler.args['--emulator']:
+            if MiaHandler.args['--emulator']:
                 # Restart the emulator.
                 adb_exit_code = subprocess.call(['adb', '-e', 'reboot', mode])
             else:
@@ -86,14 +88,15 @@ class MiaAndroid(object):
                 raise RuntimeError('Could not reboot the device!')
 
     # TODO: Check the md5sum of the files on the device, make sure they are OK.
-    def set_open_recovery_script(self):
+    @classmethod
+    def set_open_recovery_script(cls):
         # Push the open recovery script to the device.
-        script_path = os.path.join(self.handler.get_definition_path(), 'other', 'openrecoveryscript')
-        self.push_file_to_device('file', script_path, '/sdcard/openrecoveryscript')
+        script_path = os.path.join(MiaHandler.get_definition_path(), 'other', 'openrecoveryscript')
+        cls.push_file_to_device('file', script_path, '/sdcard/openrecoveryscript')
 
         # TODO: See whether `su` is really required, works fine in recovery mode?!?
         command = 'su root cp /sdcard/openrecoveryscript /cache/recovery/openrecoveryscript'
-        if self.handler.args['--emulator']:
+        if MiaHandler.args['--emulator']:
             # Run the command on the emulator.
             adb_exit_code = subprocess.call(['adb', '-e', 'shell', command])
         else:
@@ -103,7 +106,8 @@ class MiaAndroid(object):
         if adb_exit_code != 0:
             raise RuntimeError('Could not set the open recovery script!')
 
-    def push_file_to_device(self, source_type, source, destination):
+    @classmethod
+    def push_file_to_device(cls, source_type, source, destination):
         # Get the file size.
         file_size = os.path.getsize(source)
 
@@ -114,7 +118,7 @@ class MiaAndroid(object):
         adb_arguments = [source, destination]
 
         # Display progress bar on newer versions of ADB.
-        if MiaUtils.version_compare(self.adb_get_version(), '1.0.32', 'ge'):
+        if MiaUtils.version_compare(cls.adb_get_version(), '1.0.32', 'ge'):
             adb_arguments.insert(0, '-p')
         else:
             print('Please wait...')
@@ -123,7 +127,7 @@ class MiaAndroid(object):
         adb_arguments.insert(0, 'push')
 
         # Check if an emulator should be used instead of a device.
-        if self.handler.args['--emulator']:
+        if MiaHandler.args['--emulator']:
             adb_arguments.insert(0, '-e')
 
         # Push file to the device.

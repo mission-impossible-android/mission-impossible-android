@@ -19,22 +19,20 @@ from mia.handler import MiaHandler
 
 
 class Clean(object):
-    def __init__(self):
-        # Get the MIA handler singleton.
-        self.handler = MiaHandler()
-
-    def main(self):
-        if self.handler.args['<definition>']:
-            self.clean_definition()
+    @classmethod
+    def main(cls):
+        if MiaHandler.args['<definition>']:
+            cls.clean_definition()
         else:
-            self.clean_workspace()
+            cls.clean_workspace()
 
-    def clean_definition(self):
-        if not re.search(r'^[a-z][a-z0-9-]+$', self.handler.args['<definition>']):
+    @staticmethod
+    def clean_definition():
+        if not re.search(r'^[a-z][a-z0-9-]+$', MiaHandler.args['<definition>']):
             print('ERROR: Please provide a valid definition name! See: mia help definition')
             sys.exit(1)
 
-        definition_path = self.handler.get_definition_path()
+        definition_path = MiaHandler.get_definition_path()
         print('Destination directory is:\n - %s\n' % definition_path)
 
         user_apps_path = os.path.join(definition_path, 'user-apps')
@@ -51,8 +49,9 @@ class Clean(object):
         else:
             print('No system-apps.')
 
-    def clean_workspace(self):
-        workspace_path = self.handler.get_workspace_path()
+    @staticmethod
+    def clean_workspace():
+        workspace_path = MiaHandler.get_workspace_path()
         print('Workspace directory is:\n - %s\n' % workspace_path)
 
         # Clean the workspace builds folder.

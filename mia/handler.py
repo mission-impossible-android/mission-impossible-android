@@ -15,20 +15,22 @@ class MiaHandler:
     __definition_settings = {}
     __definition_apps_lock_data = {}
 
-    def __init__(self, root_path=None, workspace_path=None, global_args=None):
+    @classmethod
+    def __init__(cls, root_path=None, workspace_path=None, global_args=None):
         if root_path:
-            self.__root_path = root_path
+            cls.__root_path = root_path
 
         if global_args:
-            self.global_args = global_args
+            cls.global_args = global_args
 
         if workspace_path:
-            self.__workspace_path = workspace_path
+            cls.__workspace_path = workspace_path
 
     # Save and display a log message.
-    def log(self, msg, log_type='info'):
+    @classmethod
+    def log(cls, msg, log_type='info'):
         # Display the message to the user.
-        if self.global_args['--verbose']:
+        if cls.global_args['--verbose']:
             print(msg)
 
         # Log the message.
@@ -43,22 +45,26 @@ class MiaHandler:
         else:
             logging.error(msg)
 
-    def get_root_path(self):
-        return self.__root_path
+    @classmethod
+    def get_root_path(cls):
+        return cls.__root_path
 
-    def get_workspace_path(self):
-        return self.__workspace_path
+    @classmethod
+    def get_workspace_path(cls):
+        return cls.__workspace_path
 
-    def get_definition_path(self):
-        if not self.__definition_path and self.args['<definition>']:
-            self.__definition_path = os.path.join(
-                self.__workspace_path, 'definitions',
-                self.args['<definition>']
+    @classmethod
+    def get_definition_path(cls):
+        if not cls.__definition_path and cls.args['<definition>']:
+            cls.__definition_path = os.path.join(
+                cls.__workspace_path, 'definitions',
+                cls.args['<definition>']
             )
 
-        return self.__definition_path
+        return cls.__definition_path
 
-    def get_template_path(self, template):
+    @classmethod
+    def get_template_path(cls, template):
         relative_path = os.path.join('mia', 'templates', template)
         full_path = None
 
@@ -72,16 +78,17 @@ class MiaHandler:
 
         except DistributionNotFound:
             # Otherwise, just use the script root path.
-            tmp_path = os.path.join(self.get_root_path(), relative_path)
+            tmp_path = os.path.join(cls.get_root_path(), relative_path)
 
             if os.path.exists(tmp_path):
                 full_path = tmp_path
 
         return full_path
 
-    def get_os_zip_filename(self):
+    @classmethod
+    def get_os_zip_filename(cls):
         # Read the definition settings.
-        settings = self.get_definition_settings()
+        settings = cls.get_definition_settings()
 
         return 'cm-11-%s.%s-%s.zip' % (
             settings['general']['cm_device_codename'],
@@ -89,9 +96,10 @@ class MiaHandler:
             settings['general']['cm_release_version']
         )
 
-    def get_definition_settings(self, force_update=False):
-        if (not self.__definition_settings and self.args['<definition>']) or force_update:
-            definition_path = self.get_definition_path()
+    @classmethod
+    def get_definition_settings(cls, force_update=False):
+        if (not cls.__definition_settings and cls.args['<definition>']) or force_update:
+            definition_path = cls.get_definition_path()
             settings_file = os.path.join(definition_path, 'settings.yaml')
             if not force_update:
                 print('Using definition settings file:\n - %s\n' %
@@ -110,13 +118,14 @@ class MiaHandler:
                 return None
 
             if settings:
-                self.__definition_settings = settings
+                cls.__definition_settings = settings
 
-        return self.__definition_settings
+        return cls.__definition_settings
 
-    def get_definition_apps_lock_data(self):
-        if not self.__definition_apps_lock_data and self.args['<definition>']:
-            definition_path = self.get_definition_path()
+    @classmethod
+    def get_definition_apps_lock_data(cls):
+        if not cls.__definition_apps_lock_data and cls.args['<definition>']:
+            definition_path = cls.get_definition_path()
             lock_file_path = os.path.join(definition_path, 'apps_lock.yaml')
             print('Using lock file:\n - %s\n' % lock_file_path)
 
@@ -137,6 +146,6 @@ class MiaHandler:
                 return None
 
             if lock_data:
-                self.__definition_apps_lock_data = lock_data
+                cls.__definition_apps_lock_data = lock_data
 
-        return self.__definition_apps_lock_data
+        return cls.__definition_apps_lock_data

@@ -18,22 +18,19 @@ from mia.handler import MiaHandler
 
 
 class Build(object):
-    def __init__(self):
-        # Get the MIA handler singleton.
-        self.handler = MiaHandler()
-
-    def main(self):
+    @classmethod
+    def main(cls):
         # Read the definition settings.
-        settings = self.handler.get_definition_settings()
-        definition_path = self.handler.get_definition_path()
+        settings = MiaHandler.get_definition_settings()
+        definition_path = MiaHandler.get_definition_path()
 
         # Create the builds folder.
-        builds_path = os.path.join(self.handler.get_workspace_path(), 'builds')
+        builds_path = os.path.join(MiaHandler.get_workspace_path(), 'builds')
         if not os.path.isdir(builds_path):
             os.makedirs(builds_path, mode=0o755)
 
-        zip_name = '%s.%s' % (self.handler.args['<definition>'], 'mia-update.zip')
-        zip_path = os.path.join(self.handler.get_workspace_path(), 'builds', zip_name)
+        zip_name = '%s.%s' % (MiaHandler.args['<definition>'], 'mia-update.zip')
+        zip_path = os.path.join(MiaHandler.get_workspace_path(), 'builds', zip_name)
         if os.path.exists(zip_path):
             print('Deleting current build:\n - %s\n' % zip_path)
             os.remove(zip_path)
@@ -43,7 +40,7 @@ class Build(object):
             entry_base_path = os.path.join(definition_path, entry['src'])
             if os.path.isdir(entry_base_path):
                 print('Adding "%s" files to the archive:' % entry['dst'])
-                self.add_directory_to_zip(zf, entry_base_path, entry['dst'])
+                cls.add_directory_to_zip(zf, entry_base_path, entry['dst'])
 
             elif os.path.isfile(entry_base_path):
                 print('Adding "%s" file to the archive.' % entry['dst'])

@@ -147,11 +147,8 @@ class MiaUtils(object):
             print('ERROR: Could not save configuration file!')
             return None
 
-        # Get the MIA handler singleton.
-        handler = MiaHandler()
-
         # Load the settings in the main handler file.
-        handler.get_definition_settings(True)
+        MiaHandler.get_definition_settings(True)
 
     @staticmethod
     def format_file_size(file_size, precision=2):
