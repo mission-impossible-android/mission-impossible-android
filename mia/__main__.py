@@ -25,13 +25,13 @@ Global options:
 Available commands:
     build       Build an update.zip file.
     clean       Cleanup the current workspace.
-    definition  Create and configure a definition for a new update.zip file \
-                based on existing templates.
+    definition  Create and configure a definition for a new update.zip file.
     install     Install the OS and the built update.zip file onto the device.
 
 
 Notes:
   You can use 'mia <command> --help' for more information on a specific command.
+
 
 """
 
