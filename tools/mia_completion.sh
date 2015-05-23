@@ -16,8 +16,9 @@ _mia() {
     # The MIA executable.
     MIA="${COMP_WORDS[0]}"
 
-    # The path to the `ls` executable.
+    # The path to the system executables.
     LS=`which ls`
+    TEST=`which test`
 
     # Array variable storing the possible completions.
     COMPREPLY=()
@@ -66,7 +67,7 @@ _mia() {
 
             opts=`${MIA} --options ${command}  2>&1 | sed -e "/Command options:/d" -e "s/,//g" -e "s/=<\w\+>//g" | awk -F '  ' '{print $3}'`
 
-            defs=`${LS} definitions`
+            defs=`${TEST} -d definitions && ${LS} definitions`
             if [[ "${prev}" =~ "${defs}" ]]; then
                 defs=''
             fi
@@ -80,7 +81,7 @@ _mia() {
             else
                 opts=`${MIA} --options ${command}  2>&1 | sed -e "/Command options:/d" -e "s/,//g" -e "s/=<\w\+>//g" | awk -F '  ' '{print $3}'`
 
-                defs=`${LS} definitions`
+                defs=`${TEST} -d definitions && ${LS} definitions`
                 if [[ "${prev}" =~ "${defs}" ]]; then
                     defs=''
                 fi
