@@ -2,7 +2,7 @@
 The clean command can be use to cleanup the workspace or definition files.
 
 Usage:
-    mia clean <definition>
+    mia clean [<definition>]
     mia clean --help
 
 
