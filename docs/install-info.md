@@ -41,7 +41,7 @@
     make prepare
 
     # Activate the newly created virtualenv.
-    source bin/activate
+    source .venv/bin/activate
 
     # Install mia once inside the Virtual Environment.
     pip install -e .
