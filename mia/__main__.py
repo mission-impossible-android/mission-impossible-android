@@ -25,13 +25,13 @@ Global options:
 Available commands:
     build       Build an update.zip file.
     clean       Cleanup the current workspace.
-    definition  Create and configure a definition for a new update.zip file \
-                based on existing templates.
+    definition  Create and configure a definition for a new update.zip file.
     install     Install the OS and the built update.zip file onto the device.
 
 
 Notes:
   You can use 'mia <command> --help' for more information on a specific command.
+
 
 """
 
@@ -45,7 +45,9 @@ from docopt import docopt
 
 # Import custom helpers.
 from mia import (__version__)
-from mia.helpers.utils import *
+from mia.commands import available_commands
+from mia.handler import MiaHandler
+from mia.utils import DocParserError
 
 # Get the current directory.
 WORKSPACE = os.getcwd()
@@ -59,60 +61,43 @@ def delegate_command(command_name, command_args):
     """
     Main command handler.
     """
-    # Get the MIA handler singleton.
-    handler = MiaHandler()
-
     if not command_name:
         # Display a list of commands and exit.
-        if handler.global_args['--commands']:
+        if MiaHandler.global_args['--commands']:
             print(get_doc_section(__doc__, 'commands'))
             sys.exit(0)
 
         # Display a list of global options and exit.
-        if handler.global_args['--options']:
+        if MiaHandler.global_args['--options']:
             print(get_doc_section(__doc__, 'global-options'))
             sys.exit(0)
 
     # Prepare the the argv parameter for the command specific docopt.
     command_argv = [command_name] + command_args
 
-    command_exists = False
-    if command_name == 'build':
-        import mia.commands.build
-        command_exists = True
-    elif command_name == 'clean':
-        import mia.commands.clean
-        command_exists = True
-    elif command_name == 'definition':
-        import mia.commands.definition
-        command_exists = True
-    elif command_name == 'install':
-        import mia.commands.install
-        command_exists = True
-
-    if command_exists:
-        # Get the command handler.
-        command_handler = getattr(mia.commands, command_name)
-
-        # Display a list of commands and exit.
-        if handler.global_args['--commands']:
-            print(get_doc_section(command_handler.__doc__, 'sub-commands'))
-            sys.exit(0)
-
-        # Display a list of global options and exit.
-        if handler.global_args['--options']:
-            print(get_doc_section(command_handler.__doc__, 'command-options'))
-            sys.exit(0)
-    else:
-        msg = 'Command "%s" does not exists or has not been implemented yet!'
+    if command_name not in available_commands.keys():
+        msg = 'Command "%s" does not exist or has not been implemented yet!'
         print(msg % command_name)
-        return 1
+        sys.exit(1)
+
+    # Get the command handler.
+    command_handler = available_commands[command_name]['class']()
 
     # Note that docopt deals with the help option.
-    handler.args = docopt(command_handler.__doc__, argv=command_argv)
+    MiaHandler.args = docopt(available_commands[command_name]['help'], argv=command_argv)
+
+    # Display a list of commands and exit.
+    if MiaHandler.global_args['--commands']:
+        print(get_doc_section(command_handler.__doc__, 'sub-commands'))
+        sys.exit(0)
+
+    # Display a list of global options and exit.
+    if MiaHandler.global_args['--options']:
+        print(get_doc_section(command_handler.__doc__, 'command-options'))
+        sys.exit(0)
 
     # Remove command from the command arguments list.
-    del handler.args[command_name]
+    del MiaHandler.args[command_name]
 
     # Execute the command and return the exit code.
     return command_handler.main()

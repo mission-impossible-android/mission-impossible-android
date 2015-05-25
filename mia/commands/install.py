@@ -17,55 +17,61 @@ Command options:
 
 """
 
+import os
+import sys
+
 # Import custom helpers.
-import mia.commands.build
-from mia.helpers.android import *
-from mia.helpers.utils import *
+from mia.commands import available_commands, Build
+from mia.android import MiaAndroid
+from mia.handler import MiaHandler
 
 
-def main():
-    # Get the MIA handler singleton.
-    handler = MiaHandler()
+class Install(object):
+    def main(self):
+        # TODO: Make sure build is successful before running the installer.
+        if MiaHandler.args['--build']:
+            build_command_handler = Build()
+            build_command_handler.main()
 
-    # @TODO: Make sure build is successful before running the installer.
-    if handler.args['--build']:
-        mia.commands.build.main()
+        # Create the builds folder.
+        update_zip_name = '%s.%s' % (MiaHandler.args['<definition>'], 'mia-update.zip')
+        update_zip_path = os.path.join(MiaHandler.get_workspace_path(), 'builds', update_zip_name)
 
-    # Create the builds folder.
-    update_zip_name = '%s.%s' % (handler.args['<definition>'], 'mia-update.zip')
-    update_zip_path = os.path.join(handler.get_workspace_path(), 'builds',
-                                   update_zip_name)
+        if not os.path.isfile(update_zip_path):
+            print('ERROR: Please run the build command first.')
+            sys.exit(1)
 
-    if not os.path.isfile(update_zip_path):
-        # raise Exception('ERROR: Please run the build command first.')
-        print('ERROR: Please run the build command first.')
-        sys.exit(1)
+        # Get the OS file name.
+        os_zip_name = MiaHandler.get_os_zip_filename()
+        os_zip_path = os.path.join(MiaHandler.get_workspace_path(), 'resources', os_zip_name)
 
-    # Get the OS file name.
-    os_zip_name = handler.get_os_zip_filename()
-    os_zip_path = os.path.join(handler.get_workspace_path(), 'resources',
-                               os_zip_name)
+        if not os.path.isfile(os_zip_path):
+            print('ERROR: OS archive not found.')
+            sys.exit(1)
 
-    if not os.path.isfile(os_zip_path):
-        # raise Exception('ERROR: Please run the build command first.')
-        print('ERROR: OS archive not found.')
-        sys.exit(1)
+        # Get the android device wrapper.
+        android = MiaAndroid()
 
-    # Push the mia-update.zip to the device.
-    push_file_to_device('update archive', update_zip_path,
-                        '/sdcard/mia-update.zip')
+        # Push the mia-update.zip to the device.
+        android.push_file_to_device('update archive', update_zip_path, '/sdcard/mia-update.zip')
 
-    # Push the mia-os.zip to the device.
-    if not handler.args['--skip-os']:
-        push_file_to_device('OS archive', os_zip_path, '/sdcard/mia-os.zip')
+        # Push the mia-os.zip to the device.
+        if not MiaHandler.args['--skip-os']:
+            android.push_file_to_device('OS archive', os_zip_path, '/sdcard/mia-os.zip')
 
-    if handler.args['--push-only']:
-        print('\n' + 'Finished pushing the files onto the device.')
-        sys.exit(0)
+        if MiaHandler.args['--push-only']:
+            print('\n' + 'Finished pushing the files onto the device.')
+            sys.exit(0)
 
-    # Set the openrecoveryscript.
-    set_open_recovery_script()
+        # Set the openrecoveryscript.
+        android.set_open_recovery_script()
 
-    if not handler.args['--no-reboot']:
-        print('\n' + 'Rebooting the device into recovery...')
-        reboot_device('recovery')
+        if not MiaHandler.args['--no-reboot']:
+            print('\n' + 'Rebooting the device into recovery...')
+            android.reboot_device('recovery')
+
+# Add command to the list of available commands.
+available_commands['install'] = {
+    'class': Install,
+    'help': __doc__,
+}

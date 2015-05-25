@@ -3,11 +3,10 @@
 import io
 import os
 import re
-from setuptools import setup
-from setuptools import find_packages
+from setuptools import find_packages, setup
 
 
-def read_file_data(*names, **kwargs):
+def read_file_contents(*names, **kwargs):
     with io.open(
         os.path.join(os.path.dirname(__file__), *names),
         encoding=kwargs.get('encoding', 'utf8')
@@ -16,8 +15,8 @@ def read_file_data(*names, **kwargs):
 
 
 def get_package_info(name):
-    file = read_file_data(os.path.join('mia', '__init__.py'))
-    version_match = re.search(r'^%s\s*=\s*[\'"](.*?)[\'"]' % name, file, re.M)
+    file_contents = read_file_contents(os.path.join('mia', '__init__.py'))
+    version_match = re.search(r'^%s\s*=\s*[\'"](.*?)[\'"]' % name, file_contents, re.M)
 
     if version_match:
         return version_match.group(1)
@@ -43,7 +42,6 @@ setup(
     install_requires=[
         'docopt',
         'PyYAML',
-        'six',
     ],
     classifiers=[
         'Development Status :: 1 - Planning',

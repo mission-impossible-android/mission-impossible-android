@@ -47,393 +47,369 @@ import xml.etree.ElementTree as ElementTree
 import yaml
 
 # Import custom helpers.
-from mia.helpers.android import *
-from mia.helpers.fdroid import *
-from mia.helpers.utils import *
+from mia.commands import available_commands
+from mia.android import MiaAndroid
+from mia.fdroid import MiaFDroid
+from mia.handler import MiaHandler
+from mia.utils import MiaUtils
 
 
-def main():
-    # Get the MIA handler singleton.
-    handler = MiaHandler()
+class Definition(object):
+    @classmethod
+    def main(cls):
+        # The definition name is optional, this is helpful for new users.
+        if MiaHandler.args['<definition>'] is None:
+            msg = 'Please provide a definition name'
+            MiaHandler.args['<definition>'] = MiaUtils.input_ask(msg)
 
-    # The definition name is optional, this is helpful for new users.
-    if handler.args['<definition>'] is None:
-        msg = 'Please provide a definition name'
-        handler.args['<definition>'] = input_ask(msg)
-
-    if not re.search(r'^[a-z][a-z0-9-]+$', handler.args['<definition>']):
-        # raise Exception('Definition "%s" already exists!' % definition)
-        print('ERROR: Please provide a valid definition name! '
-              'See: mia help definition')
-        sys.exit(1)
-
-    # Create the definition.
-    if handler.args['create']:
-        create_definition()
-    elif not os.path.exists(handler.get_definition_path()):
-        # Make sure the definition exists.
-        print('ERROR: Definition "%s" does not exist!' %
-              handler.args['<definition>'])
-        sys.exit(1)
-
-    # Configure the definition.
-    if handler.args['configure']:
-        configure_definition()
-
-    # Update definition from template.
-    if handler.args['update-from-template']:
-        update_definition()
-
-    # Create the apps lock file.
-    if handler.args['lock']:
-        create_apps_lock_file()
-
-    # Download the CyanogenMod OS.
-    if handler.args['dl-os']:
-        download_os()
-
-    # Download apps.
-    if handler.args['dl-apps']:
-        download_apps()
-
-    # Extract the update-binary from the CyanogenMod zip file.
-    if handler.args['extract-update-binary']:
-        extract_update_binary()
-
-    return None
-
-
-def create_definition():
-    # Get the MIA handler singleton.
-    handler = MiaHandler()
-
-    definition_path = handler.get_definition_path()
-    print('Destination directory is:\n - %s\n' % definition_path)
-
-    # Make sure the definition does not exist.
-    if os.path.exists(definition_path):
-        if handler.args['--force']:
-            print('Removing the old definition folder...')
-            shutil.rmtree(definition_path)
-        else:
-            # raise Exception('Definition "%s" already exists!' % definition)
-            print('ERROR: Definition "%s" already exists!' %
-                  handler.args['<definition>'])
+        if not re.search(r'^[a-z][a-z0-9-]+$', MiaHandler.args['<definition>']):
+            print('ERROR: Please provide a valid definition name! See: mia help definition')
             sys.exit(1)
 
-    # Get the template name.
-    template = handler.args['--template']
-    template_path = handler.get_template_path(template)
-    if template_path is None:
-        # raise Exception('Template "%s" does not exist!' % template)
-        print('ERROR: Template "%s" does not exist!' % template)
-        sys.exit(1)
+        # Create the definition.
+        if MiaHandler.args['create']:
+            cls.create_definition()
+        elif not os.path.exists(MiaHandler.get_definition_path()):
+            # Make sure the definition exists.
+            print('ERROR: Definition "%s" does not exist!' %
+                  MiaHandler.args['<definition>'])
+            sys.exit(1)
 
-    print('Using template:\n - %s\n' % template_path)
+        # Configure the definition.
+        if MiaHandler.args['configure']:
+            cls.configure_definition()
 
-    # Make sure the definitions folder exists.
-    definitions_path = os.path.join(handler.get_workspace_path(), 'definitions')
-    if not os.path.isdir(definitions_path):
-        os.makedirs(definitions_path, mode=0o755)
+        # Update definition from template.
+        if MiaHandler.args['update-from-template']:
+            cls.update_definition()
 
-    # Create the definition using the provided template.
-    shutil.copytree(template_path, definition_path)
+        # Create the apps lock file.
+        if MiaHandler.args['lock']:
+            cls.create_apps_lock_file()
 
-    # Configure the definition.
-    if input_confirm('Configure now?', True):
-        configure_definition()
+        # Download the CyanogenMod OS.
+        if MiaHandler.args['dl-os']:
+            cls.download_os()
 
+        # Download apps.
+        if MiaHandler.args['dl-apps']:
+            cls.download_apps()
 
-def update_definition():
-    # Get the MIA handler singleton.
-    handler = MiaHandler()
+        # Extract the update-binary from the CyanogenMod zip file.
+        if MiaHandler.args['extract-update-binary']:
+            cls.extract_update_binary()
 
-    definition_path = handler.get_definition_path()
-    print('Destination directory is:\n - %s\n' % definition_path)
+        return None
 
-    settings = handler.get_definition_settings()
-    template = settings['general']['template']
-    template_path = handler.get_template_path(template)
-    print('Using template:\n - %s\n' % template_path)
+    @classmethod
+    def create_definition(cls):
+        definition_path = MiaHandler.get_definition_path()
+        print('Destination directory is:\n - %s\n' % definition_path)
 
-    # Check if the template exists.
-    if not os.path.exists(template_path):
-        # raise Exception('Template "%s" does not exist!' % template)
-        print('ERROR: Template "%s" does not exist!' % template)
-        sys.exit(1)
+        # Make sure the definition does not exist.
+        if os.path.exists(definition_path):
+            if MiaHandler.args['--force']:
+                print('Removing the old definition folder...')
+                shutil.rmtree(definition_path)
+            else:
+                print('ERROR: Definition "%s" already exists!' %
+                      MiaHandler.args['<definition>'])
+                sys.exit(1)
 
-    # Create the definition using the provided template.
-    distutils.dir_util.copy_tree(template_path, definition_path)
+        # Get the template name.
+        template = MiaHandler.args['--template']
+        template_path = MiaHandler.get_template_path(template)
+        if template_path is None:
+            print('ERROR: Template "%s" does not exist!' % template)
+            sys.exit(1)
 
+        print('Using template:\n - %s\n' % template_path)
 
-def configure_definition():
-    # Get the MIA handler singleton.
-    handler = MiaHandler()
+        # Make sure the definitions folder exists.
+        definitions_path = os.path.join(MiaHandler.get_workspace_path(), 'definitions')
+        if not os.path.isdir(definitions_path):
+            os.makedirs(definitions_path, mode=0o755)
 
-    # Detect the device codename.
-    cm_device_codename = get_cyanogenmod_codename()
-    print('Using device codename: %s\n' % cm_device_codename)
+        # Create the definition using the provided template.
+        shutil.copytree(template_path, definition_path)
 
-    # Detect the CyanogenMod release type.
-    if input_confirm('Use recommended CyanogenMod release type?', True):
-        cm_release_type = get_cyanogenmod_release_type(True)
-    else:
-        cm_release_type = get_cyanogenmod_release_type(False)
-    print('Using release type: %s\n' % cm_release_type)
+        # Configure the definition.
+        if MiaUtils.input_confirm('Configure now?', True):
+            cls.configure_definition()
 
-    # Detect the CyanogenMod release version.
-    if input_confirm('Use recommended CyanogenMod release version?', True):
-        cm_release_version = get_cyanogenmod_release_version(True)
-    else:
-        cm_release_version = get_cyanogenmod_release_version(False)
-    print('Using release version: %s\n' % cm_release_version)
+    @staticmethod
+    def update_definition():
+        definition_path = MiaHandler.get_definition_path()
+        print('Destination directory is:\n - %s\n' % definition_path)
 
-    # The path to the definition settings.yaml file.
-    definition_path = handler.get_definition_path()
-    settings_file = os.path.join(definition_path, 'settings.yaml')
-    settings_file_backup = os.path.join(definition_path, 'settings.orig.yaml')
+        settings = MiaHandler.get_definition_settings()
+        template = settings['general']['template']
+        template_path = MiaHandler.get_template_path(template)
+        print('Using template:\n - %s\n' % template_path)
 
-    # Create a backup of the settings file.
-    shutil.copy(settings_file, settings_file_backup)
+        # Check if the template exists.
+        if not os.path.exists(template_path):
+            print('ERROR: Template "%s" does not exist!' % template)
+            sys.exit(1)
 
-    # Update the settings file.
-    update_settings(settings_file, {'general': {
-        'update': {
-            'cm_device_codename': cm_device_codename,
-            'cm_release_type': cm_release_type,
-            'cm_release_version': cm_release_version,
-        },
-    }})
+        # Create the definition using the provided template.
+        distutils.dir_util.copy_tree(template_path, definition_path)
 
-    # Create the apps lock file.
-    create_apps_lock_file()
+    @classmethod
+    def configure_definition(cls):
+        # Get the android device wrapper.
+        android = MiaAndroid()
 
-    # Download the CyanogenMod OS.
-    if input_confirm('Download CyanogenMod OS now?', True):
-        download_os()
+        # Detect the device codename.
+        cm_device_codename = android.get_cyanogenmod_codename()
+        print('Using device codename: %s\n' % cm_device_codename)
 
-    # Download apps.
-    if input_confirm('Download apps now?', True):
-        download_apps()
+        # Detect the CyanogenMod release type.
+        if MiaUtils.input_confirm('Use recommended CyanogenMod release type?', True):
+            cm_release_type = android.get_cyanogenmod_release_type(True)
+        else:
+            cm_release_type = android.get_cyanogenmod_release_type(False)
+        print('Using release type: %s\n' % cm_release_type)
 
+        # Detect the CyanogenMod release version.
+        if MiaUtils.input_confirm('Use recommended CyanogenMod release version?', True):
+            cm_release_version = android.get_cyanogenmod_release_version(True)
+        else:
+            cm_release_version = android.get_cyanogenmod_release_version(False)
+        print('Using release version: %s\n' % cm_release_version)
 
-# TODO: Implement the APK lock functionality.
-def create_apps_lock_file():
-    # Get the MIA handler singleton.
-    handler = MiaHandler()
+        # The path to the definition settings.yaml file.
+        definition_path = MiaHandler.get_definition_path()
+        settings_file = os.path.join(definition_path, 'settings.yaml')
+        settings_file_backup = os.path.join(definition_path, 'settings.orig.yaml')
 
-    # Get the APK lock data.
-    lock_data = get_apps_lock_info()
+        # Create a backup of the settings file.
+        shutil.copy(settings_file, settings_file_backup)
 
-    definition_path = handler.get_definition_path()
-    lock_file_path = os.path.join(definition_path, 'apps_lock.yaml')
-    print('Creating lock file:\n - %s\n' % lock_file_path)
+        # Update the settings file.
+        MiaUtils.update_settings(settings_file, {'general': {
+            'update': {
+                'cm_device_codename': cm_device_codename,
+                'cm_release_type': cm_release_type,
+                'cm_release_version': cm_release_version,
+            },
+        }})
 
-    fd = open(lock_file_path, 'w')
-    try:
-        fd.write(yaml.dump(lock_data, default_flow_style=False))
-        fd.close()
-    except yaml.YAMLError:
-        print('ERROR: Could not save the lock file!')
-        sys.exit(1)
-    finally:
-        fd.close()
+        # Create the apps lock file.
+        cls.create_apps_lock_file()
 
-    # Download apps.
-    if handler.args['lock'] and input_confirm('Download apps now?', True):
-        download_apps()
+        # Download the CyanogenMod OS.
+        if MiaUtils.input_confirm('Download CyanogenMod OS now?', True):
+            cls.download_os()
 
+        # Download apps.
+        if MiaUtils.input_confirm('Download apps now?', True):
+            cls.download_apps()
 
-def get_apps_lock_info():
-    # Get the MIA handler singleton.
-    handler = MiaHandler()
+    # TODO: Implement the APK lock functionality.
+    @classmethod
+    def create_apps_lock_file(cls):
+        # Get the APK lock data.
+        lock_data = cls.get_apps_lock_info()
 
-    # Read the definition settings.
-    settings = handler.get_definition_settings()
+        definition_path = MiaHandler.get_definition_path()
+        lock_file_path = os.path.join(definition_path, 'apps_lock.yaml')
+        print('Creating lock file:\n - %s\n' % lock_file_path)
 
-    if not settings['defaults']['repository_id']:
-        print('Missing default repository id.')
-        sys.exit(1)
+        fd = open(lock_file_path, 'w')
+        try:
+            fd.write(yaml.dump(lock_data, default_flow_style=False))
+            fd.close()
+        except yaml.YAMLError:
+            print('ERROR: Could not save the lock file!')
+            sys.exit(1)
+        finally:
+            fd.close()
 
-    # Make sure the resources folder exists.
-    resources_path = os.path.join(handler.get_workspace_path(), 'resources')
-    if not os.path.isdir(resources_path):
-        os.makedirs(resources_path, mode=0o755)
+        # Download apps.
+        if MiaHandler.args['lock'] and MiaUtils.input_confirm('Download apps now?', True):
+            cls.download_apps()
 
-    # Download and read info from the index.xml file of all repositories.
-    repositories_data = {}
-    for repo_info in settings['repositories']:
-        index_path = os.path.join(handler.get_workspace_path(), 'resources',
-                                  repo_info['id'] + '.index.xml')
+    @staticmethod
+    def get_apps_lock_info():
+        # Read the definition settings.
+        settings = MiaHandler.get_definition_settings()
 
-        if not os.path.isfile(index_path):
-            index_url = '%s/%s' % (repo_info['url'], 'index.xml')
-            print('Downloading the %s repository information from:\n - %s' %
-                  (repo_info['name'], index_url))
-            urlretrieve(index_url, index_path)
+        if not settings['defaults']['repository_id']:
+            print('Missing default repository id.')
+            sys.exit(1)
 
-        # Parse the repository index file and return the XML root.
-        xml_tree = ElementTree.parse(index_path)
-        if not xml_tree:
-            print('Error parsing file:\n - %s' % index_path)
-        repo_info['tree'] = xml_tree.getroot()
+        # Make sure the resources folder exists.
+        resources_path = os.path.join(MiaHandler.get_workspace_path(), 'resources')
+        if not os.path.isdir(resources_path):
+            os.makedirs(resources_path, mode=0o755)
 
-        repositories_data[repo_info['id']] = repo_info
+        # Download and read info from the index.xml file of all repositories.
+        repositories_data = {}
+        for repo_info in settings['repositories']:
+            index_path = os.path.join(MiaHandler.get_workspace_path(), 'resources', repo_info['id'] + '.index.xml')
 
-    apps_list = []
-    warnings_found = False
-    print('Looking for APKs:')
-    for key, app_info in enumerate(settings['apps']):
-        # Add app to list if download url was provided directly.
-        if 'url' in app_info:
-            lock_info = {
-                'id': app_info['id'],
-                'package_name': os.path.basename(app_info['url']),
-                'package_url': app_info['url'],
-            }
+            if not os.path.isfile(index_path):
+                index_url = '%s/%s' % (repo_info['url'], 'index.xml')
+                print('Downloading the %s repository information from:\n - %s' % (repo_info['name'], index_url))
+                MiaUtils.urlretrieve(index_url, index_path)
 
-            print(' - adding `%s`' % lock_info['id'])
-            apps_list.append(lock_info)
-            continue
+            # Parse the repository index file and return the XML root.
+            xml_tree = ElementTree.parse(index_path)
+            if not xml_tree:
+                print('Error parsing file:\n - %s' % index_path)
+            repo_info['tree'] = xml_tree.getroot()
 
-        # Lookup the app by id and versioncode in the repository index.xml.
-        if 'id' in app_info:
-            # Use the default repository if no repo has been provided.
-            if 'repo' not in app_info:
-                app_info['repo'] = settings['defaults']['repository_id']
+            repositories_data[repo_info['id']] = repo_info
 
-            # Use the latest application version code.
-            if handler.args['--force-latest'] or 'versioncode' not in app_info:
-                app_info['versioncode'] = 'latest'
+        apps_list = []
+        warnings_found = False
+        print('Looking for APKs:')
+        for key, app_info in enumerate(settings['apps']):
+            # Add app to list if download url was provided directly.
+            if 'url' in app_info:
+                lock_info = {
+                    'id': app_info['id'],
+                    'package_name': os.path.basename(app_info['url']),
+                    'package_url': app_info['url'],
+                }
 
-            # Get the application info.
-            lock_info = fdroid_get_app_lock_info(repositories_data, app_info)
-            if lock_info is not None:
-                repo_id = lock_info['repository_id']
-                repo_name = repositories_data[repo_id]['name']
-                msg = ' - found `%s` in the %s repository.'
-                print(msg % (lock_info['id'], repo_name))
+                print(' - adding `%s`' % lock_info['id'])
                 apps_list.append(lock_info)
                 continue
 
-        warnings_found = True
+            # Lookup the app by id and versioncode in the repository index.xml.
+            if 'id' in app_info:
+                # Use the default repository if no repo has been provided.
+                if 'repo' not in app_info:
+                    app_info['repo'] = settings['defaults']['repository_id']
 
-    # Give the user a chance to fix any possible errors.
-    if warnings_found and not input_confirm('Warnings found! Continue?'):
-        sys.exit(1)
+                # Use the latest application version code.
+                if MiaHandler.args['--force-latest'] or 'versioncode' not in app_info:
+                    app_info['versioncode'] = 'latest'
 
-    return apps_list
+                # Get the application info.
+                lock_info = MiaFDroid.fdroid_get_app_lock_info(repositories_data, app_info)
+                if lock_info is not None:
+                    repo_id = lock_info['repository_id']
+                    repo_name = repositories_data[repo_id]['name']
+                    msg = ' - found `%s` in the %s repository.'
+                    print(msg % (lock_info['id'], repo_name))
+                    apps_list.append(lock_info)
+                    continue
 
+            warnings_found = True
 
-def download_apps():
-    # Get the MIA handler singleton.
-    handler = MiaHandler()
+        # Give the user a chance to fix any possible errors.
+        if warnings_found and not MiaUtils.input_confirm('Warnings found! Continue?'):
+            sys.exit(1)
 
-    # Read the definition apps lock data.
-    lock_data = handler.get_definition_apps_lock_data()
+        return apps_list
 
-    for apk_info in lock_data:
-        print(' - downloading: %s' % apk_info['package_url'])
-        download_dir = apk_info.get('path', 'user-apps')
-        download_path = os.path.join(handler.get_definition_path(),
-                                     download_dir)
-        if not os.path.isdir(download_path):
-            os.makedirs(download_path, mode=0o755)
+    @staticmethod
+    def download_apps():
+        # Read the definition apps lock data.
+        lock_data = MiaHandler.get_definition_apps_lock_data()
 
-        apk_path = os.path.join(download_path, apk_info['package_name'])
-        cache_path = os.path.join(handler.get_workspace_path(), 'resources', 'apps')
-        if not os.path.isdir(cache_path):
-            os.makedirs(cache_path, mode=0o755)
+        for apk_info in lock_data:
+            print(' - downloading: %s' % apk_info['package_url'])
+            download_dir = apk_info.get('path', 'user-apps')
+            download_path = os.path.join(MiaHandler.get_definition_path(), download_dir)
+            if not os.path.isdir(download_path):
+                os.makedirs(download_path, mode=0o755)
 
-        path, http_message = urlretrieve(apk_info['package_url'], apk_path, cache_path)
-        if http_message['status_code'] == 200:
-            print('   - downloaded: %s' %
-                  format_file_size(http_message['Content-Length']))
-        elif http_message['status_code'] == 206:
-            print('   - download continued: %s' %
-                  format_file_size(http_message['Content-Length']))
-        elif http_message['status_code'] == 416:
-            print('   - already downloaded. Skipped.')
+            apk_path = os.path.join(download_path, apk_info['package_name'])
+            cache_path = os.path.join(MiaHandler.get_workspace_path(), 'resources', 'apps')
+            if not os.path.isdir(cache_path):
+                os.makedirs(cache_path, mode=0o755)
+
+            path, http_message = MiaUtils.urlretrieve(apk_info['package_url'], apk_path, cache_path)
+            if http_message['status_code'] == 200:
+                print('   - downloaded: %s' % MiaUtils.format_file_size(http_message['Content-Length']))
+            elif http_message['status_code'] == 206:
+                print('   - download continued: %s' % MiaUtils.format_file_size(http_message['Content-Length']))
+            elif http_message['status_code'] == 416:
+                print('   - already downloaded. Skipped.')
+            else:
+                raise Exception('   - error downloading file.')
+
+    @staticmethod
+    def download_os():
+        """
+        Display information to the user on how to download the OS and verify it's
+        checksum.
+        """
+        print('\nNOTE: Command not finished yet; See instructions!\n')
+
+        # Read the definition settings.
+        settings = MiaHandler.get_definition_settings()
+
+        # Create the resources folder.
+        resources_path = os.path.join(MiaHandler.get_workspace_path(), 'resources')
+        if not os.path.isdir(resources_path):
+            os.makedirs(resources_path, mode=0o755)
+
+        url = 'https://download.cyanogenmod.org/?device=%s&type=%s' % (
+            settings['general']['cm_device_codename'],
+            settings['general']['cm_release_type']
+        )
+
+        file_name = MiaHandler.get_os_zip_filename()
+
+        message = '\n'.join((
+            'Download CyanogenMod from:\n - %s',
+            'and save the file as\n - %s',
+            'into the resources folder, and remember to open a new terminal and',
+            'verify the that provided md5 checksum matches the the output of:',
+            ' ~$ md5sum resources/%s',
+        ))
+        print(message % (url, file_name, file_name))
+
+        # Make sure the OS archive exists.
+        zip_file_path = os.path.join(resources_path, file_name)
+        while True:
+            MiaUtils.input_pause('Please follow the instructions before continuing.')
+
+            # Only allow the user to continue if the OS image exists.
+            if os.path.isfile(zip_file_path):
+                break
+
+            # Display message and try again.
+            print('File not found:\n - %s' % zip_file_path)
+
+    @staticmethod
+    def extract_update_binary():
+        # Get the resources folder.
+        resources_path = os.path.join(MiaHandler.get_workspace_path(), 'resources')
+
+        definition_path = MiaHandler.get_definition_path()
+
+        # Get file path.
+        zip_file_path = os.path.join(resources_path, MiaHandler.get_os_zip_filename())
+
+        # The path to the update-binary file inside the zip.
+        update_relative_path = 'META-INF/com/google/android/update-binary'
+
+        print('Extracting the update-binary from:\n - %s' % zip_file_path)
+
+        if os.path.isfile(zip_file_path) and zipfile.is_zipfile(zip_file_path):
+            # Extract the update-binary in the definition.
+            fd = zipfile.ZipFile(zip_file_path)
+
+            # Save the file; taken from ZipFile.extract
+            source = fd.open(update_relative_path)
+            destination = os.path.join(definition_path, 'other', 'update-binary')
+            target = open(destination, 'wb')
+            with source, target:
+                shutil.copyfileobj(source, target)
+            os.chmod(destination, 0o755)
+
+            print('Saved the update-binary to the definition!')
         else:
-            raise Exception('   - error downloading file.')
+            print('File does not exist or is not a zip file.')
 
-
-def download_os():
-    """
-    Display information to the user on how to download the OS and verify it's
-    checksum.
-    """
-    print('\nNOTE: Command not finished yet; See instructions!\n')
-
-    # Get the MIA handler singleton.
-    handler = MiaHandler()
-
-    # Read the definition settings.
-    settings = handler.get_definition_settings()
-
-    # Create the resources folder.
-    resources_path = os.path.join(handler.get_workspace_path(), 'resources')
-    if not os.path.isdir(resources_path):
-        os.makedirs(resources_path, mode=0o755)
-
-    url = 'https://download.cyanogenmod.org/?device=%s&type=%s' % (
-        settings['general']['cm_device_codename'],
-        settings['general']['cm_release_type']
-    )
-
-    file_name = handler.get_os_zip_filename()
-
-    message = '\n'.join((
-        'Download CyanogenMod from:\n - %s',
-        'and save the file as\n - %s',
-        'into the resources folder, and remember to open a new terminal and',
-        'verify the that provided md5 checksum matches the the output of:',
-        ' ~$ md5sum resources/%s',
-    ))
-    print(message % (url, file_name, file_name))
-
-    # Make sure the OS archive exists.
-    zip_file_path = os.path.join(resources_path, file_name)
-    while True:
-        input_pause('Please follow the instructions before continuing.')
-
-        # Only allow the user to continue if the OS image exists.
-        if os.path.isfile(zip_file_path):
-            break
-
-        # Display message and try again.
-        print('File not found:\n - %s' % zip_file_path)
-
-
-def extract_update_binary():
-    # Get the MIA handler singleton.
-    handler = MiaHandler()
-
-    # Get the resources folder.
-    resources_path = os.path.join(handler.get_workspace_path(), 'resources')
-
-    definition_path = handler.get_definition_path()
-
-    # Get file path.
-    zip_file_path = os.path.join(resources_path, handler.get_os_zip_filename())
-
-    # The path to the update-binary file inside the zip.
-    update_relative_path = 'META-INF/com/google/android/update-binary'
-
-    print('Extracting the update-binary from:\n - %s' % zip_file_path)
-
-    if os.path.isfile(zip_file_path) and zipfile.is_zipfile(zip_file_path):
-        # Extract the update-binary in the definition.
-        fd = zipfile.ZipFile(zip_file_path)
-
-        # Save the file; taken from ZipFile.extract
-        source = fd.open(update_relative_path)
-        destination = os.path.join(definition_path, 'other', 'update-binary')
-        target = open(destination, 'wb')
-        with source, target:
-            shutil.copyfileobj(source, target)
-        os.chmod(destination, 0o755)
-
-        print('Saved the update-binary to the definition!')
-    else:
-        print('File does not exist or is not a zip file.')
+# Add command to the list of available commands.
+available_commands['definition'] = {
+    'class': Definition,
+    'help': __doc__,
+}
