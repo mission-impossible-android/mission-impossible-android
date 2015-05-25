@@ -3,8 +3,7 @@ Create and configure a definition in the current workspace using the provided
 template.
 
 Usage:
-    mia definition create [--cpu=<cpu>] [--force] [--template=<template>]
-                          [<definition>]
+    mia definition create [--clean] [--cpu=<cpu>] [--template=<template>] [<definition>]
     mia definition configure <definition>
     mia definition lock [--force-latest] <definition>
     mia definition dl-apps <definition>
@@ -24,8 +23,8 @@ Available sub-commands:
 
 Command options:
     --template=<template>  The template to use. [default: mia-default]
+    --clean                Start by deleting the definition if it already exists.
     --cpu=<cpu>            The device CPU architecture. [default: armeabi]
-    --force                Delete existing definition.
     --force-latest         Force using the latest versions.
 
 
@@ -108,12 +107,11 @@ class Definition(object):
 
         # Make sure the definition does not exist.
         if os.path.exists(definition_path):
-            if MiaHandler.args['--force']:
+            if MiaHandler.args['--clean']:
                 print('Removing the old definition folder...')
                 shutil.rmtree(definition_path)
             else:
-                print('ERROR: Definition "%s" already exists!' %
-                      MiaHandler.args['<definition>'])
+                print('ERROR: Definition "%s" already exists!' % MiaHandler.args['<definition>'])
                 sys.exit(1)
 
         # Get the template name.
