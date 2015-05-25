@@ -32,23 +32,29 @@ Follow the instruction from this repo and use the installed tool to customize
 
 1.  Install the `mia` tool. Test using:
     `mia --version`
+
 2.  Create a definition and follow the instructions presented:
     ```bash
     mkdir ~/mia-workspace && cd ~/mia-workspace
     mia create definition mynexus
     ```
+
 3.  Build the definition:
     ```bash
     mia build definition mynexus
     ```
+
 4.  Reboot the phone into recovery.
+
 5.  Install the generated update.zip file:
     ```bash
     mia install definition mynexus
     ```
+
     NOTE: It will take about 90s to push the zip files onto the devices and
           about 60s for the installation will be finished and you will see the
           OS boot screen.
 6.  Wait a couple of minutes for OS to boot and then open Orbot and make sure
     you are connected to the Tor network.
+
 7.  **Safe surfing!!!**
