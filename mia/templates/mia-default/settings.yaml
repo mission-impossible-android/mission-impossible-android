@@ -75,3 +75,4 @@ apps:
   - id: org.sufficientlysecure.localcalendar
   - id: org.torproject.android
   - id: org.videolan.vlc
+  - id: be.uhasselt.privacypolice
