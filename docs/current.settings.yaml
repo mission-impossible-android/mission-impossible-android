@@ -1,4 +1,4 @@
-config_version: 000
+config_version: 2-beta
 
 general:
   cm_device_codename: grouper
