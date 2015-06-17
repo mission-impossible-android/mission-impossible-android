@@ -23,6 +23,10 @@ repositories:
     name: F-Droid Archive
     url: https://f-droid.org/archive
 
+defaults:
+  repository_id: fdroid
+  install_type: user
+
 apps:
 - id: org.fdroid.fdroid
   versioncode: 830
