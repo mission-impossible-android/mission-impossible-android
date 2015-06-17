@@ -320,7 +320,7 @@ class Definition(object):
 
         for apk_info in lock_data:
             print(' - downloading: %s' % apk_info['package_url'])
-            relative_path = settings['application_types'][apk_info['type']]
+            relative_path = settings['app_types'][apk_info['type']]
             download_path = os.path.join(definition_path, 'archive', relative_path)
             if not os.path.isdir(download_path):
                 os.makedirs(download_path, mode=0o755)
@@ -417,6 +417,7 @@ class Definition(object):
             print('Saved the update-binary to the definition!')
         else:
             print('File does not exist or is not a zip file.')
+
 
 # Add command to the list of available commands.
 available_commands['definition'] = {

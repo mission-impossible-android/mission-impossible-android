@@ -9,7 +9,7 @@ general:
 defaults:
   repository: fdroid
 
-application_types:
+app_types:
   system: system/app
   privileged: system/priv-app
   user: data/app
@@ -26,7 +26,7 @@ repositories:
 apps:
 - id: org.fdroid.fdroid
   versioncode: 830
-  type: system
+  app_type: system
 - id: info.guardianproject.orfox
   url: https://guardianproject.info/builds/OrfoxFennec/latest/OrfoxFennec-debug.apk
 - id: com.artifex.mupdfdemo

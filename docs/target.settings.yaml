@@ -10,9 +10,9 @@ general:
 
 defaults:
   repository_id: fdroid
-  install_type: user
+  app_type: user
 
-application_types:
+app_types:
   system: system/app
   privileged: system/priv-app
   user: data/app
@@ -29,7 +29,7 @@ repositories:
 apps:
 - id: org.fdroid.fdroid
   versioncode: 830
-  type: system
+  app_type: system
 - id: info.guardianproject.orfox
   name: Orfox
   url: https://guardianproject.info/builds/OrfoxFennec/latest/OrfoxFennec-debug.apk

@@ -14,7 +14,7 @@ defaults:
   # The default repository for apps.
   repository_id: fdroid
 
-application_types:
+app_types:
   system: system/app
   privileged: system/priv-app
   user: data/app
@@ -33,7 +33,7 @@ repositories:
 apps:
   - id: org.fdroid.fdroid
     versioncode: 830
-    type: privileged
+    app_type: privileged
   - id: info.guardianproject.orfox
     url: https://guardianproject.info/builds/OrfoxFennec/2014-08-22_23-32-22/OrfoxFennec-debug.apk
   - id: org.anhonesteffort.flock

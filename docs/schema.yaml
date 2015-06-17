@@ -19,7 +19,7 @@ apps: >
 
 defaults:
   repository_id: str()
-  install_type: str(required=False)
+  app_type: str(required=False)
 
 ---
 
@@ -32,22 +32,22 @@ repository:
 app_fdroid_latest:
   id: str()
   repository: str(required=False)
-  install_type: enum('system', 'privileged', 'user', required=False)
+  app_type: enum('system', 'privileged', 'user', required=False)
 
 app_fdroid_version:
   id: str()
   version: str()
   repository: str(required=False)
-  install_type: enum('system', 'privileged', 'user', required=False)
+  app_type: enum('system', 'privileged', 'user', required=False)
 
 app_fdroid_versioncode:
   id: str()
   versioncode: int()
   repository: str(required=False)
-  install_type: enum('system', 'privileged', 'user', required=False)
+  app_type: enum('system', 'privileged', 'user', required=False)
 
 app_direct_download:
   id: str()
   name: str()
   url: str()
-  install_type: enum('system', 'privileged', 'user', required=False)
+  app_type: enum('system', 'privileged', 'user', required=False)

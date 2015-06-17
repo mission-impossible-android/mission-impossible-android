@@ -37,14 +37,14 @@ class Clean(object):
         definition_path = MiaHandler.get_definition_path()
         print('Definition directory is:\n - %s\n' % definition_path)
 
-        for application_type in settings['application_types']:
-            relative_path = settings['application_types'][application_type]
+        for app_type in settings['app_types']:
+            relative_path = settings['app_types'][app_type]
             full_path = os.path.join(definition_path, 'archive', relative_path)
             if not os.path.isdir(full_path):
-                print('No %s apps to remove.' % application_type)
+                print('No %s apps to remove.' % app_type)
                 continue
 
-            print('Removing the %s apps from:\n - %s\n' % (application_type, full_path))
+            print('Removing the %s apps from:\n - %s\n' % (app_type, full_path))
             shutil.rmtree(full_path)
 
     @staticmethod
@@ -79,6 +79,7 @@ class Clean(object):
                 else:
                     print('   - removing file: %s' % item)
                     os.remove(item_path)
+
 
 # Add command to the list of available commands.
 available_commands['clean'] = {
