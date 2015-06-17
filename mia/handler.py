@@ -12,9 +12,9 @@ from pkg_resources import DistributionNotFound, Requirement, resource_filename, 
 class MiaHandler:
     args = {}
     global_args = {}
-    __root_path = None
-    __workspace_path = None
-    __definition_path = None
+    __root_path = ''
+    __workspace_path = ''
+    __definition_path = ''
     __definition_settings = {}
     __definition_apps_lock_data = {}
 

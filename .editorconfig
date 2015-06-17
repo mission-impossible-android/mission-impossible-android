@@ -11,13 +11,18 @@
 # top-most EditorConfig file
 root = true
 
-# Configuration for python files.
-[*.py]
+[*]
 end_of_line = lf
-indent_size = 4
+indent_size = 2
 indent_style = space
 insert_final_newline = true
 trim_trailing_whitespace = true
+
+[*.md]
+trim_trailing_whitespace = false
+
+[*.py]
+indent_size = 4
 
 [Makefile]
 indent_size = 4
