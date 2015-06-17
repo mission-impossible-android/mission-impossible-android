@@ -49,17 +49,6 @@ class Build(object):
             print('Adding "%s" directory to the archive:' % destination)
             cls.add_directory_to_zip(zf, entry, destination)
 
-        # TODO: Maybe remove 'update_content' from settings.yaml?!?
-        for entry in settings['update_content']:
-            entry_base_path = os.path.join(definition_path, entry['src'])
-            if os.path.isdir(entry_base_path):
-                print('Adding "%s" directory to the archive:' % entry['dst'])
-                cls.add_directory_to_zip(zf, entry_base_path, entry['dst'])
-
-            elif os.path.isfile(entry_base_path):
-                print('Adding "%s" file to the archive.' % entry['dst'])
-                zf.write(entry_base_path, entry['dst'])
-
         # Close the ZIP file.
         zf.close()
         print('\n' + 'Finished creating:\n - %s' % zip_path)
