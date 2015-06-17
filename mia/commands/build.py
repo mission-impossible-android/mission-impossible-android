@@ -9,6 +9,7 @@ Usage:
 
 """
 
+import glob
 import os
 import zipfile
 
@@ -35,17 +36,31 @@ class Build(object):
             print('Deleting current build:\n - %s\n' % zip_path)
             os.remove(zip_path)
 
+        # Open a ZIP file.
         zf = zipfile.ZipFile(zip_path, 'w', zipfile.ZIP_DEFLATED)
+
+        archive_root_directory_path = os.path.join(definition_path, 'archive')
+        for entry in glob.glob(archive_root_directory_path + '/*'):
+            # Allow only directories at the root of the generated update.zip
+            if not os.path.isdir(entry):
+                continue
+
+            destination = os.path.basename(entry)
+            print('Adding "%s" directory to the archive:' % destination)
+            cls.add_directory_to_zip(zf, entry, destination)
+
+        # TODO: Maybe remove 'update_content' from settings.yaml?!?
         for entry in settings['update_content']:
             entry_base_path = os.path.join(definition_path, entry['src'])
             if os.path.isdir(entry_base_path):
-                print('Adding "%s" files to the archive:' % entry['dst'])
+                print('Adding "%s" directory to the archive:' % entry['dst'])
                 cls.add_directory_to_zip(zf, entry_base_path, entry['dst'])
 
             elif os.path.isfile(entry_base_path):
                 print('Adding "%s" file to the archive.' % entry['dst'])
                 zf.write(entry_base_path, entry['dst'])
 
+        # Close the ZIP file.
         zf.close()
         print('\n' + 'Finished creating:\n - %s' % zip_path)
 
