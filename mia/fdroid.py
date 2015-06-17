@@ -40,6 +40,7 @@ class MiaFDroid(object):
             app_lock_info['package_name']
         )
         app_lock_info['repository_id'] = repo
+        app_lock_info['type'] = app_info.get('type', 'user')
 
         return app_lock_info
 

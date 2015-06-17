@@ -71,8 +71,7 @@ class Definition(object):
             cls.create_definition()
         elif not os.path.exists(MiaHandler.get_definition_path()):
             # Make sure the definition exists.
-            print('ERROR: Definition "%s" does not exist!' %
-                  MiaHandler.args['<definition>'])
+            print('ERROR: Definition "%s" does not exist!' % MiaHandler.args['<definition>'])
             sys.exit(1)
 
         # Configure the definition.
@@ -112,8 +111,7 @@ class Definition(object):
                 print('Removing the old definition folder...')
                 shutil.rmtree(definition_path)
             else:
-                print('ERROR: Definition "%s" already exists!' %
-                      MiaHandler.args['<definition>'])
+                print('ERROR: Definition "%s" already exists!' % MiaHandler.args['<definition>'])
                 sys.exit(1)
 
         # Get the template name.
@@ -165,15 +163,19 @@ class Definition(object):
         print('Using device codename: %s\n' % cm_device_codename)
 
         # Detect the CyanogenMod release type.
-        if MiaUtils.input_confirm('Use recommended CyanogenMod release type?', True):
-            cm_release_type = android.get_cyanogenmod_release_type(True)
+        default_release_type = android.get_cyanogenmod_release_type(True)
+        message = 'Use recommended [%s] CyanogenMod release type?' % default_release_type
+        if MiaUtils.input_confirm(message, True):
+            cm_release_type = default_release_type
         else:
             cm_release_type = android.get_cyanogenmod_release_type(False)
         print('Using release type: %s\n' % cm_release_type)
 
         # Detect the CyanogenMod release version.
-        if MiaUtils.input_confirm('Use recommended CyanogenMod release version?', True):
-            cm_release_version = android.get_cyanogenmod_release_version(True)
+        default_release_version = android.get_cyanogenmod_release_version(True)
+        message = 'Use recommended [%s] CyanogenMod release version?' % default_release_version
+        if MiaUtils.input_confirm(message, True):
+            cm_release_version = default_release_version
         else:
             cm_release_version = android.get_cyanogenmod_release_version(False)
         print('Using release version: %s\n' % cm_release_version)
@@ -272,6 +274,7 @@ class Definition(object):
                     'id': app_info['id'],
                     'package_name': os.path.basename(app_info['url']),
                     'package_url': app_info['url'],
+                    'type': app_info.get('type', 'user')
                 }
 
                 print(' - adding `%s`' % lock_info['id'])
@@ -311,25 +314,32 @@ class Definition(object):
         # Read the definition apps lock data.
         lock_data = MiaHandler.get_definition_apps_lock_data()
 
+        # Read the definition settings.
+        settings = MiaHandler.get_definition_settings()
+        definition_path = MiaHandler.get_definition_path()
+
         for apk_info in lock_data:
             print(' - downloading: %s' % apk_info['package_url'])
-            download_dir = apk_info.get('path', 'user-apps')
-            download_path = os.path.join(MiaHandler.get_definition_path(), download_dir)
+            relative_path = settings['application_types'][apk_info['type']]
+            download_path = os.path.join(definition_path, 'archive', relative_path)
             if not os.path.isdir(download_path):
                 os.makedirs(download_path, mode=0o755)
 
             apk_path = os.path.join(download_path, apk_info['package_name'])
-            cache_path = os.path.join(MiaHandler.get_workspace_path(), 'resources', 'apps')
-            if not os.path.isdir(cache_path):
-                os.makedirs(cache_path, mode=0o755)
 
-            path, http_message = MiaUtils.urlretrieve(apk_info['package_url'], apk_path, cache_path)
+            # Create the CPU architecture specific apps cache directory.
+            architecture_cache = MiaHandler.args['--cpu'] + '-apps'
+            cache_directory = os.path.join(MiaHandler.get_workspace_path(), 'resources', architecture_cache)
+            if not os.path.isdir(cache_directory):
+                os.makedirs(cache_directory, mode=0o755)
+
+            path, http_message = MiaUtils.urlretrieve(apk_info['package_url'], apk_path, cache_directory)
             if http_message['status_code'] == 200:
                 print('   - downloaded: %s' % MiaUtils.format_file_size(http_message['Content-Length']))
             elif http_message['status_code'] == 206:
                 print('   - download continued: %s' % MiaUtils.format_file_size(http_message['Content-Length']))
             elif http_message['status_code'] == 416:
-                print('   - already downloaded. Skipped.')
+                print('   - already downloaded, using cached apk.')
             else:
                 raise Exception('   - error downloading file.')
 
