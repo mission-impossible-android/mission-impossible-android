@@ -1,4 +1,4 @@
-config_version: map(int(), str())
+config_version: any(int(), str())
 
 general:
   cm_device_codename: str(required=False)
