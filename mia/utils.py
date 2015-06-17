@@ -202,8 +202,7 @@ class MiaUtils(object):
         raw_response_data = stderr.splitlines()[0]
         raw_headers = stderr.splitlines()[1:-1]
 
-        matches = re.match(r'^ *HTTP/[\d\.]+ (?P<code>\d{3}) (?P<msg>[\w ]*)$',
-                           raw_response_data.decode())
+        matches = re.match(r'^ *HTTP/[\d\.]+ (?P<code>\d{3}) (?P<msg>[\w ]*)$', raw_response_data.decode())
 
         response_data = {
             'status_code': int(matches.group('code')),
@@ -212,8 +211,7 @@ class MiaUtils(object):
 
         headers = {}
         for raw_header in iter(raw_headers):
-            matches = re.match(r'^ *(?P<name>[\dA-Za-z\-]+): (?P<value>.+)$',
-                               raw_header.decode())
+            matches = re.match(r'^ *(?P<name>[\dA-Za-z\-]+): (?P<value>.+)$', raw_header.decode())
             if matches:
                 headers[matches.group('name')] = matches.group('value')
 

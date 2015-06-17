@@ -14,28 +14,10 @@ defaults:
   # The default repository for apps.
   repository_id: fdroid
 
-# Mapping of the items in the definition and their place in the update archive.
-update_content:
-  - src: init.d
-    dst: system/etc/init.d
-  - src: META-INF
-    dst: META-INF
-  - src: misc
-    dst: sdcard/misc
-  - src: system-apps
-    dst: system/priv-app
-  - src: system-lib
-    dst: system/lib
-  - src: user-apps
-    dst: data/app
-  - src: user-data
-    dst: data/data
-  - src: other/update-binary
-    dst: META-INF/com/google/android/update-binary
-  - src: other/updater-script
-    dst: META-INF/com/google/android/updater-script
-  - src: other/firstboot.sh
-    dst: data/.firstboot.sh
+app_types:
+  system: system/app
+  privileged: system/priv-app
+  user: data/app
 
 # A list of repositories for the F-Droid application.
 repositories:
@@ -50,8 +32,8 @@ repositories:
 # Apps from the main F-Droid repository.
 apps:
   - id: org.fdroid.fdroid
-    versioncode: 830
-    path: system-apps
+    versioncode: 920
+    app_type: privileged
   - id: info.guardianproject.orfox
     url: https://guardianproject.info/builds/OrfoxFennec/2014-08-22_23-32-22/OrfoxFennec-debug.apk
   - id: org.anhonesteffort.flock

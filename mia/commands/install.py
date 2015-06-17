@@ -72,6 +72,7 @@ class Install(object):
             print('\n' + 'Rebooting the device into recovery...')
             android.reboot_device('recovery')
 
+
 # Add command to the list of available commands.
 available_commands['install'] = {
     'class': Install,

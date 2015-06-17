@@ -4,14 +4,17 @@ Utilities for the mia script.
 
 import os
 import sys
+import yaml
 
 from pkg_resources import DistributionNotFound, Requirement, resource_filename, resource_isdir
+
 
 class MiaHandler:
     args = {}
     global_args = {}
-    __root_path = None
-    __definition_path = None
+    __root_path = ''
+    __workspace_path = ''
+    __definition_path = ''
     __definition_settings = {}
     __definition_apps_lock_data = {}
 
@@ -102,10 +105,8 @@ class MiaHandler:
             definition_path = cls.get_definition_path()
             settings_file = os.path.join(definition_path, 'settings.yaml')
             if not force_update:
-                print('Using definition settings file:\n - %s\n' %
-                      settings_file)
+                print('Using definition settings file:\n - %s\n' % settings_file)
 
-            import yaml
             try:
                 fd = open(settings_file, 'r')
 
@@ -115,7 +116,7 @@ class MiaHandler:
                 fd.close()
             except yaml.YAMLError:
                 print('ERROR: Could not read configuration file!')
-                return None
+                sys.exit(1)
 
             if settings:
                 cls.__definition_settings = settings
@@ -133,7 +134,6 @@ class MiaHandler:
                 print('ERROR: Apps lock file is missing! See: mia help definition')
                 sys.exit(1)
 
-            import yaml
             try:
                 fd = open(lock_file_path, 'r')
 
@@ -143,7 +143,7 @@ class MiaHandler:
                 fd.close()
             except yaml.YAMLError:
                 print('ERROR: Could not read configuration file!')
-                return None
+                sys.exit(1)
 
             if lock_data:
                 cls.__definition_apps_lock_data = lock_data

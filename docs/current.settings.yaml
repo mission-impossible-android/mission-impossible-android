@@ -1,10 +1,18 @@
-config_version: 2
+config_version: 2-beta
 
 general:
   cm_device_codename: grouper
   cm_release_type: snapshot
   cm_release_version: M12
   template: mia-default
+
+defaults:
+  repository: fdroid
+
+app_types:
+  system: system/app
+  privileged: system/priv-app
+  user: data/app
 
 repositories:
   - id: fdroid
@@ -15,16 +23,13 @@ repositories:
     name: F-Droid Archive
     url: https://f-droid.org/archive
 
-defaults:
-  repository: fdroid
-  install_type: user
-
 apps:
 - id: org.fdroid.fdroid
-  vercode: 830
-  install_type: system
+  versioncode: 830
+  app_type: system
 - id: info.guardianproject.orfox
   url: https://guardianproject.info/builds/OrfoxFennec/latest/OrfoxFennec-debug.apk
 - id: com.artifex.mupdfdemo
-- id: com.csipsimple
-- id: org.videolan.vlc
+  version: 1.2.3
+- org.torproject.android
+- org.videolan.vlc

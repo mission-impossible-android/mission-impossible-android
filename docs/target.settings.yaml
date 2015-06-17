@@ -4,7 +4,18 @@ general:
   cm_device_codename: grouper
   cm_release_type: snapshot
   cm_release_version: M12
-  parent_template: mia-default
+  parent_templates:
+    - mia-default
+    - wifi-only
+
+defaults:
+  repository_id: fdroid
+  app_type: user
+
+app_types:
+  system: system/app
+  privileged: system/priv-app
+  user: data/app
 
 repositories:
   - id: fdroid
@@ -15,42 +26,14 @@ repositories:
     name: F-Droid Archive
     url: https://f-droid.org/archive
 
-install_types:
-  - id: system
-    path: system/app
-  - id: privileged
-    path: system/priv-app
-  - id: user
-    path: data/app
-
-defaults:
-  repository_id: fdroid
-  install_type: user
-
 apps:
 - id: org.fdroid.fdroid
   versioncode: 830
-  install_type: system
+  app_type: system
 - id: info.guardianproject.orfox
   name: Orfox
   url: https://guardianproject.info/builds/OrfoxFennec/latest/OrfoxFennec-debug.apk
 - id: com.artifex.mupdfdemo
-  version: "1.2.3"
-- id: com.csipsimple
-- id: com.fsck.k9
-- com.morlunk.mumbleclient
-- com.projectsexception.myapplist.open
-- com.xabber.androiddev
-- de.schildbach.wallet
-- fr.kwiatkowski.ApkTrack
-- indrora.atomic
-- net.osmand.plus
-- org.coolreader
-- org.ethack.orwall
-- org.mariotaku.twidere
-- org.mozilla.fennec_fdroid
-- org.sufficientlysecure.keychain
-- org.nick.cryptfs.passwdmanager
-- org.sufficientlysecure.localcalendar
+  version: 1.2.3
 - org.torproject.android
 - org.videolan.vlc
