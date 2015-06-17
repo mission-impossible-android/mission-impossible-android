@@ -37,17 +37,17 @@ class Clean(object):
 
         user_apps_path = os.path.join(definition_path, 'user-apps')
         if os.path.isdir(user_apps_path):
-            print('Removing the user-apps:\n - %s\n' % user_apps_path)
+            print('Removing the user apps from:\n - %s\n' % user_apps_path)
             shutil.rmtree(user_apps_path)
         else:
-            print('No user-apps.')
+            print('No user apps to remove.')
 
         system_apps_path = os.path.join(definition_path, 'system-apps')
         if os.path.isdir(system_apps_path):
-            print('Removing the system-apps:\n - %s\n' % system_apps_path)
+            print('Removing the system apps from:\n - %s\n' % system_apps_path)
             shutil.rmtree(system_apps_path)
         else:
-            print('No system-apps.')
+            print('No system apps to remove.')
 
     @staticmethod
     def clean_workspace():
