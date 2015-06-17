@@ -16,26 +16,10 @@ defaults:
 
 # Mapping of the items in the definition and their place in the update archive.
 update_content:
-  - src: init.d
-    dst: system/etc/init.d
-  - src: META-INF
-    dst: META-INF
-  - src: misc
-    dst: sdcard/misc
   - src: system-apps
     dst: system/priv-app
-  - src: system-lib
-    dst: system/lib
   - src: user-apps
     dst: data/app
-  - src: user-data
-    dst: data/data
-  - src: other/update-binary
-    dst: META-INF/com/google/android/update-binary
-  - src: other/updater-script
-    dst: META-INF/com/google/android/updater-script
-  - src: other/firstboot.sh
-    dst: data/.firstboot.sh
 
 # A list of repositories for the F-Droid application.
 repositories:
