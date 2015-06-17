@@ -12,7 +12,7 @@ general:
 
 defaults:
   # The default repository for apps.
-  repository_id: fdroid
+  repository: fdroid
 
 app_types:
   system: system/app

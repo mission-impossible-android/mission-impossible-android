@@ -18,7 +18,7 @@ apps: >
   )
 
 defaults:
-  repository_id: str()
+  repository: str()
   app_type: str(required=False)
 
 ---

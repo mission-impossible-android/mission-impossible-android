@@ -8,6 +8,7 @@ general:
 
 defaults:
   repository: fdroid
+  app_type: user
 
 app_types:
   system: system/app
@@ -22,10 +23,6 @@ repositories:
   - id: fdroid_archive
     name: F-Droid Archive
     url: https://f-droid.org/archive
-
-defaults:
-  repository_id: fdroid
-  install_type: user
 
 apps:
 - id: org.fdroid.fdroid

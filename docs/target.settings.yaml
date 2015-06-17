@@ -9,7 +9,7 @@ general:
     - wifi-only
 
 defaults:
-  repository_id: fdroid
+  repository: fdroid
   app_type: user
 
 app_types:
