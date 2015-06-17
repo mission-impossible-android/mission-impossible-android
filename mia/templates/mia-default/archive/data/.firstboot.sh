@@ -78,7 +78,10 @@ done
 /system/bin/settings put global adb_enabled 0
 /system/bin/settings put secure location_providers_allowed ""
 /system/bin/settings put global auto_time 0
-/system/bin/settings put global airplane_mode_on 1 # XXX: Set, but not displayed in UI :/
+
+# GH-94: Enable Airplane Mode and broadcast the event.
+/system/bin/settings put global airplane_mode_on 1
+/system/bin/am broadcast -a android.intent.action.AIRPLANE_MODE --ez state true
 
 # Change hostname for subsequent reboots
 /system/bin/settings put secure device_hostname "localhost"
