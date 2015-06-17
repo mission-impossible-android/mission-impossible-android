@@ -32,22 +32,20 @@ class Clean(object):
             print('ERROR: Please provide a valid definition name! See: mia help definition')
             sys.exit(1)
 
+        # Read the definition settings.
+        settings = MiaHandler.get_definition_settings()
         definition_path = MiaHandler.get_definition_path()
-        print('Destination directory is:\n - %s\n' % definition_path)
+        print('Definition directory is:\n - %s\n' % definition_path)
 
-        user_apps_path = os.path.join(definition_path, 'user-apps')
-        if os.path.isdir(user_apps_path):
-            print('Removing the user apps from:\n - %s\n' % user_apps_path)
-            shutil.rmtree(user_apps_path)
-        else:
-            print('No user apps to remove.')
+        for application_type in settings['application_types']:
+            relative_path = settings['application_types'][application_type]
+            full_path = os.path.join(definition_path, 'archive', relative_path)
+            if not os.path.isdir(full_path):
+                print('No %s apps to remove.' % application_type)
+                continue
 
-        system_apps_path = os.path.join(definition_path, 'system-apps')
-        if os.path.isdir(system_apps_path):
-            print('Removing the system apps from:\n - %s\n' % system_apps_path)
-            shutil.rmtree(system_apps_path)
-        else:
-            print('No system apps to remove.')
+            print('Removing the %s apps from:\n - %s\n' % (application_type, full_path))
+            shutil.rmtree(full_path)
 
     @staticmethod
     def clean_workspace():
