@@ -19,13 +19,6 @@ application_types:
   privileged: system/priv-app
   user: data/app
 
-# Mapping of the items in the definition and their place in the update archive.
-update_content:
-  - src: system-apps
-    dst: system/priv-app
-  - src: user-apps
-    dst: data/app
-
 # A list of repositories for the F-Droid application.
 repositories:
   - id: fdroid
