@@ -8,6 +8,7 @@ general:
 
 defaults:
   repository: fdroid
+  app_type: user
 
 app_types:
   system: system/app

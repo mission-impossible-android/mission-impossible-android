@@ -237,8 +237,8 @@ class Definition(object):
         # Read the definition settings.
         settings = MiaHandler.get_definition_settings()
 
-        if not settings['defaults']['repository_id']:
-            print('Missing default repository id.')
+        if not settings['defaults']['repository']:
+            print('Missing default repository setting.')
             sys.exit(1)
 
         # Make sure the resources folder exists.
@@ -285,7 +285,7 @@ class Definition(object):
             if 'id' in app_info:
                 # Use the default repository if no repo has been provided.
                 if 'repo' not in app_info:
-                    app_info['repo'] = settings['defaults']['repository_id']
+                    app_info['repo'] = settings['defaults']['repository']
 
                 # Use the latest application version code.
                 if MiaHandler.args['--force-latest'] or 'versioncode' not in app_info:
@@ -294,7 +294,7 @@ class Definition(object):
                 # Get the application info.
                 lock_info = MiaFDroid.fdroid_get_app_lock_info(repositories_data, app_info)
                 if lock_info is not None:
-                    repo_id = lock_info['repository_id']
+                    repo_id = lock_info['repository']
                     repo_name = repositories_data[repo_id]['name']
                     msg = ' - found `%s` in the %s repository.'
                     print(msg % (lock_info['id'], repo_name))
