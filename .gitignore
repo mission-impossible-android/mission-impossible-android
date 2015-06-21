@@ -10,7 +10,8 @@ __pycache__/
 /definitions/
 /resources/
 /templates
-*-ignore
+*--ignore
+*--ignore.*
 
 # Ignore virtual environment files.
 /.venv/
