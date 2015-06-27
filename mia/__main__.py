@@ -136,8 +136,7 @@ def main():
     # Use options_first to force reading the global options only.
     global_args = docopt(__doc__, version=__version__, options_first=True)
 
-    # Create the MiaHandler instance. It can be used in other modules in order
-    # to retrieve arguments, configuration, a logger...
+    # Set the MiaHandler class variables.
     MiaHandler(ROOT, WORKSPACE, global_args)
 
     try:

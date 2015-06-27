@@ -8,7 +8,7 @@ from mia.handler import MiaHandler
 
 # Replace the input() function in Python 2 with raw_input.
 try:
-    if sys.version_info[0] == 2:
+    if sys.version_info.major == 2:
         import __builtin__
         input = getattr(__builtin__, 'raw_input', input)
 except ImportError or NameError:

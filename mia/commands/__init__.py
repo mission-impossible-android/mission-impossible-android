@@ -2,6 +2,7 @@
 This sub-module contains the commands for "mia".
 """
 
+# Each command should expose it's main class and doc string.
 available_commands = {}
 
 # Populate the available commands with classes and help information.
