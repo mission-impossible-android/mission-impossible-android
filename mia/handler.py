@@ -33,8 +33,7 @@ class MiaHandler:
     @classmethod
     def log(cls, msg, log_type='info'):
         # Display the message to the user.
-        if cls.global_args['--verbose']:
-            print(msg)
+        print(msg)
 
         # Log the message.
         import logging

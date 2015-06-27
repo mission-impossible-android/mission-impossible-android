@@ -17,8 +17,6 @@ Usage:
 Global options:
     --commands  Displays a list of available commands or sub-commands.
     --options   Displays a list of global or command specific options.
-    --quiet     Restrict output to warnings and errors.
-    --verbose   Spew out even more information than normal.
     --help      Show this screen.
     --version   Show version.
 
