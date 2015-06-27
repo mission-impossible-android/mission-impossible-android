@@ -1,7 +1,8 @@
 """
-Utilities for the mia script.
+Main handler for the mia script.
 """
 
+import logging
 import os
 import sys
 import yaml
@@ -34,9 +35,6 @@ class MiaHandler:
     def log(cls, msg, log_type='info'):
         # Display the message to the user.
         print(msg)
-
-        # Log the message.
-        import logging
 
         if log_type == 'info':
             logging.info(msg)

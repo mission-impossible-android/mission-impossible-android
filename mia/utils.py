@@ -1,8 +1,16 @@
+"""
+Utilities for the mia script.
+"""
+
+import math
+import operator
 import os
 import re
 import shutil
 import subprocess
 import sys
+import yaml
+from distutils.version import StrictVersion
 
 from mia.handler import MiaHandler
 
@@ -82,7 +90,6 @@ class MiaUtils(object):
 
             # Limit the allowed characters.
             if not free_text:
-                import re
                 if not re.search(r'^[a-z][a-z0-9-]+$', value):
                     print('A sting containing letters, numbers, hyphens.')
                     print('The string must start with a letter.')
@@ -93,8 +100,6 @@ class MiaUtils(object):
     # TODO: Find a way to keep comments in the setting files.
     @staticmethod
     def update_settings(settings_file, changes):
-        import yaml
-
         # Make sure the settings file exists.
         if not os.path.isfile(settings_file):
             print('Settings file "%s" not found' % settings_file)
@@ -152,7 +157,6 @@ class MiaUtils(object):
 
     @staticmethod
     def format_file_size(file_size, precision=2):
-        import math
         file_size = int(file_size)
 
         if file_size is 0:
@@ -234,11 +238,9 @@ class MiaUtils(object):
         """
         Compare two Semantic Versions.
         @see http://semver.org/spec/v2.0.0.html
+        @see https://docs.python.org/3.4/library/operator.html
         """
-        # @see https://docs.python.org/3.4/library/operator.html
-        import operator
 
-        from distutils.version import StrictVersion
         return getattr(operator, func)(
             StrictVersion(version1),
             StrictVersion(version2)
