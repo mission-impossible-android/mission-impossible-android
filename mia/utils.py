@@ -2,6 +2,7 @@
 Utilities for the mia script.
 """
 
+import hashlib
 import math
 import operator
 import os
@@ -96,6 +97,34 @@ class MiaUtils(object):
                     continue
 
             return value
+
+    @staticmethod
+    def get_file_hash(file_path):
+        # Read the file and compute the it's hash.
+        return hashlib.sha256(open(file_path, 'rb').read()).hexdigest()
+
+    @classmethod
+    def create_hash_file(cls, file_path):
+        # Get the human readable file size.
+        file_size = os.path.getsize(file_path)
+        file_size = cls.format_file_size(file_size)
+
+        # Get the file hash.
+        print(' - computing hash of {}'. format(file_size))
+        zip_hash_value = cls.get_file_hash(file_path)
+
+        hash_file_path = '.'.join((file_path, 'SHA256SUM'))
+        if os.path.exists(hash_file_path):
+            os.remove(hash_file_path)
+
+        # Save the hash to a file.
+        hf = open(hash_file_path, mode='w')
+        # The '*' specifies that the file should be read in binary mode.
+        hf.write(' *'.join((
+            zip_hash_value,
+            os.path.basename(file_path),
+        )))
+        hf.close()
 
     # TODO: Find a way to keep comments in the setting files.
     @staticmethod
