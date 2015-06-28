@@ -32,8 +32,8 @@ repositories:
 # Apps from the main F-Droid repository.
 apps:
   - id: org.fdroid.fdroid
-    versioncode: 930
-    hash: 436e676d9b965ae50175e08513d29e73236b0dddca7b80dd4dd50711268f5dce
+    versioncode: 920
+    hash: 0e949b83d48d882ce70e1e405d25173f572b32623a8a8f58394193d3eac08f31
     app_type: privileged
   - id: info.guardianproject.orfox
     name: info.guardianproject.orfox.20140822.apk
