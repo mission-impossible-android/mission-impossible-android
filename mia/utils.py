@@ -239,7 +239,16 @@ class MiaUtils(object):
         raw_response_data = stderr.splitlines()[0]
         raw_headers = stderr.splitlines()[1:-1]
 
-        matches = re.match(r'^ *HTTP/[\d\.]+ (?P<code>\d{3}) (?P<msg>[\w ]*)$', raw_response_data.decode())
+        if sys.version_info.major == 2:
+            # In PY2 raw_response_data is actually a string
+            response_message = raw_response_data
+        else:
+            response_message = raw_response_data.decode()
+
+        matches = re.match(r'^ *HTTP/[\d\.]+ (?P<code>\d{3}) (?P<msg>[\w ]*)$', response_message)
+
+        if matches is None:
+            sys.exit('Error downloading file:\n{}'.format(response_message))
 
         response_data = {
             'status_code': int(matches.group('code')),

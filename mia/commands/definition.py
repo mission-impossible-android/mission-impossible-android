@@ -208,7 +208,6 @@ class Definition(object):
         if MiaUtils.input_confirm('Download apps now?', True):
             cls.download_apps()
 
-    # TODO: Implement the APK lock functionality.
     @classmethod
     def create_apps_lock_file(cls):
         # Get the APK lock data.
@@ -367,13 +366,14 @@ class Definition(object):
                 if not MiaUtils.input_confirm('Continue?', True):
                     sys.exit('Download aborted!')
 
+            # TODO: Verify signatures?!?
             if os.path.exists(apk_path) and 'hash' in apk_info:
                 apk_hash_value = MiaUtils.get_file_hash(apk_path, apk_info['hash_type'])
 
                 if apk_hash_value != apk_info['hash']:
                     sys.exit('WARNING: Unexpected hash for downloaded apk!')
 
-        print('Finished downloading APKs.')
+        print('Finished downloading APKs and verifying their hash values.')
 
     @staticmethod
     def download_os():
