@@ -115,8 +115,15 @@ class MiaHandler:
                 print('ERROR: Could not read configuration file!')
                 sys.exit(1)
 
-            if settings:
-                cls.__definition_settings = settings
+            # Set 'user' as default app_type if none was provided.
+            if 'app_type' not in settings['defaults']:
+                settings['defaults']['app_type'] = 'user'
+
+            # Set 'sha256' as default hash_type if none was provided.
+            if 'hash_type' not in settings['defaults']:
+                settings['defaults']['hash_type'] = 'sha256'
+
+            cls.__definition_settings = settings
 
         return cls.__definition_settings
 
