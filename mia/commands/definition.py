@@ -363,7 +363,15 @@ class Definition(object):
             elif http_message['status_code'] == 416:
                 print('   - already downloaded, using cached apk.')
             else:
-                raise Exception('   - error downloading file.')
+                print('   - error downloading file.')
+                if not MiaUtils.input_confirm('Continue?', True):
+                    sys.exit('Download aborted!')
+
+            if os.path.exists(apk_path) and 'hash' in apk_info:
+                apk_hash_value = MiaUtils.get_file_hash(apk_path, apk_info['hash_type'])
+
+                if apk_hash_value != apk_info['hash']:
+                    sys.exit('WARNING: Unexpected hash for downloaded apk!')
 
         print('Finished downloading APKs.')
 

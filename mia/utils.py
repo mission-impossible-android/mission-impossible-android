@@ -99,9 +99,13 @@ class MiaUtils(object):
             return value
 
     @staticmethod
-    def get_file_hash(file_path):
+    def get_file_hash(file_path, hash_type='sha256'):
         # Read the file and compute the it's hash.
-        return hashlib.sha256(open(file_path, 'rb').read()).hexdigest()
+        if hash_type not in hashlib.algorithms_available:
+            raise ValueError('Unknown hash type: {}'.format(hash_type))
+
+        with open(file_path, 'rb') as file_object:
+            return hashlib.new(hash_type, file_object.read()).hexdigest()
 
     @classmethod
     def create_hash_file(cls, file_path):
