@@ -79,7 +79,7 @@ class Build(object):
             if os.path.exists(hash_file_path):
                 os.remove(hash_file_path)
 
-        print('Build finished successfully:', ' - {}'.format(zip_path), sep='\n')
+        print('Build finished successfully:\n - {}'.format(zip_path))
 
         return None
 
