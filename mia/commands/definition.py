@@ -372,6 +372,8 @@ class Definition(object):
 
                 if apk_hash_value != apk_info['hash']:
                     sys.exit('WARNING: Unexpected hash for downloaded apk!')
+                else:
+                    print('   - file hash is OK.')
 
         print('Finished downloading APKs and verifying their hash values.')
 
