@@ -46,6 +46,11 @@ class MiaFDroid(object):
 
     @staticmethod
     def _fdroid_index_get_app_info(tag, target_versioncode):
+        """
+        :type tag: xml.etree.ElementTree.Element
+        :type target_versioncode: str
+        :rtype: dict
+        """
         package = None
         if target_versioncode == 'latest':
             package = tag.find('package')
@@ -64,4 +69,6 @@ class MiaFDroid(object):
             'name': tag.find('name').text,
             'package_name': package.find('apkname').text,
             'package_versioncode': package.find('versioncode').text,
+            'hash': package.find('hash').text,
+            'hash_type': package.find('hash').get('type'),
         }

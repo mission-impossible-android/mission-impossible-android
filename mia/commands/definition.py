@@ -272,9 +272,11 @@ class Definition(object):
             if 'url' in app_info:
                 lock_info = {
                     'id': app_info['id'],
-                    'package_name': os.path.basename(app_info['url']),
+                    'package_name': app_info['name'],
                     'package_url': app_info['url'],
-                    'type': app_info.get('type', 'user')
+                    'type': app_info.get('type', settings['defaults']['app_type']),
+                    'hash': app_info['hash'],
+                    'hash_type': app_info.get('hash_type', settings['defaults']['hash_type']),
                 }
 
                 print(' - adding `%s`' % lock_info['id'])
@@ -283,9 +285,17 @@ class Definition(object):
 
             # Lookup the app by id and versioncode in the repository index.xml.
             if 'id' in app_info:
-                # Use the default repository if no repo has been provided.
+                # Use the default repository if it has not been provided.
                 if 'repo' not in app_info:
                     app_info['repo'] = settings['defaults']['repository']
+
+                # Use the default app_type if it has not been provided.
+                if 'type' not in app_info:
+                    app_info['type'] = settings['defaults']['app_type']
+
+                # Use the default hash_type if it has not been provided.
+                if 'hash' in app_info and 'hash_type' not in app_info:
+                    app_info['hash_type'] = settings['defaults']['hash_type']
 
                 # Use the latest application version code.
                 if MiaHandler.args['--force-latest'] or 'versioncode' not in app_info:
@@ -293,19 +303,31 @@ class Definition(object):
 
                 # Get the application info.
                 lock_info = MiaFDroid.fdroid_get_app_lock_info(repositories_data, app_info)
-                if lock_info is not None:
-                    repo_id = lock_info['repository']
-                    repo_name = repositories_data[repo_id]['name']
-                    msg = ' - found `%s` in the %s repository.'
-                    print(msg % (lock_info['id'], repo_name))
-                    apps_list.append(lock_info)
+
+                if lock_info is None:
+                    msg = ' - app `%s` is missing'
+                    print(msg % (app_info['id']))
+                    warnings_found = True
                     continue
 
-            warnings_found = True
+                repo_id = lock_info['repository']
+                repo_name = repositories_data[repo_id]['name']
+
+                if 'hash' in lock_info and 'hash' in app_info and lock_info['hash'] != app_info['hash']:
+                    msg = ' - mismatching hash for `%s` in the %s repository.'
+                    print(msg % (lock_info['id'], repo_name))
+                    warnings_found = True
+                    continue
+
+                msg = ' - found `%s` in the %s repository.'
+                print(msg % (lock_info['id'], repo_name))
+                apps_list.append(lock_info)
 
         # Give the user a chance to fix any possible errors.
-        if warnings_found and not MiaUtils.input_confirm('Warnings found! Continue?'):
-            sys.exit(1)
+        if warnings_found:
+            msg = 'Warnings found, some APKs will not be downloaded! Continue?'
+            if not MiaUtils.input_confirm(msg):
+                sys.exit(1)
 
         return apps_list
 
@@ -342,6 +364,8 @@ class Definition(object):
                 print('   - already downloaded, using cached apk.')
             else:
                 raise Exception('   - error downloading file.')
+
+        print('Finished downloading APKs.')
 
     @staticmethod
     def download_os():
