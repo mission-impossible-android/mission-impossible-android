@@ -92,7 +92,7 @@ class MiaAndroid(object):
     def set_open_recovery_script(cls):
         # Push the open recovery script to the device.
         script_path = os.path.join(MiaHandler.get_definition_path(), 'other', 'openrecoveryscript')
-        cls.push_file_to_device('file', script_path, '/sdcard/openrecoveryscript')
+        cls.push_file('file', script_path, '/sdcard/openrecoveryscript')
 
         # TODO: See whether `su` is really required, works fine in recovery mode?!?
         command = 'su root cp /sdcard/openrecoveryscript /cache/recovery/openrecoveryscript'
@@ -107,7 +107,7 @@ class MiaAndroid(object):
             raise RuntimeError('Could not set the open recovery script!')
 
     @classmethod
-    def push_file_to_device(cls, source_type, source, destination):
+    def push_file(cls, source_type, source, destination):
         # Get the file size.
         file_size = os.path.getsize(source)
 

@@ -55,11 +55,11 @@ class Install(object):
         android = MiaAndroid()
 
         # Push the mia-update.zip to the device.
-        android.push_file_to_device('update archive', update_zip_path, '/sdcard/mia-update.zip')
+        android.push_file('update archive', update_zip_path, '/sdcard/mia-update.zip')
 
         # Push the mia-os.zip to the device.
         if not MiaHandler.args['--skip-os']:
-            android.push_file_to_device('OS archive', os_zip_path, '/sdcard/mia-os.zip')
+            android.push_file('OS archive', os_zip_path, '/sdcard/mia-os.zip')
 
         if MiaHandler.args['--push-only']:
             print('\n' + 'Finished pushing the files onto the device.')
