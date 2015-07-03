@@ -5,7 +5,9 @@ information about the software or device.
 
 import re
 import os
+import sys
 import subprocess
+from tempfile import mkstemp
 
 # Import custom helpers.
 from mia.handler import MiaHandler
@@ -134,3 +136,39 @@ class MiaAndroid(object):
         adb_exit_code = subprocess.call(['adb'] + adb_arguments)
         if adb_exit_code != 0:
             raise RuntimeError('Could not push to the device!')
+
+    @classmethod
+    def push_hash_for_file(cls, hash_type, source, destination):
+        source_path = '.'.join((source, hash_type))
+        destination_path = '.'.join((destination, hash_type))
+
+        try:
+            with open(source_path, 'r') as source_file:
+                """:type sourcefile: FileIO"""
+                """:type temp_file: FileIO"""
+
+                # Read the file content.
+                source_content = source_file.read()
+
+                # Update the content.
+                destination_content = source_content.replace(
+                    os.path.basename(source),
+                    os.path.basename(destination)
+                )
+
+                # Create a temporary file.
+                tfd, temp_file_path = mkstemp(suffix='.mia_hash_file', text=True)
+
+                # Save the content to the temporary file
+                with open(temp_file_path, 'w') as temp_file:
+                    temp_file.write(destination_content)
+        except IOError:
+            print('ERROR: Could not open file:\n - %s' % source)
+            sys.exit(1)
+
+        # Push the file onto the devices.
+        cls.push_file('hash file', temp_file_path, destination_path)
+
+        # Delete the temporary file.
+        if os.path.exists(temp_file_path):
+            os.unlink(temp_file_path)
