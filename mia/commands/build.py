@@ -50,7 +50,7 @@ class Build(object):
         # Open a ZIP file.
         zf = zipfile.ZipFile(zip_path, mode='w', compression=zipfile.ZIP_DEFLATED)
 
-        # TODO: Verify available hashes for files added to the generated update.zip.
+        # Build the ZIP file.
         archive_root_directory_path = os.path.join(definition_path, 'archive')
         for entry in glob.glob(archive_root_directory_path + '/*'):
             # Allow only directories at the root of the generated update.zip
@@ -71,11 +71,12 @@ class Build(object):
         # Only generate hash upon successful build. Keeping the old hash
         # will help prevent installing broken update.zip files.
         if not MiaHandler.args['--no-hash']:
-            # TODO: Verify hash during the install process.
-            MiaUtils.create_hash_file(zip_path)
+            # NOTE: For now the TWRP OpenRecoveryScript only supports md5.
+            # @see https://github.com/TeamWin/Team-Win-Recovery-Project/issues/450
+            MiaUtils.create_hash_file(zip_path, 'md5')
         else:
             # Remove hash from previous build.
-            hash_file_path = '.'.join((zip_path, 'SHA256SUM'))
+            hash_file_path = '.'.join((zip_path, 'md5'))
             if os.path.exists(hash_file_path):
                 os.remove(hash_file_path)
 

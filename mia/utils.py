@@ -108,16 +108,16 @@ class MiaUtils(object):
             return hashlib.new(hash_type, file_object.read()).hexdigest()
 
     @classmethod
-    def create_hash_file(cls, file_path):
+    def create_hash_file(cls, file_path, hash_type):
         # Get the human readable file size.
         file_size = os.path.getsize(file_path)
         file_size = cls.format_file_size(file_size)
 
         # Get the file hash.
         print(' - computing hash of {}'. format(file_size))
-        zip_hash_value = cls.get_file_hash(file_path)
+        zip_hash_value = cls.get_file_hash(file_path, hash_type)
 
-        hash_file_path = '.'.join((file_path, 'SHA256SUM'))
+        hash_file_path = '.'.join((file_path, hash_type))
         if os.path.exists(hash_file_path):
             os.remove(hash_file_path)
 
@@ -128,6 +128,7 @@ class MiaUtils(object):
             zip_hash_value,
             os.path.basename(file_path),
         )))
+        hf.write('')  # Add an extra empty line.
         hf.close()
 
     # TODO: Find a way to keep comments in the setting files.
