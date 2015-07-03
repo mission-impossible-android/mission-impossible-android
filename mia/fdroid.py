@@ -10,9 +10,9 @@ class MiaFDroid(object):
         app_lock_info = None
 
         # Prepare a list of repositories to look into.
-        repositories = [app_info['repo']]
-        if 'fallback' in data[app_info['repo']]:
-            repositories.append(data[app_info['repo']]['fallback'])
+        repositories = [app_info['repository']]
+        if 'fallback' in data[app_info['repository']]:
+            repositories.append(data[app_info['repository']]['fallback'])
 
         for repo in repositories:
             # TODO: Improve detection!

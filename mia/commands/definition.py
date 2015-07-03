@@ -285,8 +285,8 @@ class Definition(object):
             # Lookup the app by id and versioncode in the repository index.xml.
             if 'id' in app_info:
                 # Use the default repository if it has not been provided.
-                if 'repo' not in app_info:
-                    app_info['repo'] = settings['defaults']['repository']
+                if 'repository' not in app_info:
+                    app_info['repository'] = settings['defaults']['repository']
 
                 # Use the default app_type if it has not been provided.
                 if 'type' not in app_info:
