@@ -25,12 +25,12 @@ repositories:
     url: https://f-droid.org/archive
 
 apps:
-- id: org.fdroid.fdroid
-  versioncode: 830
-  app_type: system
-- id: info.guardianproject.orfox
-  url: https://guardianproject.info/builds/OrfoxFennec/latest/OrfoxFennec-debug.apk
-- id: com.artifex.mupdfdemo
-  version: 1.2.3
-- org.torproject.android
-- org.videolan.vlc
+  - id: org.fdroid.fdroid
+    versioncode: 830
+    app_type: system
+  - id: info.guardianproject.orfox
+    url: https://guardianproject.info/builds/OrfoxFennec/latest/OrfoxFennec-debug.apk
+  - id: com.artifex.mupdfdemo
+    version: 1.2.3
+  - org.torproject.android
+  - org.videolan.vlc

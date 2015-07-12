@@ -2,6 +2,7 @@
 Utilities for the mia script.
 """
 
+import hashlib
 import math
 import operator
 import os
@@ -96,6 +97,39 @@ class MiaUtils(object):
                     continue
 
             return value
+
+    @staticmethod
+    def get_file_hash(file_path, hash_type='sha256'):
+        # Read the file and compute the it's hash.
+        if hash_type not in hashlib.algorithms_available:
+            raise ValueError('Unknown hash type: {}'.format(hash_type))
+
+        with open(file_path, 'rb') as file_object:
+            return hashlib.new(hash_type, file_object.read()).hexdigest()
+
+    @classmethod
+    def create_hash_file(cls, file_path, hash_type):
+        # Get the human readable file size.
+        file_size = os.path.getsize(file_path)
+        file_size = cls.format_file_size(file_size)
+
+        # Get the file hash.
+        print(' - computing hash of {}'. format(file_size))
+        zip_hash_value = cls.get_file_hash(file_path, hash_type)
+
+        hash_file_path = '.'.join((file_path, hash_type))
+        if os.path.exists(hash_file_path):
+            os.remove(hash_file_path)
+
+        # Save the hash to a file.
+        hf = open(hash_file_path, mode='w')
+        # The '*' specifies that the file should be read in binary mode.
+        hf.write(' *'.join((
+            zip_hash_value,
+            os.path.basename(file_path),
+        )))
+        hf.write('')  # Add an extra empty line.
+        hf.close()
 
     # TODO: Find a way to keep comments in the setting files.
     @staticmethod
@@ -206,7 +240,16 @@ class MiaUtils(object):
         raw_response_data = stderr.splitlines()[0]
         raw_headers = stderr.splitlines()[1:-1]
 
-        matches = re.match(r'^ *HTTP/[\d\.]+ (?P<code>\d{3}) (?P<msg>[\w ]*)$', raw_response_data.decode())
+        if sys.version_info.major == 2:
+            # In PY2 raw_response_data is actually a string
+            response_message = raw_response_data
+        else:
+            response_message = raw_response_data.decode()
+
+        matches = re.match(r'^ *HTTP/[\d\.]+ (?P<code>\d{3}) (?P<msg>[\w ]*)$', response_message)
+
+        if matches is None:
+            sys.exit('Error downloading file:\n{}'.format(response_message))
 
         response_data = {
             'status_code': int(matches.group('code')),

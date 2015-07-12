@@ -33,11 +33,17 @@ repositories:
 apps:
   - id: org.fdroid.fdroid
     versioncode: 920
+    hash: 0e949b83d48d882ce70e1e405d25173f572b32623a8a8f58394193d3eac08f31
     app_type: privileged
   - id: info.guardianproject.orfox
+    name: info.guardianproject.orfox.20140822.apk
     url: https://guardianproject.info/builds/OrfoxFennec/2014-08-22_23-32-22/OrfoxFennec-debug.apk
+    hash: 90b5a851ac855d2e58a9f09fd4c6eda4977e9746fa1ddca766d30549621722fc
   - id: org.anhonesteffort.flock
+    name: org.anhonesteffort.flock.v27.apk
+    # @see https://flock-supplychain.anhonesteffort.org/packages/org.anhonesteffort.flock/current
     url: https://flock-supplychain.s3.amazonaws.com/apks/org.anhonesteffort.flock-4b93f078-cae6-4997-a1c2-ef833b2ac2c1.apk
+    hash: b92a03e8bea7fad9bda5bb31b4d6f2f4d859f7a05436f27f86da32331f37e271
   - id: com.artifex.mupdfdemo
   - id: com.csipsimple
   - id: com.fsck.k9
