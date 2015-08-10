@@ -2,11 +2,10 @@
 Install MIA custom ROM to a device (real or emulated).
 
 Usage:
-    mia install [--build] [--emulator] [--no-reboot] [--push-only] [--skip-os] <definition>
+    mia install [--emulator] [--no-reboot] [--push-only] [--skip-os] <definition>
     mia install --help
 
 Command options:
-    --build      Build the definition before installing it.
     --emulator   Use running emulator instead of a real device.
     --no-reboot  Do not reboot the device once all the files are in place.
     --push-only  Only push the OS and update zips.
@@ -22,7 +21,7 @@ import os
 import sys
 
 # Import custom helpers.
-from mia.commands import available_commands, Build
+from mia.commands import available_commands
 from mia.android import MiaAndroid
 from mia.handler import MiaHandler
 
@@ -30,10 +29,6 @@ from mia.handler import MiaHandler
 class Install(object):
     @staticmethod
     def main():
-        if MiaHandler.args['--build']:
-            build_command_handler = Build()
-            build_command_handler.main()
-
         # Push the update archive and hash file to the device.
         Install.push_update_zip()
 
