@@ -66,6 +66,7 @@ class Build(object):
         bad_file = zf.testzip()
         zf.close()
         if bad_file:
+            os.remove(zip_path)
             sys.exit('Created zip file is corrupted: {!r}'.format(bad_file))
 
         # Only generate hash upon successful build. Keeping the old hash
