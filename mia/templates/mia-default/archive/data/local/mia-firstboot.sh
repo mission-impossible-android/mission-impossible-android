@@ -1,5 +1,6 @@
 #!/system/bin/sh
 # One time fixup script to fix installed APP permissions
+# TODO: Encrypt the user data on FirstBoot; @see GH-104
 
 # Based on:
 # https://raw.githubusercontent.com/CyanogenMod/android_vendor_cyanogen/a013434bb46bb06bf0b7c83817cbcfaf040c5874/prebuilt/common/bin/fix_permissions
@@ -112,7 +113,3 @@ rm -rf $MISC_DIR
 
 # Remove self
 rm $0 >> /sdcard/init.log
-
-# XXX: Seems to fail? causes a reboot loop when enabled, and will mess with
-# the settings wizard anyway :/.
-#/system/bin/vdc cryptfs enablecrypto inplace thisisapassword
