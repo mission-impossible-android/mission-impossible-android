@@ -1,6 +1,7 @@
 #!/system/bin/sh
 # One time fixup script to fix installed APP permissions
 # TODO: Encrypt the user data on FirstBoot; @see GH-104
+# TODO: Find a way to set the time zone.
 
 # Based on:
 # https://raw.githubusercontent.com/CyanogenMod/android_vendor_cyanogen/a013434bb46bb06bf0b7c83817cbcfaf040c5874/prebuilt/common/bin/fix_permissions
@@ -113,13 +114,9 @@ am startservice org.torproject.android/org.torproject.android.service.TorService
 # TODO: Investigate why this doesn't happen on its own.
 am broadcast -a android.intent.action.BOOT_COMPLETED -n org.ethack.orwall/.BootBroadcast
 
-# Start time settings app so the user can set the clock.
-# FIXME: This could be done better with our own wizard, or maybe even if we
-# call into only specific activities of the CM one.
-am start -a android.intent.action.MAIN -n 'com.android.settings/.Settings$DateTimeSettingsActivity'
-
 # Remove setup MISC_DIR
 rm -rf $MISC_DIR
+
 
 # We want this FirstBoot script to run only once.
 fb_logger "Finished running script: $0"
