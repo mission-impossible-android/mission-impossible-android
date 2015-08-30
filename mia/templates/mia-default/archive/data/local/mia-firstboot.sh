@@ -95,7 +95,7 @@ echo localhost > /proc/sys/kernel/hostname
 # directory prior to that.  Starting this service happens to check for these
 # directories and generate them if missing (which they are on first boot).
 #
-# This is a hack, and race conditions might occur if the .firstboot.sh script gets to long.
+# This is a hack, and race conditions might occur if the mia-firstboot.sh script gets to long.
 am startservice org.torproject.android/org.torproject.android.service.TorService
 
 # Fake BOOT_COMPLETE to force orwall to apply rules in background.

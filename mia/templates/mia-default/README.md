@@ -2,7 +2,7 @@
 ## The `archive` directory
 This directory will be the root of the generated `mia-update.zip`.
 
-* `/data/.firstboot.sh`:
+* `/data/local/mia-firstboot.sh`:
   This simple bash script will be executed on the first boot by 
   `/system/etc/init.d/Y02firstboot`
   TODO: Rename, we don't really want hidden dot files in the archive.
