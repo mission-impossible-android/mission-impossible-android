@@ -19,6 +19,19 @@ SIP_APP=com.csipsimple
 BROWSER_APP=org.mozilla.fennec_fdroid
 ORWALL_APP=org.ethack.orwall
 
+MISC_DIR="/sdcard/misc"
+FB_LOG="/sdcard/mia-firstboot.log"
+
+# Load helper functions.
+source $MISC_DIR/library.sh
+
+# TODO: Use system log instead of a simple file?!?
+fb_logger() {
+  echo $(date): $1 >> $FB_LOG
+}
+fb_logger "Running script: $0"
+
+
 # Programs needed
 ECHO="busybox echo"
 GREP="busybox grep"
@@ -30,9 +43,6 @@ CUT="busybox cut"
 FIND="busybox find"
 SED="busybox sed"
 
-MISC_DIR=/sdcard/misc
-source $MISC_DIR/library.sh
-
 # Get important UIDs for later
 BROWSER_UID=$(get_app_uid $BROWSER_APP)
 SIP_UID=$(get_app_uid $SIP_APP)
@@ -43,7 +53,7 @@ $SED -i /data/data/org.ethack.orwall/shared_prefs/org.ethack.orwall_preferences.
 $SED -i /data/data/org.ethack.orwall/shared_prefs/org.ethack.orwall_preferences.xml -e "s/REPLACE_WITH_SIP_UID/$SIP_UID/"
 
 # Give OrWall full, permanent root access
-echo "Importing Superuser database with orWall uid $APP_UID pre-authorized." >> /sdcard/init.log
+fb_logger "Importing Superuser database with orWall uid $APP_UID pre-authorized."
 mkdir -p /data/data/com.android.settings/databases
 $SED -i $MISC_DIR/com.android.settings_su.sql -e "s/REPLACE_WITH_ORWALL_UID/$ORWALL_UID/"
 /system/xbin/sqlite3 /data/data/com.android.settings/databases/su.sqlite < $MISC_DIR/com.android.settings_su.sql
@@ -67,7 +77,7 @@ for APP in ${APPS[@]}
 do
   PKG_LINE=$( $CAT /data/system/packages.xml | $EGREP "^[ ]*<package.*serId" | $GREP -v framework-res.apk | $GREP -v com.htc.resources.apk | $GREP -i $APP )
   APP_UID=$( $ECHO $PKG_LINE | $SED 's%.*serId="\(.*\)".*%\1%' |  $CUT -d '"' -f1)
-  echo "Fixup for app $APP uid $APP_UID: " >> /sdcard/init.log
+  fb_logger "Fixup for app $APP uid $APP_UID."
   $FIND /data/data/$APP -type d -exec $CHOWN $APP_UID:$APP_UID {} \;
   $FIND /data/data/$APP -type d -exec $CHMOD 0771 {} \;
   $FIND /data/data/$APP -type f -exec $CHOWN $APP_UID:$APP_UID {} \;
@@ -111,5 +121,7 @@ am start -a android.intent.action.MAIN -n 'com.android.settings/.Settings$DateTi
 # Remove setup MISC_DIR
 rm -rf $MISC_DIR
 
-# Remove self
-rm $0 >> /sdcard/init.log
+# We want this FirstBoot script to run only once.
+fb_logger "Finished running script: $0"
+fb_logger "Removing script: $0"
+rm $0

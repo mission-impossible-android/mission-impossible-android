@@ -35,7 +35,6 @@ if [ -e $FB_SCRIPT ]; then
 
       # Run the FirstBoot script.
       $LOG "Executing ${FB_SCRIPT} script."
-      fb_logger "Running FirstBoot init"
       logwrapper /system/bin/sh ${FB_SCRIPT}
 
       # Exit the loop.
