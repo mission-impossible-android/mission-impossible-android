@@ -159,26 +159,17 @@ class Definition(object):
         android = MiaAndroid()
 
         # Detect the device codename.
-        cm_device_codename = android.get_cyanogenmod_codename()
-        print('Using device codename: %s\n' % cm_device_codename)
-
-        # Detect the CyanogenMod release type.
-        default_release_type = android.get_cyanogenmod_release_type(True)
-        message = 'Use recommended [%s] CyanogenMod release type?' % default_release_type
-        if MiaUtils.input_confirm(message, True):
-            cm_release_type = default_release_type
-        else:
-            cm_release_type = android.get_cyanogenmod_release_type(False)
-        print('Using release type: %s\n' % cm_release_type)
+        device_codename = android.get_cyanogenmod_codename()
+        print('Using device codename: %s\n' % device_codename)
 
         # Detect the CyanogenMod release version.
-        default_release_version = android.get_cyanogenmod_release_version(True)
-        message = 'Use recommended [%s] CyanogenMod release version?' % default_release_version
+        default_version = android.get_cyanogenmod_version(True)
+        message = 'Use recommended [%s] CyanogenMod version?' % default_version
         if MiaUtils.input_confirm(message, True):
-            cm_release_version = default_release_version
+            os_version = default_version
         else:
-            cm_release_version = android.get_cyanogenmod_release_version(False)
-        print('Using release version: %s\n' % cm_release_version)
+            os_version = android.get_cyanogenmod_version(False)
+        print('Using version: %s\n' % os_version)
 
         # The path to the definition settings.yaml file.
         definition_path = MiaHandler.get_definition_path()
@@ -191,9 +182,8 @@ class Definition(object):
         # Update the settings file.
         MiaUtils.update_settings(settings_file, {'general': {
             'update': {
-                'cm_device_codename': cm_device_codename,
-                'cm_release_type': cm_release_type,
-                'cm_release_version': cm_release_version,
+                'device_codename': device_codename,
+                'os_version': os_version,
             },
         }})
 
@@ -393,9 +383,8 @@ class Definition(object):
         if not os.path.isdir(resources_path):
             os.makedirs(resources_path, mode=0o755)
 
-        url = 'https://download.cyanogenmod.org/?device=%s&type=%s' % (
-            settings['general']['cm_device_codename'],
-            settings['general']['cm_release_type']
+        url = 'https://download.cyanogenmod.org/?device=%s' % (
+            settings['general']['device_codename']
         )
 
         file_name = MiaHandler.get_os_zip_filename()

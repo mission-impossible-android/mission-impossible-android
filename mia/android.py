@@ -55,26 +55,15 @@ class MiaAndroid(object):
         return codename
 
     @staticmethod
-    def get_cyanogenmod_release_type(recommended=True):
-        """
-        Try to determine what kind of CyanogenMod release type to use.
-        """
-        # TODO: First check the settings.ini file inside the definition.
-        if not recommended:
-            return MiaUtils.input_ask('Please provide a CM release type')
-
-        return 'snapshot'
-
-    @staticmethod
-    def get_cyanogenmod_release_version(recommended=True):
+    def get_cyanogenmod_version(recommended=True):
         """
         Try to determine what kind of CyanogenMod release version to use.
         """
         # TODO: First check the settings.ini file inside the definition.
         if not recommended:
-            return MiaUtils.input_ask('Please provide a CM release version', None, True)
+            return MiaUtils.input_ask('Please provide a CM version', None, True)
 
-        return 'M12'
+        return '12.1'
 
     @staticmethod
     def reboot_device(mode):

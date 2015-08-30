@@ -1,9 +1,8 @@
 config_version: 2-beta
 
 general:
-  cm_device_codename: grouper
-  cm_release_type: snapshot
-  cm_release_version: M12
+  device_codename: grouper
+  os_version: 12.1
   template: mia-default
 
 defaults:
