@@ -41,7 +41,7 @@ if [ -e $FB_SCRIPT ]; then
       break
     fi
 
-    fb_logger "Waiting, next try in ${TIMEOUT}s."
+    fb_logger "- waiting, next try in ${TIMEOUT}s..."
     sleep $TIMEOUT
   done
 fi
