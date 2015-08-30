@@ -190,9 +190,18 @@ class Definition(object):
         # Create the apps lock file.
         cls.create_apps_lock_file()
 
-        # Download the CyanogenMod OS.
-        if MiaUtils.input_confirm('Download CyanogenMod OS now?', True):
-            cls.download_os()
+        # Check if the OS archive needs to be downloaded.
+        os_zip_file_path = os.path.join(
+            MiaHandler.get_workspace_path(),
+            'resources',
+            MiaHandler.get_os_zip_filename()
+        )
+        if not os.path.exists(os_zip_file_path):
+            # Download the CyanogenMod OS.
+            if MiaUtils.input_confirm('Download CyanogenMod OS now?', True):
+                cls.download_os()
+        else:
+            print('Using OS zip file: %s\n' % os_zip_file_path)
 
         # Download apps.
         if MiaUtils.input_confirm('Download apps now?', True):
