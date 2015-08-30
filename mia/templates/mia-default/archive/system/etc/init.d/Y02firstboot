@@ -6,7 +6,10 @@ FB_SCRIPT="/data/local/mia-firstboot.sh"
 FB_LOG="/sdcard/mia-firstboot.log"
 TIMEOUT=5
 
-CHMOD="busybox chmod"
+LOG="log -p I -t MIA"
+$LOG "Running MIA init script: $0"
+$LOG "Environment PATH variable: ${PATH}"
+
 GREP="busybox grep"
 PS="busybox ps"
 SLEEP="busybox sleep"
@@ -17,14 +20,14 @@ ps_grep () {
   $PS | $GREP "$@" | $GREP -v "$( echo $GREP $@ )"
 }
 
+# TODO: Use system log instead of a simple file?!?
 fb_logger() {
   echo $(date): $1 >> $FB_LOG
 }
 
 # Install apps on first boot after system services have started.
-if [ -f "$FB_SCRIPT" ]; then
-  fb_logger "FirstBoot script found: $FB_SCRIPT"
-  $CHMOD 0755 $FB_SCRIPT
+if [ -e $FB_SCRIPT ]; then
+  fb_logger "FirstBoot script found: ${FB_SCRIPT}"
 
   # TODO: Find a way to prevent race conditions.
   fb_logger "Waiting for com.android.systemui..."
@@ -34,10 +37,10 @@ if [ -f "$FB_SCRIPT" ]; then
       fb_logger "com.android.systemui is running!"
       $SLEEP $TIMEOUT
 
-      # Run the First Boot script.
-      log -p i -t boot "Executing $FB_SCRIPT script"
+      # Run the FirstBoot script.
+      $LOG "Executing ${FB_SCRIPT} script."
       fb_logger "Running FirstBoot init"
-      $FB_SCRIPT
+      logwrapper /system/bin/sh ${FB_SCRIPT}
 
       # Exit the loop.
       break
@@ -47,3 +50,5 @@ if [ -f "$FB_SCRIPT" ]; then
     $SLEEP $TIMEOUT
   done
 fi
+
+$LOG "Finished running MIA init script: $0"
