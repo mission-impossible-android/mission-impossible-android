@@ -17,7 +17,7 @@ ui_print("| 20%  Installing /system files |");
 set_progress(0.2);
 package_extract_dir("system", "/system");
 set_perm_recursive(0, 0, 0755, 0644, "/system/priv-app");
-set_perm(0, 2000, 0755, "/system/etc/init.d/91mia-early-init.sh");
+set_perm(0, 2000, 0755, "/system/etc/init.d/20mia-early-init.sh");
 set_perm(0, 2000, 0755, "/system/etc/init.d/99mia-late-init.sh");
 # Save a restart by placing a file Orwall would normally create during setup.
 set_perm(0, 2000, 0755, "/system/etc/init.d/91firewall");
