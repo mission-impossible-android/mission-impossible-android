@@ -2,7 +2,7 @@ config_version: 2
 
 general:
   device_codename: grouper
-  os_version: 12.1
+  os_version: 11
   parent_templates:
     - mia-default
     - wifi-only

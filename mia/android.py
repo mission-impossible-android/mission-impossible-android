@@ -63,7 +63,7 @@ class MiaAndroid(object):
         if not recommended:
             return MiaUtils.input_ask('Please provide a CM version', None, True)
 
-        return '12.1'
+        return '11'
 
     @staticmethod
     def reboot_device(mode):
