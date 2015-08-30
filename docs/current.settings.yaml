@@ -26,8 +26,9 @@ repositories:
 
 apps:
   - id: org.fdroid.fdroid
-    versioncode: 830
-    app_type: system
+    versioncode: 95150
+    hash: 2003977ec3b19fd2a5caa46ddd546294e5ee7b096fc8bd0261e94ded1e2f719f
+    app_type: privileged
   - id: info.guardianproject.orfox
     url: https://guardianproject.info/builds/OrfoxFennec/latest/OrfoxFennec-debug.apk
   - id: com.artifex.mupdfdemo

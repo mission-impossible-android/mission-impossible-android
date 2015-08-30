@@ -29,9 +29,9 @@ repositories:
 
 apps:
   - id: org.fdroid.fdroid
-    versioncode: 920
-    hash: 0e949b83d48d882ce70e1e405d25173f572b32623a8a8f58394193d3eac08f31
-    app_type: system
+    versioncode: 95150
+    hash: 2003977ec3b19fd2a5caa46ddd546294e5ee7b096fc8bd0261e94ded1e2f719f
+    app_type: privileged
   - id: info.guardianproject.orfox
     name: Orfox
     url: https://guardianproject.info/builds/OrfoxFennec/latest/OrfoxFennec-debug.apk
