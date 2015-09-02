@@ -90,10 +90,10 @@ class MiaHandler:
         # Read the definition settings.
         settings = cls.get_definition_settings()
 
-        return 'cm-11-%s.%s-%s.zip' % (
-            settings['general']['cm_device_codename'],
-            settings['general']['cm_release_type'],
-            settings['general']['cm_release_version']
+        return '%s-%s-%s.zip' % (
+            settings['general']['os_name'],
+            settings['general']['os_version'],
+            settings['general']['device_codename']
         )
 
     @classmethod

@@ -2,12 +2,13 @@ config_version: 1
 
 # General settings.
 general:
-  # The CyanogenMod codename of the device.
-  cm_device_codename:
-  # Preferred CyanogenMod release type
-  cm_release_type: snapshot
-  # Preferred CyanogenMod release version
-  cm_release_version: M12
+  # The codename of the device.
+  device_codename:
+  # The operating system name.
+  os_name: cm
+  # The operating system version.
+  os_version: 11
+  # The template name.
   template: mia-default
 
 defaults:
