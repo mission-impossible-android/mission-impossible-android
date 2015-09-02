@@ -2,6 +2,7 @@ config_version: any(int(), str())
 
 general:
   device_codename: str(required=False)
+  os_name: str()
   os_version: num()
   template: str(required=False)
 

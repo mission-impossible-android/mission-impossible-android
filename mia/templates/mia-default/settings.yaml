@@ -4,8 +4,11 @@ config_version: 1
 general:
   # The codename of the device.
   device_codename:
-  # Preferred CyanogenMod version.
+  # The operating system name.
+  os_name: cm
+  # The operating system version.
   os_version: 11
+  # The template name.
   template: mia-default
 
 defaults:
