@@ -1,3 +1,6 @@
+"""
+Mission Impossible: Hardening Android for Security & Privacy
+"""
 
 __version__ = '0.2.0'
 __description__ = 'Mission Impossible: Hardening Android for Security & Privacy'
