@@ -1,5 +1,5 @@
 #!/system/bin/sh
-# One time fixup script to fix installed APP permissions
+# One time script to fix installed APP permissions and prepare the OS.
 # TODO: Encrypt the user data on FirstBoot; @see GH-104
 # TODO: Find a way to set the time zone.
 
@@ -28,7 +28,7 @@ source $MISC_DIR/library.sh
 
 # TODO: Use system log instead of a simple file?!?
 fb_logger() {
-  echo $(date): $1 >> $FB_LOG
+  echo $(date +%s): $1 >> $FB_LOG
 }
 fb_logger "Running script: $0"
 
@@ -67,7 +67,7 @@ SQL_FRAGMENT=""
 while read APP_DATA; do
   APP_NAME=$(echo $APP_DATA | $CUT -f'1' -d':')
   APP_UID=$(get_app_uid $APP_NAME)
-  fb_logger "- preparing SQL for ${APP_NAME}; UID: ${APP_UID}."
+  fb_logger "- preparing SQL for ${APP_NAME}; uid: ${APP_UID}"
 
   APP_PORT_TYPE=$(echo $APP_DATA | $CUT -f'2' -d':')
   APP_PORT_TYPE=${APP_PORT_TYPE:-TransProxy} # Default port type
@@ -80,12 +80,12 @@ $SED -i $MISC_DIR/org.ethack.orwall_nat.sql -e "s/{{REPLACE_WITH_GENERATED_SQL}}
 mkdir -p /data/data/org.ethack.orwall/databases
 /system/xbin/sqlite3 /data/data/org.ethack.orwall/databases/nat.s3db < $MISC_DIR/org.ethack.orwall_nat.sql
 
-# Fix permissions for all apps
+fb_logger "Fix application data owner and group:"
 for APP in ${APPS[@]}
 do
   PKG_LINE=$( $CAT /data/system/packages.xml | $EGREP "^[ ]*<package.*serId" | $GREP -v framework-res.apk | $GREP -v com.htc.resources.apk | $GREP -i $APP )
   APP_UID=$( $ECHO $PKG_LINE | $SED 's%.*serId="\(.*\)".*%\1%' |  $CUT -d '"' -f1)
-  fb_logger "Fix the ${APP} application data owner and group; UID: $APP_UID."
+  fb_logger "- fixing ownership of ${APP}; uid: ${APP_UID}"
   $FIND /data/data/$APP -type d -exec $CHOWN $APP_UID:$APP_UID {} \;
   $FIND /data/data/$APP -type d -exec $CHMOD 0771 {} \;
   $FIND /data/data/$APP -type f -exec $CHOWN $APP_UID:$APP_UID {} \;
@@ -93,11 +93,11 @@ do
 done
 
 fb_logger "Settings.Secure.ADB_ENABLED -- Disable ADB by default."
-# NOTE: This does not prevent the sytem from asking to authorize the connection.
+# NOTE: This does not prevent the system from asking to authorize the connection.
 /system/bin/settings put global adb_enabled 0
 
 fb_logger "Settings.Secure.LOCATION_PROVIDERS_ALLOWED -- Limit the list of location providers that activities may access."
-/system/bin/settings put secure location_providers_allowed ""
+/system/bin/settings put secure location_providers_allowed ''
 
 fb_logger "Settings.Global.AUTO_TIME -- Do not update the date, time and time zone automatically from the network (NITZ)."
 /system/bin/settings put global auto_time 0
@@ -132,5 +132,3 @@ rm -rf $MISC_DIR
 
 # We want this FirstBoot script to run only once.
 fb_logger "Finished running script: $0"
-fb_logger "Removing script: $0"
-rm $0

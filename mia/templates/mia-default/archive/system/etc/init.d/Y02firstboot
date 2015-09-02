@@ -4,11 +4,11 @@
 
 FB_SCRIPT="/data/local/mia-firstboot.sh"
 FB_LOG="/sdcard/mia-firstboot.log"
-TIMEOUT=5
+TIMEOUT=8
 
 # TODO: Use system log instead of a simple file?!?
 fb_logger() {
-  echo $(date): $1 >> $FB_LOG
+  echo $(date +%s): $1 >> $FB_LOG
 }
 fb_logger "Running MIA init script: $0"
 fb_logger "Environment PATH variable: ${PATH}"
@@ -16,7 +16,7 @@ fb_logger "Environment PATH variable: ${PATH}"
 
 # Search for active process.
 ps_grep () {
-  # Make sure the search down't show up.
+  # Make sure the search command does not show up.
   ps | grep "$@" | grep -v "$( echo grep $@ )"
 }
 
@@ -32,9 +32,11 @@ if [ -e $FB_SCRIPT ]; then
       fb_logger "com.android.systemui is running!"
       sleep $TIMEOUT
 
-      # Run the FirstBoot script.
-      fb_logger "Executing ${FB_SCRIPT} script."
+      # Run the firstboot script.
       logwrapper /system/bin/sh ${FB_SCRIPT}
+
+      fb_logger "Removing firstboot script: ${FB_SCRIPT}"
+      rm ${FB_SCRIPT}
 
       # Exit the loop.
       break
