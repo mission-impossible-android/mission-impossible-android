@@ -6,19 +6,18 @@ FB_SCRIPT="/data/local/mia-firstboot.sh"
 FB_LOG="/sdcard/mia-firstboot.log"
 TIMEOUT=5
 
-LOG="log -p I -t MIA"
-$LOG "Running MIA init script: $0"
-$LOG "Environment PATH variable: ${PATH}"
+# TODO: Use system log instead of a simple file?!?
+fb_logger() {
+  echo $(date): $1 >> $FB_LOG
+}
+fb_logger "Running MIA init script: $0"
+fb_logger "Environment PATH variable: ${PATH}"
+
 
 # Search for active process.
 ps_grep () {
   # Make sure the search down't show up.
   ps | grep "$@" | grep -v "$( echo grep $@ )"
-}
-
-# TODO: Use system log instead of a simple file?!?
-fb_logger() {
-  echo $(date): $1 >> $FB_LOG
 }
 
 # Install apps on first boot after system services have started.
@@ -34,7 +33,7 @@ if [ -e $FB_SCRIPT ]; then
       sleep $TIMEOUT
 
       # Run the FirstBoot script.
-      $LOG "Executing ${FB_SCRIPT} script."
+      fb_logger "Executing ${FB_SCRIPT} script."
       logwrapper /system/bin/sh ${FB_SCRIPT}
 
       # Exit the loop.
@@ -46,4 +45,4 @@ if [ -e $FB_SCRIPT ]; then
   done
 fi
 
-$LOG "Finished running MIA init script: $0"
+fb_logger "Finished running MIA init script: $0"
