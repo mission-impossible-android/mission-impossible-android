@@ -1,6 +1,7 @@
 #!/system/bin/sh
 # Call `mia-firstboot.sh` if it exists.
 # @see https://github.com/CyanogenMod/android_vendor_cm/blob/cm-12.1/prebuilt/common/etc/init.d/90userinit
+# @see http://forum.xda-developers.com/showthread.php?t=1441378
 
 FB_SCRIPT="/data/local/mia-firstboot.sh"
 FB_LOG="/sdcard/mia-firstboot.log"
