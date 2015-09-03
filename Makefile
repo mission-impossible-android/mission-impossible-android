@@ -1,18 +1,15 @@
 
 clean:
-	@echo "Clean the python virtualenv, distribution and package folders/files."
-	rm -rf .venv build dist *.egg-info
+	@echo "Clean the workspace folders and files."
+	rm -rf builds resources definitions
 
 
 clean-py:
+	@echo "Clean the python virtualenv, distribution and package folders/files."
+	rm -rf .venv build dist *.egg-info
 	@echo "Clean the byte-compiled, optimized or DLL files."
 	find . -name __pycache__ | xargs -i rm -rf {}
 	find . -name '*.py[cod]' | xargs -i rm -rf {}
-
-
-clean-all: clean clean-py
-	@echo "Clean all, including the workspace folders/files."
-	rm -rf builds resources definitions
 
 
 define INFOTEXT
