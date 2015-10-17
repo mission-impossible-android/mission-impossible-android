@@ -7,19 +7,28 @@ FB_SCRIPT="/data/local/mia-firstboot.sh"
 FB_LOG="/sdcard/mia-firstboot.log"
 TIMEOUT=8
 
+
+# Programs needed.
+ECHO="busybox echo"
+DATE="busybox date"
+GREP="busybox grep"
+PS="busybox ps"
+RM="busybox rm"
+SLEEP="busybox sleep"
+
 # TODO: Use system log instead of a simple file?!?
 fb_logger() {
-  echo $(date +%s): $1 >> $FB_LOG
+  $ECHO $($DATE +%s): $1 >> $FB_LOG
 }
 fb_logger "Running MIA init script: $0"
 fb_logger "Environment PATH variable: ${PATH}"
 
-
 # Search for active process.
 ps_grep () {
   # Make sure the search command does not show up.
-  ps | grep "$@" | grep -v "$( echo grep $@ )"
+  $PS | $GREP "$@" | $GREP -v "$( $ECHO $GREP $@ )"
 }
+
 
 # Install apps on first boot after system services have started.
 if [ -e $FB_SCRIPT ]; then
@@ -31,20 +40,20 @@ if [ -e $FB_SCRIPT ]; then
     # Check if the system is up and running.
     if ps_grep com.android.systemui; then
       fb_logger "com.android.systemui is running!"
-      sleep $TIMEOUT
+      $SLEEP $TIMEOUT
 
       # Run the firstboot script.
       logwrapper /system/bin/sh ${FB_SCRIPT}
 
       fb_logger "Removing firstboot script: ${FB_SCRIPT}"
-      rm ${FB_SCRIPT}
+      $RM ${FB_SCRIPT}
 
       # Exit the loop.
       break
     fi
 
     fb_logger "- waiting, next try in ${TIMEOUT}s..."
-    sleep $TIMEOUT
+    $SLEEP $TIMEOUT
   done
 fi
 
