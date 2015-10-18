@@ -1,32 +1,32 @@
 <?xml version='1.0' encoding='UTF-8' standalone='yes' ?>
 <app-list>
-  <app name="ApkTrack" package="fr.kwiatkowski.ApkTrack" />
-  <app name="Atomic" package="indrora.atomic" />
-  <app name="Barcode Scanner" package="com.google.zxing.client.android" />
-  <app name="Bitcoin" package="de.schildbach.wallet" />
-  <app name="CatLog" package="com.nolanlawson.logcat" />
-  <app name="Chat Secure" package="info.guardianproject.otr.app.im" />
-  <app name="Cool Reader" package="org.coolreader" />
-  <app name="Document Viewer" package="org.sufficientlysecure.viewer" />
-  <app name="FreeOTP" package="org.fedorahosted.freeotp" />
-  <app name="Intent Intercept" package="uk.co.ashtonbrsc.android.intentintercept" />
-  <app name="KeePass NFC" package="net.lardcave.keepassnfc" />
-  <app name="KeePassDroid" package="com.android.keepass" />
-  <app name="Launch App Ops" package="com.adstrosoftware.launchappops" />
-  <app name="LinPhone" package="org.linphone" />
-  <app name="ug UnifiedNlp" package="com.google.android.gms" />
-  <app name="LocalWifiNlpBackend" package="org.fitchfamily.android.wifi_backend" />
-  <app name="MuPDF" package="com.artifex.mupdfdemo" />
-  <app name="Offline Calendar" package="org.sufficientlysecure.localcalendar" />
-  <app name="OSMAnd Countour Lines" package="net.osmand.srtmPlugin.paid" />
-  <app name="OS Monitor" package="com.eolwral.osmonitor" />
-  <app name="Permissions" package="com.FireFart.Permissions2" />
-  <app name="Plumble" package="com.morlunk.mumbleclient" />
-  <app name="Twidere" package="org.mariotaku.twidere" />
-  <app name="Fennec Browser" package="org.mozilla.fennec_fdroid" />
-  <app name="Firefox Browser" package="org.mozilla.firefox" />
-  <app name="Seafile" package="com.seafile.seadroid2" />
-  <app name="Snoop Snitch" package="de.srlabs.snoopsnitch" />
-  <app name="VLC" package="org.videolan.vlc" />
-  <app name="Xabber XMPP+OTR Chat" package="com.xabber.androiddev" />
+  <app package="fr.kwiatkowski.ApkTrack" name="ApkTrack" />
+  <app package="indrora.atomic" name="Atomic" />
+  <app package="com.google.zxing.client.android" name="Barcode Scanner" />
+  <app package="de.schildbach.wallet" name="Bitcoin" />
+  <app package="com.nolanlawson.logcat" name="CatLog" />
+  <app package="info.guardianproject.otr.app.im" name="Chat Secure" />
+  <app package="org.coolreader" name="Cool Reader" />
+  <app package="org.sufficientlysecure.viewer" name="Document Viewer" />
+  <app package="org.fedorahosted.freeotp" name="FreeOTP" />
+  <app package="uk.co.ashtonbrsc.android.intentintercept" name="Intent Intercept" />
+  <app package="net.lardcave.keepassnfc" name="KeePass NFC" />
+  <app package="com.android.keepass" name="KeePassDroid" />
+  <app package="com.adstrosoftware.launchappops" name="Launch App Ops" />
+  <app package="org.linphone" name="LinPhone" />
+  <app package="com.google.android.gms" name="ug UnifiedNlp" />
+  <app package="org.fitchfamily.android.wifi_backend" name="LocalWifiNlpBackend" />
+  <app package="com.artifex.mupdfdemo" name="MuPDF" />
+  <app package="org.sufficientlysecure.localcalendar" name="Offline Calendar" />
+  <app package="net.osmand.srtmPlugin.paid" name="OSMAnd Countour Lines" />
+  <app package="com.eolwral.osmonitor" name="OS Monitor" />
+  <app package="com.FireFart.Permissions2" name="Permissions" />
+  <app package="com.morlunk.mumbleclient" name="Plumble" />
+  <app package="org.mariotaku.twidere" name="Twidere" />
+  <app package="org.mozilla.fennec_fdroid" name="Fennec Browser" />
+  <app package="org.mozilla.firefox" name="Firefox Browser" />
+  <app package="com.seafile.seadroid2" name="Seafile" />
+  <app package="de.srlabs.snoopsnitch" name="Snoop Snitch" />
+  <app package="org.videolan.vlc" name="VLC" />
+  <app package="com.xabber.androiddev" name="Xabber XMPP+OTR Chat" />
 </app-list>
