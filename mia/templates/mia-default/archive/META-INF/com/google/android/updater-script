@@ -16,6 +16,7 @@ run_program("/sbin/busybox", "mount", "/system");
 run_program("/sbin/busybox", "mount", "/cache");
 run_program("/sbin/busybox", "mount", "/data");
 
+
 ui_print("| 20%  Writing global settings  |");
 set_progress(0.2);
 run_program("/system/bin/settings", "put", "global", "install_non_market_apps", "0");
@@ -26,34 +27,54 @@ run_program("/system/bin/settings", "put", "global", "backup_auto_restore", "0")
 run_program("/system/bin/settings", "put", "global", "backup_enabled", "0");
 run_program("/system/bin/settings", "put", "secure", "privacy_guard_default", "1");
 
+
 ui_print("| 30%  Installing /system files |");
 set_progress(0.3);
 package_extract_dir("system", "/system");
+
+# Reset ownership and permissions for all privileged APKs.
+# UIDs: 0(root)
 set_perm_recursive(0, 0, 0755, 0644, "/system/priv-app");
-set_perm(0, 2000, 0755, "/system/etc/init.d/Y02firstboot");
-# Save a restart by placing a file Orwall would normally create during setup.
-set_perm(0, 2000, 0755, "/system/etc/init.d/91firewall");
+
+# Reset ownership and permissions for all init.d scripts.
+# UIDs: 0(root), shell(sdcard_r)
+set_perm_recursive(0, 2000, 0755, 0644, "/system/etc/init.d");
+
 
 ui_print("| 40%  Installing /data files   |");
 set_progress(0.4);
 package_extract_dir("data", "/data");
+
+# Reset ownership and permissions for user APKs.
+# UIDs: 1000(system)
 set_perm_recursive(1000, 1000, 0771, 0644, "/data/app");
+
+# UIDs: 0(root)
 set_perm(0, 0, 0755, "/data/local/mia-firstboot.sh");
+
 
 ui_print("| 70%  Installing App List      |");
 set_progress(0.7);
 package_extract_dir("sdcard/misc/MyAppList", "/sdcard/MyAppList");
-# Linux UIDs: 0(root), 1028(sdcard_r)
-set_perm_recursive(1023, 1023, 0770, 0660, "/sdcard/MyAppList");
+
+# Reset ownership and permissions for MyAppList files.
+# UIDs: 1023(media_rw)
+set_perm_recursive(1023, 1023, 0755, 0644, "/sdcard/MyAppList");
+
 
 ui_print("| 75%  Copying misc boot files  |");
 set_progress(0.75);
 package_extract_dir("sdcard/misc", "/sdcard/misc");
-set_perm_recursive(1023, 1023, 0770, 0660, "/sdcard/misc");
+
+# Reset ownership and permissions for temporary misc files.
+# UIDs: 1023(media_rw)
+set_perm_recursive(1023, 1023, 0755, 0644, "/sdcard/misc");
+
 
 ui_print("| 80%  Disable CM Setup Wizard  |");
 set_progress(0.8);
 delete("/system/priv-app/CMAccount.apk");
+
 
 ui_print("| 85%  Removing stock browser   |");
 set_progress(0.85);
@@ -64,13 +85,16 @@ delete("/system/app/DownloadProviderUi.apk");
 delete("/system/priv-app/DownloadProvider.apk");
 delete("/system/app/Term.apk");
 
-ui_print("| 90%  Unmounting filesystems   |");
+
+ui_print("| 90%  Un-mounting filesystems  |");
 set_progress(0.9);
 run_program("/sbin/busybox", "umount", "/system");
 run_program("/sbin/busybox", "umount", "/cache");
 run_program("/sbin/busybox", "umount", "/data");
 
+
 ui_print("| 100% Setup complete           |");
 set_progress(1.0);
 ui_print("|-------------------------------|");
 ui_print("_________________________________");
+
