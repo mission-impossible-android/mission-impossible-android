@@ -38,7 +38,7 @@ ui_print("| 40%  Installing /data files   |");
 set_progress(0.4);
 package_extract_dir("data", "/data");
 set_perm_recursive(1000, 1000, 0771, 0644, "/data/app");
-set_perm(0, 0, 0755, "/data/.firstboot.sh");
+set_perm(0, 0, 0755, "/data/local/mia-firstboot.sh");
 
 ui_print("| 70%  Installing App List      |");
 set_progress(0.7);

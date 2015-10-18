@@ -18,13 +18,18 @@ Android Lollipop (v5.0.x).
 ## Install the TWRP and Root
 [Team Win Recovery Project](http://www.teamw.in/project/twrp2) is the custom
 recovery that is needed in order to auto install the generated update.zip and
-perform various tasks. Download TWRP for your device and follow the [install
-instructions](http://twrp.me/devices/lgnexus4.html#fastboot-install).
+perform various tasks. 
 
-Then Manually root the device or reboot into recovery and simply select
-"Reboot > System" and you will be notified that the devices is not rooted and
-you will have the option to install "SuperSu" in order to root the device. Just
-confirm the installation and you are done.
+*   Download TWRP for the device and follow the [install instructions](http://twrp.me/devices/lgnexus4.html#fastboot-install).
+*   Manually root the device or reboot into TWRP and simply select
+    "Reboot > System" and you will be notified that the devices is not rooted
+    and you will have the option to install "SuperSu" in order to root the
+    device. Confirm the installation!
+*   Once rebooted into the OS, enable developer tools and USB debugging, run 
+    `adb shell` and then execute `su`. At this moment you will be prompted
+    to give root permissions to "ADB shell", make sure you click "Remember for
+    X minute". Otherwise the `mia install` command will fail silently (adb
+    does not have proper return codes).
 
 
 ## Generate and install an update.zip
@@ -50,10 +55,10 @@ Follow the instruction from this repo and use the installed tool to customize
     ```bash
     mia install definition mynexus
     ```
-
     NOTE: It will take about 90s to push the zip files onto the devices and
           about 60s for the installation will be finished and you will see the
           OS boot screen.
+
 6.  Wait a couple of minutes for OS to boot and then open Orbot and make sure
     you are connected to the Tor network.
 

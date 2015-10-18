@@ -201,7 +201,7 @@ class Definition(object):
             if MiaUtils.input_confirm('Download CyanogenMod OS now?', True):
                 cls.download_os()
         else:
-            print('Using OS zip file: %s\n' % os_zip_file_path)
+            print('Using OS zip file:\n - %s\n' % os_zip_file_path)
 
         # Download apps.
         if MiaUtils.input_confirm('Download apps now?', True):
