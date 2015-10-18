@@ -1,6 +1,5 @@
 org.fdroid.fdroid:
 info.guardianproject.orfox:Fenced
-com.android.providers.downloads
 org.mariotaku.twidere:
 com.cyanogenmod.updater:
 com.csipsimple:
