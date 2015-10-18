@@ -71,3 +71,6 @@ apps:
   - id: org.torproject.android
     versioncode: 133
   - id: org.videolan.vlc
+  - id: org.witness.informacam.app
+    repository: guardian
+
