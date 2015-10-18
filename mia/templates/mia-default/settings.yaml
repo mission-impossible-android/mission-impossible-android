@@ -36,6 +36,10 @@ repositories:
   - id: guardian_archive
     name: Guardian Project Archive
     url: https://dev.guardianproject.info/fdroid/archive
+    # Until a proper release in official F-Droid repo
+  - id: orfox_devel
+    name: Orfox Development
+    url: https://dev.guardianproject.info/debug/info.guardianproject.orfox/fdroid/repo
 
 # Apps from the main F-Droid repository.
 apps:
@@ -54,7 +58,7 @@ apps:
   - id: fr.kwiatkowski.ApkTrack
   - id: indrora.atomic
   - id: info.guardianproject.orfox
-    repository: guardian
+    repository: orfox_devel
   - id: jackpal.androidterm
   - id: net.osmand.plus
   - id: org.coolreader
