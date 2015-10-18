@@ -60,5 +60,6 @@ apps:
   - id: org.nick.cryptfs.passwdmanager
   - id: org.sufficientlysecure.localcalendar
   - id: org.torproject.android
+    versioncode: 133
   - id: org.videolan.vlc
   - id: be.uhasselt.privacypolice
