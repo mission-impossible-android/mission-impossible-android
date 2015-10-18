@@ -40,11 +40,6 @@ apps:
     versioncode: 95150
     hash: 2003977ec3b19fd2a5caa46ddd546294e5ee7b096fc8bd0261e94ded1e2f719f
     app_type: privileged
-  - id: org.anhonesteffort.flock
-    name: org.anhonesteffort.flock.v27.apk
-    # @see https://flock-supplychain.anhonesteffort.org/packages/org.anhonesteffort.flock/current
-    url: https://flock-supplychain.s3.amazonaws.com/apks/org.anhonesteffort.flock-4b93f078-cae6-4997-a1c2-ef833b2ac2c1.apk
-    hash: b92a03e8bea7fad9bda5bb31b4d6f2f4d859f7a05436f27f86da32331f37e271
   - id: info.guardianproject.orfox
     repository: guardian_orfox
   - id: com.artifex.mupdfdemo
