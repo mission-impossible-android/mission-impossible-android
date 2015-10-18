@@ -40,8 +40,7 @@ apps:
     versioncode: 96150
     hash: 481f2f1ec4e0fd21279018d5fa6b31086fc4cdd4bb88c2a3d074a0db1df8d24c
     app_type: privileged
-  - id: info.guardianproject.orfox
-    repository: guardian_orfox
+  - id: be.uhasselt.privacypolice
   - id: com.artifex.mupdfdemo
   - id: com.csipsimple
   - id: com.fsck.k9
@@ -51,16 +50,17 @@ apps:
   - id: de.schildbach.wallet
   - id: fr.kwiatkowski.ApkTrack
   - id: indrora.atomic
+  - id: info.guardianproject.orfox
+    repository: guardian_orfox
   - id: jackpal.androidterm
   - id: net.osmand.plus
   - id: org.coolreader
   - id: org.ethack.orwall
   - id: org.mariotaku.twidere
   - id: org.mozilla.fennec_fdroid
-  - id: org.sufficientlysecure.keychain
   - id: org.nick.cryptfs.passwdmanager
+  - id: org.sufficientlysecure.keychain
   - id: org.sufficientlysecure.localcalendar
   - id: org.torproject.android
     versioncode: 133
   - id: org.videolan.vlc
-  - id: be.uhasselt.privacypolice
