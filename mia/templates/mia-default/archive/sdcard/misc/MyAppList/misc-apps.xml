@@ -1,32 +1,32 @@
 <?xml version='1.0' encoding='UTF-8' standalone='yes' ?>
 <app-list>
-  <app package="fr.kwiatkowski.ApkTrack" name="ApkTrack" />
-  <app package="indrora.atomic" name="Atomic" />
-  <app package="com.google.zxing.client.android" name="Barcode Scanner" />
-  <app package="de.schildbach.wallet" name="Bitcoin" />
-  <app package="com.nolanlawson.logcat" name="CatLog" />
-  <app package="info.guardianproject.otr.app.im" name="Chat Secure" />
-  <app package="org.coolreader" name="Cool Reader" />
-  <app package="org.sufficientlysecure.viewer" name="Document Viewer" />
-  <app package="org.fedorahosted.freeotp" name="FreeOTP" />
-  <app package="uk.co.ashtonbrsc.android.intentintercept" name="Intent Intercept" />
-  <app package="net.lardcave.keepassnfc" name="KeePass NFC" />
-  <app package="com.android.keepass" name="KeePassDroid" />
   <app package="com.adstrosoftware.launchappops" name="Launch App Ops" />
-  <app package="org.linphone" name="LinPhone" />
-  <app package="com.google.android.gms" name="ug UnifiedNlp" />
-  <app package="org.fitchfamily.android.wifi_backend" name="LocalWifiNlpBackend" />
+  <app package="com.android.keepass" name="KeePassDroid" />
   <app package="com.artifex.mupdfdemo" name="MuPDF" />
-  <app package="org.sufficientlysecure.localcalendar" name="Offline Calendar" />
-  <app package="net.osmand.srtmPlugin.paid" name="OSMAnd Countour Lines" />
   <app package="com.eolwral.osmonitor" name="OS Monitor" />
   <app package="com.FireFart.Permissions2" name="Permissions" />
+  <app package="com.google.android.gms" name="ug UnifiedNlp" />
+  <app package="com.google.zxing.client.android" name="Barcode Scanner" />
   <app package="com.morlunk.mumbleclient" name="Plumble" />
+  <app package="com.nolanlawson.logcat" name="CatLog" />
+  <app package="com.seafile.seadroid2" name="Seafile" />
+  <app package="com.xabber.androiddev" name="Xabber XMPP+OTR Chat" />
+  <app package="de.schildbach.wallet" name="Bitcoin" />
+  <app package="de.srlabs.snoopsnitch" name="Snoop Snitch" />
+  <app package="fr.kwiatkowski.ApkTrack" name="ApkTrack" />
+  <app package="indrora.atomic" name="Atomic" />
+  <app package="info.guardianproject.otr.app.im" name="Chat Secure" />
+  <app package="net.lardcave.keepassnfc" name="KeePass NFC" />
+  <app package="net.osmand.srtmPlugin.paid" name="OSMAnd Countour Lines" />
+  <app package="org.coolreader" name="Cool Reader" />
+  <app package="org.fedorahosted.freeotp" name="FreeOTP" />
+  <app package="org.fitchfamily.android.wifi_backend" name="LocalWifiNlpBackend" />
+  <app package="org.linphone" name="LinPhone" />
   <app package="org.mariotaku.twidere" name="Twidere" />
   <app package="org.mozilla.fennec_fdroid" name="Fennec Browser" />
   <app package="org.mozilla.firefox" name="Firefox Browser" />
-  <app package="com.seafile.seadroid2" name="Seafile" />
-  <app package="de.srlabs.snoopsnitch" name="Snoop Snitch" />
+  <app package="org.sufficientlysecure.localcalendar" name="Offline Calendar" />
+  <app package="org.sufficientlysecure.viewer" name="Document Viewer" />
   <app package="org.videolan.vlc" name="VLC" />
-  <app package="com.xabber.androiddev" name="Xabber XMPP+OTR Chat" />
+  <app package="uk.co.ashtonbrsc.android.intentintercept" name="Intent Intercept" />
 </app-list>
