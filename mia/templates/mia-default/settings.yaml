@@ -51,6 +51,7 @@ apps:
   - id: de.schildbach.wallet
   - id: fr.kwiatkowski.ApkTrack
   - id: indrora.atomic
+  - id: jackpal.androidterm
   - id: net.osmand.plus
   - id: org.coolreader
   - id: org.ethack.orwall
