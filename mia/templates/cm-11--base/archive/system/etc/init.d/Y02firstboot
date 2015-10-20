@@ -1,0 +1,60 @@
+#!/system/bin/sh
+# Call `mia-firstboot.sh` if it exists.
+# @see https://github.com/CyanogenMod/android_vendor_cm/blob/cm-12.1/prebuilt/common/etc/init.d/90userinit
+# @see http://forum.xda-developers.com/showthread.php?t=1441378
+
+FB_SCRIPT="/data/local/mia-firstboot.sh"
+FB_LOG="/sdcard/mia-firstboot.log"
+TIMEOUT=8
+
+
+# Programs needed.
+ECHO="busybox echo"
+DATE="busybox date"
+GREP="busybox grep"
+PS="busybox ps"
+RM="busybox rm"
+SLEEP="busybox sleep"
+
+# TODO: Use system log instead of a simple file?!?
+fb_logger() {
+  $ECHO $($DATE +%s): $1 >> $FB_LOG
+}
+fb_logger "Running MIA init script: $0"
+fb_logger "Environment PATH variable: ${PATH}"
+
+# Search for active process.
+ps_grep () {
+  # Make sure the search command does not show up.
+  $PS | $GREP "$@" | $GREP -v "$( $ECHO $GREP $@ )"
+}
+
+
+# Install apps on first boot after system services have started.
+if [ -e $FB_SCRIPT ]; then
+  fb_logger "FirstBoot script found: ${FB_SCRIPT}"
+
+  # TODO: Find a way to prevent race conditions.
+  fb_logger "Waiting for com.android.systemui..."
+  while : ; do
+    # Check if the system is up and running.
+    if ps_grep com.android.systemui; then
+      fb_logger "com.android.systemui is running!"
+      $SLEEP $TIMEOUT
+
+      # Run the firstboot script.
+      logwrapper /system/bin/sh ${FB_SCRIPT}
+
+      fb_logger "Removing firstboot script: ${FB_SCRIPT}"
+      $RM ${FB_SCRIPT}
+
+      # Exit the loop.
+      break
+    fi
+
+    fb_logger "- waiting, next try in ${TIMEOUT}s..."
+    $SLEEP $TIMEOUT
+  done
+fi
+
+fb_logger "Finished running MIA init script: $0"

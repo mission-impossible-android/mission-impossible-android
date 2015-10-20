@@ -1,0 +1,26 @@
+<?xml version='1.0' encoding='UTF-8' standalone='yes' ?>
+<app-list>
+  <app package="com.android.keepass" name="KeePassDroid" />
+  <app package="com.artifex.mupdfdemo" name="MuPDF" />
+  <app package="com.google.android.gms" name="ug UnifiedNlp" />
+  <app package="com.google.zxing.client.android" name="Barcode Scanner" />
+  <app package="com.morlunk.mumbleclient" name="Plumble" />
+  <app package="com.nolanlawson.logcat" name="CatLog" />
+  <app package="com.seafile.seadroid2" name="Seafile" />
+  <app package="com.xabber.androiddev" name="Xabber XMPP+OTR Chat" />
+  <app package="de.schildbach.wallet" name="Bitcoin" />
+  <app package="fr.kwiatkowski.ApkTrack" name="ApkTrack" />
+  <app package="indrora.atomic" name="Atomic" />
+  <app package="info.guardianproject.otr.app.im" name="Chat Secure" />
+  <app package="net.lardcave.keepassnfc" name="KeePass NFC" />
+  <app package="org.coolreader" name="Cool Reader" />
+  <app package="org.fedorahosted.freeotp" name="FreeOTP" />
+  <app package="org.fitchfamily.android.wifi_backend" name="LocalWifiNlpBackend" />
+  <app package="org.linphone" name="LinPhone" />
+  <app package="org.mariotaku.twidere" name="Twidere" />
+  <app package="org.mozilla.fennec_fdroid" name="Fennec Browser" />
+  <app package="org.mozilla.firefox" name="Firefox Browser" />
+  <app package="org.sufficientlysecure.localcalendar" name="Offline Calendar" />
+  <app package="org.sufficientlysecure.viewer" name="Document Viewer" />
+  <app package="org.videolan.vlc" name="VLC" />
+</app-list>

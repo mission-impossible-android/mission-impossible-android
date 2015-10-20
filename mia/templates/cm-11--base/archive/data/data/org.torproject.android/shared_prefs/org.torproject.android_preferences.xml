@@ -1,0 +1,12 @@
+<?xml version='1.0' encoding='utf-8' standalone='yes' ?>
+<map>
+    <boolean name="pref_start_boot" value="true" />
+    <boolean name="pref_disable_network" value="true" />
+    <boolean name="wizardscreen1" value="false" />
+    <boolean name="has_root" value="false" />
+    <boolean name="connect_first_time" value="false" />
+    <boolean name="pref_transparent" value="false" />
+    <boolean name="pref_enable_logging" value="false" />
+    <boolean name="show_wizard" value="false" />
+    <boolean name="pref_transparent_all" value="false" />
+</map>
