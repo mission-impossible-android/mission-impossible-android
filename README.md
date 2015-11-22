@@ -128,7 +128,6 @@ Devices currently available for testing:
  Motorola Moto G 4G          | peregrine    | mikeperry-tor | no
  Samsung Galaxy S II         | i9100        | SchnWalter    | no
  OnePlus One                 | bacon        | SchnWalter    | no
- Sony Xperia Tablet Z (wifi) | pollux_windy | SchnWalter    | yes
 
 NOTE: Other devices supported by CyanogenMod might also be compatible. If you
       test one, please report it in the [issue queue](https://github.com/mission-impossible-android/mission-impossible-android/issues).
