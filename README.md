@@ -1,5 +1,5 @@
 
-# MIA - Mission Impossible: Android hardening
+# MIA: Hardening Android for Security and Privacy
 
 [![Build Status](https://travis-ci.org/mission-impossible-android/mission-impossible-android.svg)](https://travis-ci.org/mission-impossible-android/mission-impossible-android)
 [![#guardianproject on Freenode IRC](http://img.shields.io/badge/freenode-join%20%23guardianproject-green.svg?style=flat)](https://kiwiirc.com/client/chat.freenode.net/guardianproject)
